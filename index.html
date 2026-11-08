@@ -59,7 +59,7 @@ h2{font-size:21px;margin:32px 0 10px;border-bottom:1px solid var(--ligne);paddin
 .encadre{background:#fff;border:1px solid var(--ligne);border-radius:8px;padding:14px 16px;margin-bottom:16px}
 .encadre h3{margin:0 0 8px;font-size:16px}
 #mini,#graphe{background:#fff;border:1px solid var(--ligne);border-radius:8px}
-#mini{height:320px}
+#mini{height:380px}
 #graphe{height:calc(100vh - 230px);min-height:520px}
 .legende{display:flex;flex-wrap:wrap;gap:6px 16px;font-size:12px;color:var(--gris);margin:10px 0}
 .fil{font-size:13px;color:var(--gris);margin-bottom:8px}
@@ -190,6 +190,37 @@ function vueArtefacts(){
     h += `</tr>`;
   }
   return h + `</tbody></table></div>`;
+}
+function enfants(slug){ return D.concepts.filter(c=>parent(c.slug)===slug).map(c=>c.slug); }
+function miniHierarchique(slug){
+  const asc = ascendants(slug), enf = enfants(slug);
+  const hier = new Set([...asc, slug, ...enf]);
+  const lat = [];
+  D.relations.forEach(r=>{
+    const autre = r.source_slug===slug ? r.cible_slug : r.cible_slug===slug ? r.source_slug : null;
+    if(autre && !hier.has(autre) && !lat.includes(autre)) lat.push(autre);
+  });
+  const pos = {}, DY = 70, DX = 120;
+  asc.forEach((a,i)=>pos[a] = {x:0, y:(i-asc.length)*DY});
+  pos[slug] = {x:0, y:0};
+  enf.forEach((e,i)=>pos[e] = {x:(i-(enf.length-1)/2)*DX, y:DY*1.4 + (enf.length>4 ? (i%2)*40 : 0)});
+  const gauche = lat.filter((_,i)=>i%2===0), droite = lat.filter((_,i)=>i%2===1);
+  gauche.forEach((l,i)=>pos[l] = {x:-DX*1.6, y:(i-(gauche.length-1)/2)*44});
+  droite.forEach((l,i)=>pos[l] = {x:DX*1.6, y:(i-(droite.length-1)/2)*44});
+  const ids = new Set(Object.keys(pos));
+  const elements = elementsGraphe(ids);
+  elements.forEach(e=>{
+    if(e.data.source){
+      const hierarchique = hier.has(e.data.source) && hier.has(e.data.target) && (parent(e.data.source)===e.data.target || parent(e.data.target)===e.data.source);
+      e.classes = hierarchique ? "hier" : "lat";
+    } else if(!hier.has(e.data.id)) e.classes = "lateral";
+  });
+  const cy = dessiner("mini", elements, slug, {name:"preset", positions:n=>pos[n.id()], fit:true, padding:18});
+  cy.style()
+    .selector("edge.lat").style({"opacity":.35})
+    .selector("edge.hier").style({"width":2,"line-color":"#8a8f9a","target-arrow-color":"#8a8f9a"})
+    .selector("node.lateral").style({"opacity":.55,"width":10,"height":10,"font-size":9})
+    .update();
 }
 function vueFamille(slug){
   const f = D.famille[slug]; if(!f) return vueAccueil();
@@ -430,9 +461,7 @@ function router(){
     const c = D.parSlug[arg];
     if(c){
       document.title = `${c.libelle} · Glossaire de la STC`;
-      const voisins = new Set([arg]);
-      D.relations.forEach(r=>{ if(r.source_slug===arg) voisins.add(r.cible_slug); if(r.cible_slug===arg) voisins.add(r.source_slug); });
-      dessiner("mini", elementsGraphe(voisins), arg, {name:"concentric",concentric:n=>n.id()===arg?2:1,levelWidth:()=>1,minNodeSpacing:28,padding:16,animate:false});
+      miniHierarchique(arg);
     }
     return;
   }
