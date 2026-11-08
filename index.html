@@ -407,7 +407,10 @@ function appliquerFiltres(){
   const vis = cy.nodes().filter(n=>n.style("display")!=="none");
   if(vis.empty()) return;
   if(G.focus && G.profondeur>0){
-    vis.layout({name:"concentric",concentric:n=>n.id()===G.focus?3:(voisinage(G.focus,1).has(n.id())?2:1),levelWidth:()=>1,minNodeSpacing:40,animate:true,animationDuration:400,padding:40}).run();
+    const v1 = voisinage(G.focus,1);
+    const lay = vis.layout({name:"concentric",concentric:n=>n.id()===G.focus?3:(v1.has(n.id())?2:1),levelWidth:()=>1,minNodeSpacing:70,nodeDimensionsIncludeLabels:true,animate:false,fit:false});
+    lay.one("layoutstop", ()=>cy.animate({fit:{eles:vis,padding:40}},{duration:300}));
+    lay.run();
   } else {
     cy.animate({fit:{eles:vis,padding:30}},{duration:300});
   }
