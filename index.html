@@ -36,8 +36,8 @@ h1,h2,h3{font-family:"Source Serif 4",Georgia,serif;font-weight:600}
 h1{font-size:32px;margin:0 0 6px}
 h2{font-size:21px;margin:32px 0 10px;border-bottom:1px solid var(--ligne);padding-bottom:6px}
 .intro{color:var(--gris);max-width:760px}
-.familles{columns:3 300px;column-gap:28px}
-.famille{break-inside:avoid;margin-bottom:22px;background:var(--carte);border:1px solid var(--ligne);border-radius:8px;padding:14px 16px}
+.familles{display:grid;grid-template-columns:repeat(auto-fill,minmax(300px,1fr));gap:16px 22px;align-items:start}
+.famille{margin:0;background:var(--carte);border:1px solid var(--ligne);border-radius:8px;padding:14px 16px}
 .famille h3{margin:0 0 2px;font-size:17px}
 .famille p{margin:0 0 8px;font-size:13px;color:var(--gris)}
 .famille ul{margin:0;padding:0;list-style:none}
