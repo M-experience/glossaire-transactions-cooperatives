@@ -76,6 +76,14 @@ table{border-collapse:collapse;width:100%;background:#fff;font-size:14px}
 th,td{border:1px solid var(--ligne);padding:10px;vertical-align:top;text-align:left}
 th{font-weight:600;background:#f4f4f1}
 @media (max-width:700px){.grille .ligne{grid-template-columns:1fr}}
+.menu{position:relative}
+.menu summary{list-style:none;cursor:pointer;font-weight:500;font-size:14px;color:var(--encre)}
+.menu summary::-webkit-details-marker{display:none}
+.menu summary::after{content:" ▾";font-size:11px;color:var(--gris)}
+.menu summary.actif{color:var(--rouge)}
+.sous-menu{position:absolute;right:0;top:28px;background:#fff;border:1px solid var(--ligne);border-radius:8px;box-shadow:0 6px 20px rgba(0,0,0,.08);padding:6px 0;min-width:260px;z-index:10}
+.sous-menu a{display:block;padding:8px 16px;font-size:14px;white-space:nowrap}
+.sous-menu a:hover{background:#f4f4f1;text-decoration:none}
 footer{border-top:1px solid var(--ligne);font-size:12px;color:var(--gris);text-align:center;padding:18px}
 .chargement{color:var(--gris)}
 </style>
@@ -87,7 +95,12 @@ footer{border-top:1px solid var(--ligne);font-size:12px;color:var(--gris);text-a
     <nav>
       <a href="#/" data-v="accueil">Concepts</a>
       <a href="#/graphe" data-v="graphe">Graphe</a>
-      <a href="#/artefacts" data-v="artefacts">Artefacts situés</a>
+      <details class="menu" id="menu-exemples">
+        <summary data-v="artefacts">Exemples</summary>
+        <div class="sous-menu">
+          <a href="#/artefacts" data-v="artefacts">Artefacts situés sur les gradients</a>
+        </div>
+      </details>
       <a href="#/references" data-v="references">Références</a>
       <input id="recherche" type="search" placeholder="Rechercher un concept" aria-label="Rechercher un concept">
     </nav>
@@ -282,7 +295,8 @@ function router(){
   const h = decodeURIComponent(location.hash.replace(/^#\/?/,""));
   const [v, arg] = [h.split("/")[0], h.split("/").slice(1).join("/")];
   const el = document.getElementById("vue");
-  document.querySelectorAll("nav a").forEach(a=>a.classList.toggle("actif", a.dataset.v===(v||"accueil")));
+  document.querySelectorAll("nav a, nav summary").forEach(a=>a.classList.toggle("actif", a.dataset.v===(v||"accueil")));
+  document.getElementById("menu-exemples").open = false;
   window.scrollTo(0,0);
   if(v==="concept"){
     el.innerHTML = vueConcept(arg);
@@ -309,6 +323,7 @@ document.getElementById("recherche").addEventListener("input", e=>{
   location.hash = q ? `#/recherche/${encodeURIComponent(q)}` : "#/";
 });
 window.addEventListener("hashchange", router);
+document.addEventListener("click", e=>{ const m = document.getElementById("menu-exemples"); if(m.open && !m.contains(e.target)) m.open = false; });
 charger().then(router).catch(err=>{
   document.getElementById("vue").innerHTML = `<h1>Erreur de chargement</h1><p class="note">${esc(String(err.message||err))}</p>`;
 });
