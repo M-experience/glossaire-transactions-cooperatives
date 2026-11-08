@@ -1,10 +1,16 @@
 #!/usr/bin/env python3
 """English SVG versions of the STC schemas (international reference)."""
 import os, sys
-from xml.sax.saxutils import escape as E
+from xml.sax.saxutils import escape as _E
+def E(s): return _E(T(s))
 
 OUT = sys.argv[1]
+LANG = sys.argv[2] if len(sys.argv) > 2 else "en"
 os.makedirs(OUT, exist_ok=True)
+sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
+from traductions_schemas import TR
+_TR = TR.get(LANG, {})
+def T(s): return _TR.get(s, s)
 FONT = "Inter, 'Helvetica Neue', Helvetica, Arial, sans-serif"
 INK = "#1f2430"; GREY = "#55606e"; LINE = "#8a8f98"
 
@@ -79,7 +85,7 @@ b += rect(543, 651, 410, 127, "#f5c6c6", INK, 0, 1.2) + ctext(748, 714, [[("Cogn
 b += line([(749, 314), (749, 180)], "ad", color=INK, sw=1.5) + line([(578, 414), (436, 414)], "ad", color=INK, sw=1.5)
 b += line([(920, 414), (1108, 413)], "ad", color=INK, sw=1.5) + line([(749, 516), (749, 649)], "ad", color=INK, sw=1.5)
 b += ctext(328, 211, ["Mead’s interactionist", "semiotics"], 17)
-b += ctext(1238, 211, ["Greimas’s narrative", "semiotics"], 17)
+b += ctext(1238, 211, ["Greimas’s narrative", "semiotics "], 17)
 b += ctext(1176, 681, ["Peirce’s triadic semiotics", "enriched by Morris"], 17)
 S["slide05"] = svg(1500, 800, b)
 
@@ -123,7 +129,7 @@ for cx, head, c1, t1, verb, c2, t2 in cols:
     b += text(cx, 46, [head], 34)
     b += rect(cx - 133, 86, 266, 156, c1, INK, 26, 1.5) + ctext(cx, 164, t1, 23)
     b += line([(cx, 246), (cx, 296)], end=False, color=INK, sw=5, dash="1 11").replace('stroke-width="5"', 'stroke-width="5" stroke-linecap="round"')
-    vw = len(verb) * 17 + 20
+    vw = len(T(verb)) * 17 + 20
     b += f'<rect x="{cx - vw/2}" y="300" width="{vw}" height="58" fill="#fff"/>' + ctext(cx, 329, [verb], 32, 700)
     b += line([(cx, 368), (cx, 410)], end=False, color=INK, sw=5, dash="1 11").replace('stroke-width="5"', 'stroke-width="5" stroke-linecap="round"')
     b += f'<polygon points="{cx-16},{412} {cx+16},{412} {cx},{456}" fill="{INK}"/>'
@@ -198,7 +204,7 @@ for x, y, lines_ in [(182, 76, [[("Project owner", True)], "(demand)"]), (835, 7
                      (835, 416, [[("Performer", True)], "(giving, doing,", "exchanging)"])]:
     b += rect(x, y, 205, 120 if y < 200 else 132, ROLE, "#555", 0, 1.2) + ctext(x + 102, y + (60 if y < 200 else 66), lines_, 18, lh=1.6)
 for x, y, fill, l2 in [(487, 76, "#6aa8e6", "virtualizing"), (835 - 0, 246, "#b4d394", "enabling"), (182, 246, "#f7d796", "evaluative"), (487, 416, "#df856e", "value-bearing")]:
-    b += rect(x, y, 230 if x == 487 else 205, 120, fill, INK, 24, 1.2) + ctext(x + (115 if x == 487 else 102), y + 60, [l2[0].upper()+l2[1:], "mediating artifact"], 18, lh=1.6)
+    b += rect(x, y, 230 if x == 487 else 205, 120, fill, INK, 24, 1.2) + ctext(x + (115 if x == 487 else 102), y + 60, (["MEDIATOR_LINE1", l2] if LANG in ("es", "pt", "it") else [l2, "mediating artifact"]), 18, lh=1.6)
 G = "#8a8a8a"
 b += line([(387, 106), (487, 106)], end=False, color=G, sw=4) + line([(717, 106), (830, 106)], color=G, sw=3)
 b += line([(487, 140), (392, 140)], color=G, sw=3) + line([(835, 140), (717, 140)], end=False, color=G, sw=4)
