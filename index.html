@@ -181,7 +181,7 @@ function dessiner(conteneur, elements, centre, disposition){
       {selector:`node[id = "${centre||""}"]`,style:{"width":22,"height":22,"font-weight":600,"font-size":12,"border-width":3,"border-color":"#1d2330"}},
       {selector:".attenue",style:{"opacity":.15}}
     ],
-    layout: disposition || {name:"cose",animate:false,nodeRepulsion:9000,idealEdgeLength:80,padding:20},
+    layout: disposition || {name:"cose",animate:false,nodeDimensionsIncludeLabels:true,nodeRepulsion:()=>600000,idealEdgeLength:()=>120,edgeElasticity:()=>80,nodeOverlap:40,gravity:0.15,numIter:2500,componentSpacing:120,padding:30},
     wheelSensitivity:.2
   });
   cy.on("tap","node",e=>{ location.hash = `#/concept/${e.target.id()}`; });
