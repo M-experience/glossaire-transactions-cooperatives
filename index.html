@@ -134,6 +134,8 @@ details.famille summary p{margin:0}
 details.famille[open] summary p{margin-bottom:8px}
 details.famille ul{margin-top:4px}
 .compte{font-family:Inter,sans-serif;font-size:12px;font-weight:500;color:var(--gris);background:#f1f1ee;border-radius:10px;padding:1px 7px;margin-left:4px}
+.telecharger{font-size:13px}
+.telecharger a{font-weight:600}
 footer{border-top:1px solid var(--ligne);font-size:12px;color:var(--gris);text-align:center;padding:18px}
 .chargement{color:var(--gris)}
 </style>
@@ -294,8 +296,14 @@ function tableauParcours(courant){
   }
   return h + `</tbody></table></div><p class="note">Les rôles se font face de part et d'autre de l'œuvre : l'offre de l'entrepreneur répond à la demande du commanditaire, l'accomplissement du réalisateur à la réception du bénéficiaire. Une même personne peut tenir plusieurs rôles.</p>`;
 }
+function telechargements(url){
+  if(!url) return "";
+  if(/\.pdf$/i.test(url)) return `<span class="telecharger">Télécharger : <a href="${esc(url)}" target="_blank" rel="noopener">PDF</a> · <a href="${esc(url.replace(/\.pdf$/i,".pptx"))}" download>PowerPoint</a></span>`;
+  return `<a href="${esc(url)}" target="_blank" rel="noopener">Lien</a>`;
+}
+function urlDiaporama(){ return D.references.find(r=>r.cle==="diaporama-communication-conversation")?.url; }
 function figure(i){
-  return `<figure class="schema"><img src="schemas/${esc(i.fichier)}" alt="${esc(i.titre)} : ${esc(i.legende)}" loading="lazy" data-zoom="schemas/${esc(i.fichier)}" data-titre="${esc(i.titre)}"><figcaption><b>${esc(i.titre)}</b>. ${esc(i.legende)} <span class="note">Diaporama, diapositive ${i.diapositive} · cliquer pour agrandir</span></figcaption></figure>`;
+  return `<figure class="schema"><img src="schemas/${esc(i.fichier)}" alt="${esc(i.titre)} : ${esc(i.legende)}" loading="lazy" data-zoom="schemas/${esc(i.fichier)}" data-titre="${esc(i.titre)}"><figcaption><b>${esc(i.titre)}</b>. ${esc(i.legende)} <span class="note">${urlDiaporama()?`<a href="${esc(urlDiaporama())}#page=${i.diapositive}" target="_blank" rel="noopener">Diaporama, diapositive ${i.diapositive}</a>`:`Diaporama, diapositive ${i.diapositive}`} · cliquer pour agrandir</span></figcaption></figure>`;
 }
 function familleSchema(i){
   if(i.famille_slug && D.famille[i.famille_slug]) return i.famille_slug;
@@ -340,6 +348,7 @@ function vueAccueil(){
   <p class="intro">Glossaire relationnel de la Sémiotique des Transactions Coopératives. Chaque concept est relié aux autres par des relations typées (pôles, composantes, oppositions, correspondances) ; le graphe permet de parcourir ces relations. Première version établie à partir du cours « Communication et conversation dans la STC » : les résumés sont provisoires, les définitions et les références textuelles seront ajoutées progressivement.</p>`;
   const vue = D.concepts.find(c=>c.slug==="communication")?.concept_illustration?.find(x=>x.illustration?.fichier==="slide12.webp")?.illustration;
   if(vue) h += `<div style="max-width:820px">${figure(vue)}</div>`;
+  if(urlDiaporama()) h += `<p class="note">Diaporama du cours « Communication et conversation dans la STC » · ${telechargements(urlDiaporama())}</p>`;
   let ouvertes = null; try{ ouvertes = JSON.parse(localStorage.getItem("familles-ouvertes")); }catch(e){}
   h += `<p class="note">${D.concepts.length} concepts · ${D.relations.length} relations · <a href="#" id="tout-deplier">Tout déplier</a> · <a href="#" id="tout-replier">Tout replier</a></p><div class="familles">`;
   for(const f of D.familles){
@@ -402,7 +411,7 @@ function vueConcept(slug){
     h += `<div class="encadre" style="margin-top:16px"><h3>Auteurs mobilisés</h3><ul>` + c.concept_auteur.map(a=>`<li>${esc(a.auteur?.nom)} <span class="note">(${esc(a.nature)})</span>${a.commentaire?`<br><span class="com">${esc(a.commentaire)}</span>`:""}</li>`).join("") + `</ul></div>`;
   }
   if(c.concept_reference?.length){
-    h += `<div class="encadre"><h3>Références</h3><ul>` + c.concept_reference.map(r=>`<li>${esc(r.reference?.citation)} <span class="note">(${esc(r.role)}${r.localisation?", "+esc(r.localisation):""})</span></li>`).join("") + `</ul></div>`;
+    h += `<div class="encadre"><h3>Références</h3><ul>` + c.concept_reference.map(r=>`<li>${esc(r.reference?.citation)} <span class="note">(${esc(r.role)}${r.localisation?", "+esc(r.localisation):""})</span>${r.reference?.url?`<br>${telechargements(r.reference.url)}`:""}</li>`).join("") + `</ul></div>`;
   }
   return h + `</aside></div>`;
 }
@@ -566,7 +575,7 @@ function vueReferences(){
   let h = `<h1>Références</h1><ul class="resultats">`;
   for(const r of D.references){
     const cs = D.concepts.filter(c=>c.concept_reference?.some(x=>x.reference?.cle===r.cle && x.role!=="extrait de"));
-    h += `<li>${esc(r.citation)}${cs.length?`<br><span class="note">Concepts : ${cs.map(c=>lien(c.slug)).join(", ")}</span>`:""}</li>`;
+    h += `<li>${esc(r.citation)}${r.url?`<br>${telechargements(r.url)}`:""}${cs.length?`<br><span class="note">Concepts : ${cs.map(c=>lien(c.slug)).join(", ")}</span>`:""}</li>`;
   }
   return h + `</ul>`;
 }
