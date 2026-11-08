@@ -174,7 +174,7 @@ function dessiner(conteneur, elements, centre, disposition){
   const cy = cytoscape({
     container: document.getElementById(conteneur), elements,
     style:[
-      {selector:"node",style:{"background-color":"data(couleur)","label":"data(label)","font-size":10,"font-family":"Inter","color":"#1d2330","text-valign":"bottom","text-margin-y":4,"width":14,"height":14,"text-wrap":"wrap","text-max-width":110}},
+      {selector:"node",style:{"background-color":"data(couleur)","label":"data(label)","font-size":conteneur==="graphe"?17:10,"font-family":"Inter","color":"#1d2330","text-valign":"bottom","text-margin-y":4,"width":conteneur==="graphe"?22:14,"height":conteneur==="graphe"?22:14,"text-wrap":"wrap","text-max-width":conteneur==="graphe"?150:110}},
       {selector:"edge",style:{"width":1,"line-color":"#c9ccd3","target-arrow-color":"#c9ccd3","target-arrow-shape":"triangle","arrow-scale":.7,"curve-style":"bezier"}},
       {selector:"edge[sym = 1]",style:{"target-arrow-shape":"none","line-style":"dashed"}},
       {selector:"edge.vis",style:{"label":"data(label)","font-size":8,"color":"#5b6372","text-rotation":"autorotate","text-background-color":"#fff","text-background-opacity":1}},
