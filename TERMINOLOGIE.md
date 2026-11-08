@@ -36,3 +36,26 @@ Choix arbitrés par M. Zacklad : *œuvre* = **work** ; *dispositif* conservé en
 | dispositif d'information et de communication | information and communication dispositif | dispositivo de información y comunicación | *dispositif* conservé en anglais |
 | documentarisation ; ritualisation | documentarization ; ritualization | documentarización ; ritualización | |
 | métacommunication ; transmédiation | metacommunication ; transmediation | metacomunicación ; transmediación | |
+
+## Allemand, portugais, italien (traductions de travail, 8 novembre 2026)
+
+| Français | Deutsch | Português | Italiano |
+|---|---|---|---|
+| artefact médiateur | vermittelndes Artefakt | artefato mediador | artefatto mediatore |
+| œuvre | Werk | obra | opera |
+| milieu | Milieu | meio | milieu |
+| dispositif | Dispositiv | dispositivo | dispositivo |
+| conversation | Konversation | conversa | conversazione |
+| commanditaire ; entrepreneur ; réalisateur ; bénéficiaire | Auftraggeber ; Unternehmer ; Ausführender ; Begünstigter | comitente ; empreendedor ; realizador ; beneficiário | committente ; imprenditore ; realizzatore ; beneficiario |
+| engagement, compétence, performance, bilan | Verpflichtung, Kompetenz, Performanz, Bilanz | compromisso, competência, performance, balanço | impegno, competenza, performance, bilancio |
+| parcours narratif | narrativer Verlauf | percurso narrativo | percorso narrativo |
+| finalité (capacitant ↔ porteur de valeur) | Finalität (befähigend ↔ werttragend) | finalidade (capacitante ↔ portador de valor) | finalità (abilitante ↔ portatore di valore) |
+| symbolicité (profane ↔ symbolique) | Symbolizität (profan ↔ symbolisch) | simbolicidade (profano ↔ simbólico) | simbolicità (profano ↔ simbolico) |
+| pérennité (éphémère ↔ pérenne) | Beständigkeit (flüchtig ↔ beständig) | perenidade (efêmero ↔ perene) | perennità (effimero ↔ perenne) |
+| matérialité (matérielle ↔ sémiosique) | Materialität (materiell ↔ semiosisch) | materialidade (material ↔ semiósico) | materialità (materiale ↔ semiosico) |
+| subjectivation ; territorialisation | Subjektivierung ; Territorialisierung | subjetivação ; territorialização | soggettivazione ; territorializzazione |
+| consommatoire | konsumatorisch | consumatório | consumatorio |
+| raison sensible / pratique / conceptuelle | sinnliche / praktische / begriffliche Vernunft | razão sensível / prática / conceitual | ragione sensibile / pratica / concettuale |
+| communication axiogène | axiogene Kommunikation | comunicação axiogênica | comunicazione axiogena |
+
+Portugais : variante brésilienne (artefato, efêmero), majoritaire dans les sciences de l'information et de la communication lusophones.
