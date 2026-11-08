@@ -1,0 +1,14 @@
+{
+  "name": "Glossaire de la Sémiotique des Transactions Coopératives",
+  "short_name": "Glossaire STC",
+  "start_url": "/",
+  "display": "standalone",
+  "background_color": "#fafaf8",
+  "theme_color": "#C4122C",
+  "lang": "fr",
+  "icons": [
+    {"src": "/icon-192.png", "sizes": "192x192", "type": "image/png"},
+    {"src": "/icon-512.png", "sizes": "512x512", "type": "image/png"},
+    {"src": "/favicon.svg", "sizes": "any", "type": "image/svg+xml"}
+  ]
+}
