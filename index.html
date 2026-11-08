@@ -84,6 +84,22 @@ th{font-weight:600;background:#f4f4f1}
 .sous-menu{position:absolute;right:0;top:28px;background:#fff;border:1px solid var(--ligne);border-radius:8px;box-shadow:0 6px 20px rgba(0,0,0,.08);padding:6px 0;min-width:260px;z-index:10}
 .sous-menu a{display:block;padding:8px 16px;font-size:14px;white-space:nowrap}
 .sous-menu a:hover{background:#f4f4f1;text-decoration:none}
+.outils{display:flex;flex-wrap:wrap;gap:10px 18px;align-items:center;margin:12px 0}
+.outils input{padding:7px 10px;border:1px solid var(--ligne);border-radius:6px;font:inherit;font-size:14px;width:240px}
+.outils .groupe{font-size:13px;color:var(--gris);display:inline-flex;gap:4px;align-items:center}
+.outils button,.familles-filtre button,.bouton{font:inherit;font-size:13px;border:1px solid var(--ligne);background:#fff;border-radius:6px;padding:5px 10px;cursor:pointer;color:var(--encre)}
+.outils button.actif{background:var(--encre);color:#fff;border-color:var(--encre)}
+.familles-filtre button{font-size:12px;padding:3px 8px;margin:2px}
+.familles-filtre button:hover{border-color:var(--gris)}
+.familles-filtre button.eteint{opacity:.35;text-decoration:line-through}
+.zone-graphe{display:grid;grid-template-columns:1fr 300px;gap:16px}
+@media (max-width:900px){.zone-graphe{grid-template-columns:1fr}}
+.panneau{background:#fff;border:1px solid var(--ligne);border-radius:8px;padding:14px 16px;max-height:calc(100vh - 230px);overflow:auto;font-size:14px}
+.panneau h3{margin:4px 0 6px;font-size:19px}
+.panneau .rel h4{font-size:11px}
+a.bouton{display:inline-block;background:var(--rouge);color:#fff;border-color:var(--rouge)}
+a.bouton:hover{text-decoration:none;opacity:.9}
+.bouton.secondaire{margin-left:6px}
 footer{border-top:1px solid var(--ligne);font-size:12px;color:var(--gris);text-align:center;padding:18px}
 .chargement{color:var(--gris)}
 </style>
@@ -233,7 +249,7 @@ function vueConcept(slug){
   if(c.terme_ecarte?.length){
     h += `<h2>Termes écartés</h2><ul>` + c.terme_ecarte.map(t=>`<li><b>${esc(t.terme)}</b>${t.raison?" : "+esc(t.raison):""}</li>`).join("") + `</ul>`;
   }
-  h += `</div><aside><div id="mini"></div>`;
+  h += `</div><aside><div id="mini"></div><p class="note" style="margin:6px 0 14px"><a href="#/graphe/${slug}">Explorer depuis ce concept dans le graphe</a></p>`;
   if(c.concept_auteur?.length){
     h += `<div class="encadre" style="margin-top:16px"><h3>Auteurs mobilisés</h3><ul>` + c.concept_auteur.map(a=>`<li>${esc(a.auteur?.nom)} <span class="note">(${esc(a.nature)})</span>${a.commentaire?`<br><span class="com">${esc(a.commentaire)}</span>`:""}</li>`).join("") + `</ul></div>`;
   }
@@ -263,17 +279,128 @@ function dessiner(conteneur, elements, centre, disposition){
     layout: disposition || {name:"cose",animate:false,nodeDimensionsIncludeLabels:true,nodeRepulsion:()=>600000,idealEdgeLength:()=>120,edgeElasticity:()=>80,nodeOverlap:40,gravity:0.15,numIter:2500,componentSpacing:120,padding:30},
     wheelSensitivity:.2
   });
-  cy.on("tap","node",e=>{ location.hash = `#/concept/${e.target.id()}`; });
+  if(conteneur!=="graphe") cy.on("tap","node",e=>{ location.hash = `#/concept/${e.target.id()}`; });
   cy.on("mouseover","node",e=>{
+    if(cy.scratch("selection")) return;
     const v = e.target.closedNeighborhood();
     cy.elements().not(v).addClass("attenue"); v.edges().addClass("vis");
   });
-  cy.on("mouseout","node",()=>{ cy.elements().removeClass("attenue vis"); });
+  cy.on("mouseout","node",()=>{ if(!cy.scratch("selection")) cy.elements().removeClass("attenue vis"); });
   return cy;
 }
+const G = { cy:null, masquees:new Set(), focus:null, profondeur:0 };
 function vueGraphe(){
-  return `<h1>Graphe des concepts</h1><p class="intro">Survolez un concept pour voir ses relations, cliquez pour ouvrir sa fiche. Les liens en pointillés sont symétriques (oppositions, correspondances).</p>
-  <div class="legende">${D.familles.map(f=>`<span>${pastille(f.slug)}${esc(f.libelle)}</span>`).join("")}</div><div id="graphe"></div>`;
+  return `<h1>Graphe des concepts</h1>
+  <p class="intro">Cliquez sur un concept pour le sélectionner et voir ses liens ; double-cliquez pour ouvrir sa fiche. « Voisinage » n'affiche que le concept choisi et ses voisins. Cliquez sur une famille pour la masquer ou l'afficher. Les liens en pointillés sont symétriques.</p>
+  <div class="outils">
+    <input id="g-cherche" list="g-liste" placeholder="Aller à un concept…" aria-label="Aller à un concept">
+    <datalist id="g-liste">${D.concepts.map(c=>`<option value="${esc(c.libelle)}">`).join("")}</datalist>
+    <span class="groupe">Voisinage :
+      <button data-p="0" class="actif">tout le graphe</button><button data-p="1">1 lien</button><button data-p="2">2 liens</button>
+    </span>
+    <span class="groupe"><button id="g-plus" title="Zoomer">+</button><button id="g-moins" title="Dézoomer">−</button><button id="g-ajuster">Ajuster</button><button id="g-reinit">Réinitialiser</button></span>
+  </div>
+  <div class="legende familles-filtre"><span class="note">Familles (clic : masquer ou afficher ; double-clic : n'afficher que celle-ci)</span> <button id="g-toutes">Toutes</button><button id="g-aucune">Aucune</button><br>${D.familles.map(f=>`<button data-f="${f.slug}">${pastille(f.slug)}${esc(f.libelle)}</button>`).join("")}</div>
+  <div class="zone-graphe"><div id="graphe"></div><aside id="g-panneau" class="panneau vide"><p class="note">Sélectionnez un concept dans le graphe.</p></aside></div>`;
+}
+function panneauGraphe(slug){
+  const el = document.getElementById("g-panneau");
+  const c = D.parSlug[slug];
+  if(!c){ el.className="panneau vide"; el.innerHTML = `<p class="note">Sélectionnez un concept dans le graphe.</p>`; return; }
+  const groupes = grouperRelations(slug);
+  el.className = "panneau";
+  el.innerHTML = `<div class="fil">${pastille(c.famille_slug)}${esc(D.famille[c.famille_slug]?.libelle)}</div>
+  <h3>${esc(c.libelle)}</h3>${badge(c.statut)}
+  <p>${esc(c.resume||"")}</p>
+  <p><a class="bouton" href="#/concept/${slug}">Ouvrir la fiche</a> <button class="bouton secondaire" id="g-explorer">Voisinage</button></p>
+  ${Object.entries(groupes).map(([k,xs])=>`<div class="rel"><h4>${esc(k)}</h4><ul>${xs.map(x=>`<li><a href="#" data-aller="${x.autre}">${esc(D.parSlug[x.autre]?.libelle)}</a></li>`).join("")}</ul></div>`).join("")}`;
+  document.getElementById("g-explorer").onclick = ()=>{ G.profondeur = Math.max(G.profondeur,1); appliquerFiltres(); majBoutons(); };
+  el.querySelectorAll("[data-aller]").forEach(a=>a.onclick = e=>{ e.preventDefault(); selectionner(a.dataset.aller, true); });
+}
+function selectionner(slug, recentrer){
+  const cy = G.cy; if(!cy) return;
+  G.focus = slug; cy.scratch("selection", slug);
+  history.replaceState(null,"",`#/graphe/${slug}`);
+  if(G.profondeur>0) appliquerFiltres();
+  const n = cy.getElementById(slug);
+  cy.elements().removeClass("attenue vis choisi");
+  if(n.nonempty()){
+    const v = n.closedNeighborhood();
+    cy.elements().not(v).addClass("attenue"); v.edges().addClass("vis"); n.addClass("choisi");
+    if(recentrer) cy.animate({center:{eles:n}, zoom:Math.max(cy.zoom(),1)}, {duration:350});
+  }
+  panneauGraphe(slug);
+}
+function deselectionner(){
+  G.focus = null; G.cy.scratch("selection", null);
+  G.cy.elements().removeClass("attenue vis choisi");
+  history.replaceState(null,"","#/graphe");
+  panneauGraphe(null);
+}
+function voisinage(slug, prof){
+  const ids = new Set([slug]); let front = [slug];
+  for(let i=0;i<prof;i++){
+    const suiv = [];
+    for(const r of D.relations){
+      if(front.includes(r.source_slug) && !ids.has(r.cible_slug)){ ids.add(r.cible_slug); suiv.push(r.cible_slug); }
+      if(front.includes(r.cible_slug) && !ids.has(r.source_slug)){ ids.add(r.source_slug); suiv.push(r.source_slug); }
+    }
+    front = suiv;
+  }
+  return ids;
+}
+function appliquerFiltres(){
+  const cy = G.cy;
+  let visibles = new Set(D.concepts.filter(c=>!G.masquees.has(c.famille_slug)).map(c=>c.slug));
+  if(G.focus && G.profondeur>0){ const v = voisinage(G.focus, G.profondeur); visibles = new Set([...visibles].filter(x=>v.has(x))); visibles.add(G.focus); }
+  cy.batch(()=>{ cy.nodes().forEach(n=>n.style("display", visibles.has(n.id())?"element":"none")); });
+  const vis = cy.nodes().filter(n=>n.style("display")!=="none");
+  if(vis.empty()) return;
+  if(G.focus && G.profondeur>0){
+    vis.layout({name:"concentric",concentric:n=>n.id()===G.focus?3:(voisinage(G.focus,1).has(n.id())?2:1),levelWidth:()=>1,minNodeSpacing:40,animate:true,animationDuration:400,padding:40}).run();
+  } else {
+    cy.animate({fit:{eles:vis,padding:30}},{duration:300});
+  }
+}
+function majBoutons(){
+  document.querySelectorAll(".outils [data-p]").forEach(b=>b.classList.toggle("actif", Number(b.dataset.p)===G.profondeur));
+  document.querySelectorAll(".familles-filtre [data-f]").forEach(b=>b.classList.toggle("eteint", G.masquees.has(b.dataset.f)));
+}
+function initGraphe(focus){
+  G.masquees = new Set(); G.profondeur = 0; G.focus = null;
+  const cy = G.cy = dessiner("graphe", elementsGraphe());
+  cy.style().selector("node.choisi").style({"border-width":4,"border-color":"#1d2330","width":30,"height":30,"font-weight":600}).update();
+  G.positions = {}; cy.nodes().forEach(n=>G.positions[n.id()] = {...n.position()});
+  cy.on("tap","node",e=>selectionner(e.target.id(), false));
+  cy.on("dbltap","node",e=>{ location.hash = `#/concept/${e.target.id()}`; });
+  cy.on("tap",e=>{ if(e.target===cy) deselectionner(); });
+  document.querySelectorAll(".outils [data-p]").forEach(b=>b.onclick=()=>{
+    G.profondeur = Number(b.dataset.p);
+    if(G.profondeur===0){ cy.nodes().forEach(n=>n.position(G.positions[n.id()])); }
+    appliquerFiltres(); majBoutons();
+    if(G.focus) selectionner(G.focus, false);
+  });
+  let minuteur = null;
+  document.querySelectorAll(".familles-filtre [data-f]").forEach(b=>{
+    b.onclick = ()=>{ clearTimeout(minuteur); minuteur = setTimeout(()=>{
+      const f = b.dataset.f; G.masquees.has(f) ? G.masquees.delete(f) : G.masquees.add(f);
+      appliquerFiltres(); majBoutons(); }, 220); };
+    b.ondblclick = ()=>{ clearTimeout(minuteur);
+      G.masquees = new Set(D.familles.map(f=>f.slug).filter(x=>x!==b.dataset.f));
+      appliquerFiltres(); majBoutons(); };
+  });
+  document.getElementById("g-toutes").onclick = ()=>{ G.masquees.clear(); appliquerFiltres(); majBoutons(); };
+  document.getElementById("g-aucune").onclick = ()=>{ G.masquees = new Set(D.familles.map(f=>f.slug)); appliquerFiltres(); majBoutons(); };
+  document.getElementById("g-plus").onclick = ()=>cy.animate({zoom:{level:cy.zoom()*1.3, position:{x:cy.width()/2,y:cy.height()/2}}},{duration:200});
+  document.getElementById("g-moins").onclick = ()=>cy.animate({zoom:{level:cy.zoom()/1.3, position:{x:cy.width()/2,y:cy.height()/2}}},{duration:200});
+  document.getElementById("g-ajuster").onclick = ()=>cy.animate({fit:{eles:cy.nodes().filter(n=>n.style("display")!=="none"),padding:30}},{duration:300});
+  document.getElementById("g-reinit").onclick = ()=>{ G.masquees.clear(); G.profondeur=0; cy.nodes().forEach(n=>n.position(G.positions[n.id()])); deselectionner(); appliquerFiltres(); majBoutons(); };
+  const champ = document.getElementById("g-cherche");
+  champ.addEventListener("change", ()=>{
+    const n = norm(champ.value); const c = D.concepts.find(c=>norm(c.libelle)===n) || D.concepts.find(c=>norm(c.libelle).includes(n));
+    if(c){ G.masquees.delete(c.famille_slug); appliquerFiltres(); majBoutons(); selectionner(c.slug, true); champ.value=""; }
+  });
+  if(focus && D.parSlug[focus]) selectionner(focus, true);
 }
 function vueReferences(){
   let h = `<h1>Références</h1><ul class="resultats">`;
@@ -310,7 +437,7 @@ function router(){
     return;
   }
   document.title = "Glossaire de la Sémiotique des Transactions Coopératives";
-  if(v==="graphe"){ el.innerHTML = vueGraphe(); dessiner("graphe", elementsGraphe()); }
+  if(v==="graphe"){ el.innerHTML = vueGraphe(); initGraphe(arg); }
   else if(v==="references") el.innerHTML = vueReferences();
   else if(v==="artefacts") el.innerHTML = vueArtefacts();
   else if(v==="famille") el.innerHTML = vueFamille(arg);
