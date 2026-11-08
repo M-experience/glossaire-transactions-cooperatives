@@ -109,6 +109,8 @@ a.bouton:hover{text-decoration:none;opacity:.9}
 .flottant button{font:inherit;font-size:12px;border:1px solid var(--ligne);background:rgba(255,255,255,.95);border-radius:6px;padding:4px 9px;cursor:pointer;color:var(--encre);box-shadow:0 1px 3px rgba(0,0,0,.08)}
 .flottant button:hover{border-color:var(--gris)}
 .aide{position:absolute;bottom:6px;left:12px;margin:0;font-size:11px;color:var(--gris);background:rgba(255,255,255,.85);padding:2px 6px;border-radius:4px}
+table.parcours td,table.parcours th{width:25%}
+table.parcours tr.courant td{background:#fbf3f4}
 footer{border-top:1px solid var(--ligne);font-size:12px;color:var(--gris);text-align:center;padding:18px}
 .chargement{color:var(--gris)}
 </style>
@@ -247,6 +249,24 @@ function miniHierarchique(slug, mode){
     .selector("node.lateral").style({"opacity":.55,"width":10,"height":10,"font-size":9})
     .update();
 }
+function tableauParcours(courant){
+  const R = D.relations;
+  const membres = side => R.filter(r=>r.type_slug==="composante_de" && r.cible_slug===side).map(r=>r.source_slug);
+  const cotes = {real: membres("self-realisation"), recep: membres("self-reception")};
+  const moments = R.filter(r=>r.type_slug==="composante_de" && r.cible_slug==="parcours-narratif").map(r=>D.parSlug[r.source_slug]).filter(Boolean).sort((a,b)=>a.ordre-b.ordre);
+  if(!moments.length || !cotes.real.length) return "";
+  const roles = (m, side) => R.filter(r=>r.type_slug==="intervient_dans" && r.cible_slug===m && cotes[side].includes(r.source_slug)).map(r=>r.source_slug);
+  const artefacts = m => R.filter(r=>r.type_slug==="mobilise" && r.source_slug===m && D.parSlug[r.cible_slug]?.famille_slug==="artefact").map(r=>r.cible_slug);
+  const faces = m => R.filter(r=>r.type_slug==="face_de" && r.cible_slug===m).map(r=>r.source_slug);
+  const cell = xs => xs.length ? xs.map(x=>x===courant?`<b>${esc(D.parSlug[x].libelle)}</b>`:lien(x)).join("<br>") : `<span class="note">-</span>`;
+  let h = `<h2>Rôles symétriques dans le parcours transactionnel</h2><div class="tableau"><table class="parcours"><thead><tr><th>Moment</th><th>${cell(["self-realisation"])}</th><th>Artefact médiateur</th><th>${cell(["self-reception"])}</th></tr></thead><tbody>`;
+  for(const m of moments){
+    const f = faces(m.slug);
+    const sous = f.length ? `<br><span class="com">${f.map(lien).join(" / ")}</span>` : "";
+    h += `<tr${m.slug===courant?' class="courant"':""}><td>${cell([m.slug])}${sous}</td><td>${cell(roles(m.slug,"real"))}</td><td>${cell(artefacts(m.slug))}</td><td>${cell(roles(m.slug,"recep"))}</td></tr>`;
+  }
+  return h + `</tbody></table></div><p class="note">Les rôles se font face de part et d'autre de l'œuvre : l'offre de l'entrepreneur répond à la demande du commanditaire, l'accomplissement du réalisateur à la réception du bénéficiaire. Une même personne peut tenir plusieurs rôles.</p>`;
+}
 function vueFamille(slug){
   const f = D.famille[slug]; if(!f) return vueAccueil();
   const cs = D.concepts.filter(c=>c.famille_slug===slug);
@@ -302,6 +322,7 @@ function vueConcept(slug){
     h += `<div class="rel"><h4>${esc(k)}</h4><ul>` + groupes[k].map(x=>`<li>${pastille(D.parSlug[x.autre]?.famille_slug)}${lien(x.autre)}${x.com?` <span class="com">· ${esc(x.com)}</span>`:""}</li>`).join("") + `</ul></div>`;
   }
   if(GRADIENTS.includes(slug)) h += grilleGradient(slug);
+  if(c.famille_slug==="role" || slug==="parcours-narratif" || ["engagement","competence","performance","bilan","realisation","reception"].includes(slug)) h += tableauParcours(slug);
   if(c.terme_ecarte?.length){
     h += `<h2>Termes écartés</h2><ul>` + c.terme_ecarte.map(t=>`<li><b>${esc(t.terme)}</b>${t.raison?" : "+esc(t.raison):""}</li>`).join("") + `</ul>`;
   }
