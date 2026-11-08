@@ -120,6 +120,11 @@ figure.schema figcaption b{color:var(--encre)}
 #visionneuse img{max-width:96vw;max-height:86vh;background:#fff;border-radius:6px}
 #visionneuse p{color:#fff;margin:10px 0 0;font-size:14px}
 #visionneuse button{position:absolute;top:14px;right:20px;font-size:30px;line-height:1;background:none;border:0;color:#fff;cursor:pointer}
+.galerie{display:grid;grid-template-columns:repeat(auto-fill,minmax(420px,1fr));gap:18px}
+@media (max-width:600px){.galerie{grid-template-columns:1fr}}
+.carte-schema figure.schema{margin:0}
+.concepts-associes{margin:8px 2px 0;line-height:2}
+.etiquette{display:inline-block;background:#fff;border:1px solid var(--ligne);border-radius:12px;padding:0 9px;margin:0 3px 3px 0;font-size:13px}
 footer{border-top:1px solid var(--ligne);font-size:12px;color:var(--gris);text-align:center;padding:18px}
 .chargement{color:var(--gris)}
 </style>
@@ -131,6 +136,7 @@ footer{border-top:1px solid var(--ligne);font-size:12px;color:var(--gris);text-a
     <nav>
       <a href="#/" data-v="accueil">Concepts</a>
       <a href="#/graphe" data-v="graphe">Graphe</a>
+      <a href="#/schemas" data-v="schemas">Schémas</a>
       <details class="menu" id="menu-exemples">
         <summary data-v="artefacts">Exemples</summary>
         <div class="sous-menu">
@@ -159,13 +165,15 @@ async function api(chemin){
   return r.json();
 }
 async function charger(){
-  const [familles, concepts, relations, references, exemples] = await Promise.all([
+  const [familles, concepts, relations, references, exemples, illustrations] = await Promise.all([
     api("famille?select=*&order=ordre"),
     api("concept?select=*,concept_auteur(nature,commentaire,auteur(slug,nom)),concept_reference(role,localisation,reference(cle,citation,type,url)),definition(texte,version,date_version,est_courante,note),terme_ecarte(terme,raison),concept_illustration(principal,illustration(fichier,titre,legende,diapositive))&order=ordre"),
     api("v_relation?select=*&order=ordre"),
     api("reference?select=*&order=annee"),
-    api("artefact_exemple?select=slug,libelle,commentaire,ordre,positionnement(position,libelle,commentaire,concept(slug))&order=ordre")
+    api("artefact_exemple?select=slug,libelle,commentaire,ordre,positionnement(position,libelle,commentaire,concept(slug))&order=ordre"),
+    api("illustration?select=fichier,titre,legende,diapositive,ordre,concept_illustration(principal,concept(slug))&order=ordre")
   ]);
+  D.illustrations = illustrations;
   D.exemples = exemples;
   D.familles = familles; D.concepts = concepts; D.relations = relations; D.references = references;
   D.parSlug = Object.fromEntries(concepts.map(c=>[c.slug,c]));
@@ -279,6 +287,29 @@ function tableauParcours(courant){
 }
 function figure(i){
   return `<figure class="schema"><img src="schemas/${esc(i.fichier)}" alt="${esc(i.titre)} : ${esc(i.legende)}" loading="lazy" data-zoom="schemas/${esc(i.fichier)}" data-titre="${esc(i.titre)}"><figcaption><b>${esc(i.titre)}</b>. ${esc(i.legende)} <span class="note">Diaporama, diapositive ${i.diapositive} · cliquer pour agrandir</span></figcaption></figure>`;
+}
+function familleSchema(i){
+  const princ = i.concept_illustration.filter(x=>x.principal && x.concept).map(x=>D.parSlug[x.concept.slug]).filter(Boolean);
+  const base = princ.length ? princ : i.concept_illustration.map(x=>D.parSlug[x.concept?.slug]).filter(Boolean);
+  const compte = {};
+  base.forEach(c=>compte[c.famille_slug]=(compte[c.famille_slug]||0)+1);
+  return Object.keys(compte).sort((a,b)=>(compte[b]-compte[a])||(D.famille[a].ordre-D.famille[b].ordre))[0];
+}
+function vueSchemas(){
+  const groupes = {};
+  for(const i of D.illustrations){ const f = familleSchema(i); (groupes[f] ??= []).push(i); }
+  let h = `<h1>Schémas</h1><p class="intro">Les schémas et illustrations de la STC, classés par famille de concepts. Sous chaque schéma figurent les concepts qu'il éclaire ; ceux pour lesquels il sert de schéma de référence sont en gras.</p>`;
+  h += `<p class="note">Aller à : ${D.familles.filter(f=>groupes[f.slug]).map(f=>`<a href="#" data-ancre="sch-${f.slug}">${esc(f.libelle)}</a>`).join(" · ")}</p>`;
+  for(const f of D.familles){
+    const xs = groupes[f.slug]; if(!xs) continue;
+    h += `<h2 id="sch-${f.slug}">${pastille(f.slug)}${esc(f.libelle)}</h2><div class="galerie">`;
+    for(const i of xs){
+      const cs = i.concept_illustration.filter(x=>x.concept && D.parSlug[x.concept.slug]).sort((a,b)=>(b.principal-a.principal)||(D.parSlug[a.concept.slug].ordre-D.parSlug[b.concept.slug].ordre));
+      h += `<div class="carte-schema">${figure(i)}<div class="concepts-associes"><span class="note">Concepts associés :</span> ${cs.map(x=>`<span class="etiquette">${pastille(D.parSlug[x.concept.slug].famille_slug)}${x.principal?`<b>${lien(x.concept.slug)}</b>`:lien(x.concept.slug)}</span>`).join(" ")}</div></div>`;
+    }
+    h += `</div>`;
+  }
+  return h;
 }
 function vueFamille(slug){
   const f = D.famille[slug]; if(!f) return vueAccueil();
@@ -546,6 +577,7 @@ function router(){
   if(v==="graphe"){ el.innerHTML = vueGraphe(); initGraphe(arg); }
   else if(v==="references") el.innerHTML = vueReferences();
   else if(v==="artefacts") el.innerHTML = vueArtefacts();
+  else if(v==="schemas"){ el.innerHTML = vueSchemas(); el.querySelectorAll("[data-ancre]").forEach(a=>a.onclick=e=>{ e.preventDefault(); document.getElementById(a.dataset.ancre).scrollIntoView({behavior:"smooth"}); }); }
   else if(v==="famille") el.innerHTML = vueFamille(arg);
   else if(v==="recherche") el.innerHTML = vueRecherche(arg);
   else el.innerHTML = vueAccueil();
