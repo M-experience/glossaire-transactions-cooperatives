@@ -125,6 +125,14 @@ figure.schema figcaption b{color:var(--encre)}
 .carte-schema figure.schema{margin:0}
 .concepts-associes{margin:8px 2px 0;line-height:2}
 .etiquette{display:inline-block;background:#fff;border:1px solid var(--ligne);border-radius:12px;padding:0 9px;margin:0 3px 3px 0;font-size:13px}
+details.famille summary{list-style:none;cursor:pointer}
+details.famille summary::-webkit-details-marker{display:none}
+details.famille summary h3::after{content:"▸";float:right;color:var(--gris);font-size:14px;transition:transform .15s}
+details.famille[open] summary h3::after{transform:rotate(90deg)}
+details.famille summary p{margin:0}
+details.famille[open] summary p{margin-bottom:8px}
+details.famille ul{margin-top:4px}
+.compte{font-family:Inter,sans-serif;font-size:12px;font-weight:500;color:var(--gris);background:#f1f1ee;border-radius:10px;padding:1px 7px;margin-left:4px}
 footer{border-top:1px solid var(--ligne);font-size:12px;color:var(--gris);text-align:center;padding:18px}
 .chargement{color:var(--gris)}
 </style>
@@ -312,6 +320,13 @@ function vueSchemas(){
   }
   return h;
 }
+function brancherAccueil(){
+  const sauver = ()=>{ try{ localStorage.setItem("familles-ouvertes", JSON.stringify([...document.querySelectorAll("details.famille[open]")].map(d=>d.dataset.f))); }catch(e){} };
+  document.querySelectorAll("details.famille").forEach(d=>d.addEventListener("toggle", sauver));
+  const tous = ouvrir => e=>{ e.preventDefault(); document.querySelectorAll("details.famille").forEach(d=>d.open = ouvrir); sauver(); };
+  document.getElementById("tout-deplier").onclick = tous(true);
+  document.getElementById("tout-replier").onclick = tous(false);
+}
 function vueFamille(slug){
   const f = D.famille[slug]; if(!f) return vueAccueil();
   const cs = D.concepts.filter(c=>c.famille_slug===slug);
@@ -324,13 +339,15 @@ function vueAccueil(){
   <p class="intro">Glossaire relationnel de la Sémiotique des Transactions Coopératives. Chaque concept est relié aux autres par des relations typées (pôles, composantes, oppositions, correspondances) ; le graphe permet de parcourir ces relations. Première version établie à partir du cours « Communication et conversation dans la STC » : les résumés sont provisoires, les définitions et les références textuelles seront ajoutées progressivement.</p>`;
   const vue = D.concepts.find(c=>c.slug==="communication")?.concept_illustration?.find(x=>x.illustration?.fichier==="slide12.webp")?.illustration;
   if(vue) h += `<div style="max-width:820px">${figure(vue)}</div>`;
-  h += `<p class="note">${D.concepts.length} concepts · ${D.relations.length} relations</p><div class="familles">`;
+  let ouvertes = null; try{ ouvertes = JSON.parse(localStorage.getItem("familles-ouvertes")); }catch(e){}
+  h += `<p class="note">${D.concepts.length} concepts · ${D.relations.length} relations · <a href="#" id="tout-deplier">Tout déplier</a> · <a href="#" id="tout-replier">Tout replier</a></p><div class="familles">`;
   for(const f of D.familles){
     const cs = D.concepts.filter(c=>c.famille_slug===f.slug);
     if(!cs.length) continue;
-    h += `<section class="famille"><h3>${pastille(f.slug)}${esc(f.libelle)}</h3><p>${esc(f.description)}</p><ul>`;
+    const ouvert = ouvertes ? ouvertes.includes(f.slug) : false;
+    h += `<details class="famille" data-f="${f.slug}"${ouvert?" open":""}><summary><h3>${pastille(f.slug)}${esc(f.libelle)} <span class="compte">${cs.length}</span></h3><p>${esc(f.description)}</p></summary><ul>`;
     h += cs.map(c=>`<li>${lien(c.slug)}${c.statut!=="stabilisé"?` <span class="note">(${esc(c.statut)})</span>`:""}</li>`).join("");
-    h += `</ul></section>`;
+    h += `</ul></details>`;
   }
   return h + `</div>`;
 }
@@ -581,7 +598,7 @@ function router(){
   else if(v==="schemas"){ el.innerHTML = vueSchemas(); el.querySelectorAll("[data-ancre]").forEach(a=>a.onclick=e=>{ e.preventDefault(); document.getElementById(a.dataset.ancre).scrollIntoView({behavior:"smooth"}); }); }
   else if(v==="famille") el.innerHTML = vueFamille(arg);
   else if(v==="recherche") el.innerHTML = vueRecherche(arg);
-  else el.innerHTML = vueAccueil();
+  else { el.innerHTML = vueAccueil(); brancherAccueil(); }
 }
 
 document.getElementById("recherche").addEventListener("input", e=>{
