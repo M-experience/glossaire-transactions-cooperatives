@@ -218,10 +218,10 @@ function grilleGradient(g){
     const p = e.positionnement.find(x=>x.concept?.slug===g); if(!p) continue;
     h += `<div class="ligne"><span>${esc(e.libelle)}</span>${curseur(Number(p.position), p.libelle)}<span class="com">${esc(p.libelle)}${p.commentaire?" · "+esc(p.commentaire):""}</span></div>`;
   }
-  return h + `</div><p class="note">Positions indicatives, à discuter (diaporama, exercice 2). Voir aussi <a href="#/artefacts">l'ensemble des artefacts situés</a>.</p>`;
+  return h + `</div><p class="note">Positions indicatives, à discuter (diaporama, exercice 2, complété). Voir aussi <a href="#/artefacts">l'ensemble des artefacts situés</a>.</p>`;
 }
 function vueArtefacts(){
-  let h = `<h1>Artefacts situés sur les quatre gradients</h1><p class="intro">Positions indicatives de huit artefacts sur les gradients de finalité, de symbolicité, de pérennité et de matérialité. Les cas de dissociation montrent l'indépendance des gradients : le bon repas sans occasion particulière est porteur de valeur mais profane, à la différence du gâteau d'anniversaire ; la consigne et l'explication orales ont même pérennité et même matérialité, mais une finalité différente.</p>`;
+  let h = `<h1>Artefacts situés sur les quatre gradients</h1><p class="intro">Positions indicatives de ${D.exemples.length} artefacts sur les gradients de finalité, de symbolicité, de pérennité et de matérialité. Les cas de dissociation montrent l'indépendance des gradients : le bon repas sans occasion particulière est porteur de valeur mais profane, à la différence du gâteau d'anniversaire ; la consigne et l'explication orales ont même pérennité et même matérialité, mais une finalité différente ; le geste du masseur et le bon repas sont tous deux matériels et porteurs de valeur, mais l'un est éphémère, l'autre pérenne.</p>`;
   h += `<div class="tableau"><table><thead><tr><th>Artefact</th>${GRADIENTS.map(g=>{const ps=poles(g);return `<th>${lien(g)}<br><span class="note">${esc(ps[0]?.libelle)} ↔ ${esc(ps[1]?.libelle)}</span></th>`;}).join("")}</tr></thead><tbody>`;
   for(const e of D.exemples){
     h += `<tr><td><b>${esc(e.libelle)}</b>${e.commentaire?`<br><span class="com">${esc(e.commentaire)}</span>`:""}</td>`;
