@@ -104,6 +104,11 @@ a.bouton:hover{text-decoration:none;opacity:.9}
 .bascule{display:flex;gap:4px;margin-bottom:6px}
 .bascule button{font:inherit;font-size:12px;border:1px solid var(--ligne);background:#fff;border-radius:6px;padding:4px 9px;cursor:pointer;color:var(--encre)}
 .bascule button.actif{background:var(--encre);color:#fff;border-color:var(--encre)}
+.cadre-graphe{position:relative}
+.flottant{position:absolute;top:10px;right:10px;display:flex;gap:4px}
+.flottant button{font:inherit;font-size:12px;border:1px solid var(--ligne);background:rgba(255,255,255,.95);border-radius:6px;padding:4px 9px;cursor:pointer;color:var(--encre);box-shadow:0 1px 3px rgba(0,0,0,.08)}
+.flottant button:hover{border-color:var(--gris)}
+.aide{position:absolute;bottom:6px;left:12px;margin:0;font-size:11px;color:var(--gris);background:rgba(255,255,255,.85);padding:2px 6px;border-radius:4px}
 footer{border-top:1px solid var(--ligne);font-size:12px;color:var(--gris);text-align:center;padding:18px}
 .chargement{color:var(--gris)}
 </style>
@@ -130,6 +135,7 @@ footer{border-top:1px solid var(--ligne);font-size:12px;color:var(--gris);text-a
 <footer>Manuel Zacklad · Cnam, Dicen-IDF · Glossaire en cours d'élaboration, version provisoire</footer>
 
 <script>
+if(location.protocol==="http:" && location.hostname.endsWith("zacklad.org")) location.replace("https://"+location.host+location.pathname+location.search+location.hash);
 const SUPABASE_URL = "https://jfzyjxtvmambpntpwjrr.supabase.co";
 const SUPABASE_KEY = "sb_publishable_UjuNUsU-SOe6E18QKl18Yg_mXimkrKz";
 const COULEURS = ["#C4122C","#144162","#617CA9","#EC5A64","#2f6f4f","#8a6d1a","#7a3d8c","#0f7c8c","#b8562b","#4a5a1e","#9b2c5d","#3b4cc0","#6b4f2a","#1f7a52","#a0336b","#5a6b7d","#c2841a"];
@@ -327,8 +333,12 @@ function dessiner(conteneur, elements, centre, disposition){
       {selector:".attenue",style:{"opacity":.15}}
     ],
     layout: disposition || {name:"cose",animate:false,nodeDimensionsIncludeLabels:true,nodeRepulsion:()=>600000,idealEdgeLength:()=>120,edgeElasticity:()=>80,nodeOverlap:40,gravity:0.15,numIter:2500,componentSpacing:120,padding:30},
-    wheelSensitivity:.2
+    wheelSensitivity:.2, minZoom:.08, maxZoom:3
   });
+  const boite = document.getElementById(conteneur);
+  boite.parentElement.addEventListener("wheel", e=>{
+    if(boite.contains(e.target) && !(e.ctrlKey || e.metaKey)) e.stopPropagation();
+  }, {capture:true});
   if(conteneur!=="graphe") cy.on("tap","node",e=>{ location.hash = `#/concept/${e.target.id()}`; });
   cy.on("mouseover","node",e=>{
     if(cy.scratch("selection")) return;
@@ -351,7 +361,9 @@ function vueGraphe(){
     <span class="groupe"><button id="g-plus" title="Zoomer">+</button><button id="g-moins" title="Dézoomer">−</button><button id="g-ajuster">Ajuster</button><button id="g-reinit">Réinitialiser</button></span>
   </div>
   <div class="legende familles-filtre"><span class="note">Familles (clic : masquer ou afficher ; double-clic : n'afficher que celle-ci)</span> <button id="g-toutes">Toutes</button><button id="g-aucune">Aucune</button><br>${D.familles.map(f=>`<button data-f="${f.slug}">${pastille(f.slug)}${esc(f.libelle)}</button>`).join("")}</div>
-  <div class="zone-graphe"><div id="graphe"></div><aside id="g-panneau" class="panneau vide"><p class="note">Sélectionnez un concept dans le graphe.</p></aside></div>`;
+  <div class="zone-graphe"><div class="cadre-graphe"><div id="graphe"></div>
+    <div class="flottant"><button id="f-plus" title="Zoomer">+</button><button id="f-moins" title="Dézoomer">−</button><button id="f-ajuster" title="Recadrer sur les concepts affichés">Recadrer</button><button id="f-reinit" title="Revenir au graphe complet">Tout réafficher</button></div>
+    <p class="aide">Molette : défiler la page · Ctrl ou ⌘ + molette : zoomer · Échap : désélectionner</p></div><aside id="g-panneau" class="panneau vide"><p class="note">Sélectionnez un concept dans le graphe.</p></aside></div>`;
 }
 function panneauGraphe(slug){
   const el = document.getElementById("g-panneau");
@@ -448,6 +460,8 @@ function initGraphe(focus){
   document.getElementById("g-plus").onclick = ()=>cy.animate({zoom:{level:cy.zoom()*1.3, position:{x:cy.width()/2,y:cy.height()/2}}},{duration:200});
   document.getElementById("g-moins").onclick = ()=>cy.animate({zoom:{level:cy.zoom()/1.3, position:{x:cy.width()/2,y:cy.height()/2}}},{duration:200});
   document.getElementById("g-ajuster").onclick = ()=>cy.animate({fit:{eles:cy.nodes().filter(n=>n.style("display")!=="none"),padding:30}},{duration:300});
+  ["plus","moins","ajuster","reinit"].forEach(k=>document.getElementById("f-"+k).onclick = ()=>document.getElementById("g-"+k).click());
+  document.onkeydown = e=>{ if(e.key==="Escape" && G.cy && location.hash.startsWith("#/graphe")){ if(G.profondeur>0){ document.querySelector('.outils [data-p="0"]').click(); } deselectionner(); document.getElementById("g-ajuster").click(); } };
   document.getElementById("g-reinit").onclick = ()=>{ G.masquees.clear(); G.profondeur=0; cy.nodes().forEach(n=>n.position(G.positions[n.id()])); deselectionner(); appliquerFiltres(); majBoutons(); };
   const champ = document.getElementById("g-cherche");
   champ.addEventListener("change", ()=>{
