@@ -51,7 +51,7 @@ Choix arbitrés par M. Zacklad : *œuvre* = **work** ; *dispositif* conservé en
 | parcours narratif | narrativer Verlauf | percurso narrativo | percorso narrativo |
 | finalité (capacitant ↔ porteur de valeur) | Finalität (befähigend ↔ werttragend) | finalidade (capacitante ↔ portador de valor) | finalità (abilitante ↔ portatore di valore) |
 | symbolicité (profane ↔ symbolique) | Symbolizität (profan ↔ symbolisch) | simbolicidade (profano ↔ simbólico) | simbolicità (profano ↔ simbolico) |
-| pérennité (éphémère ↔ pérenne) | Beständigkeit (flüchtig ↔ beständig) | perenidade (efêmero ↔ perene) | perennità (effimero ↔ perenne) |
+| pérennité (éphémère ↔ pérenne) | Dauerhaftigkeit (flüchtig ↔ dauerhaft) | perenidade (efêmero ↔ perene) | perennità (effimero ↔ perenne) |
 | matérialité (matérielle ↔ sémiosique) | Materialität (materiell ↔ semiosisch) | materialidade (material ↔ semiósico) | materialità (materiale ↔ semiosico) |
 | subjectivation ; territorialisation | Subjektivierung ; Territorialisierung | subjetivação ; territorialização | soggettivazione ; territorializzazione |
 | consommatoire | konsumatorisch | consumatório | consumatorio |
