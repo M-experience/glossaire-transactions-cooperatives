@@ -409,8 +409,8 @@ function appliquerFiltres(){
   if(G.focus && G.profondeur>0){
     const v1 = voisinage(G.focus,1);
     const lay = vis.layout({name:"concentric",concentric:n=>n.id()===G.focus?3:(v1.has(n.id())?2:1),levelWidth:()=>1,minNodeSpacing:70,nodeDimensionsIncludeLabels:true,animate:false,fit:false});
-    lay.one("layoutstop", ()=>{ cy.stop(); cy.fit(vis, 40); });
     lay.run();
+    setTimeout(()=>{ cy.stop(); cy.fit(vis, 40); }, 60);
   } else {
     cy.animate({fit:{eles:vis,padding:30}},{duration:300});
   }
