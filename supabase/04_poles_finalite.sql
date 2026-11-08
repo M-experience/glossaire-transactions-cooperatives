@@ -1,0 +1,3 @@
+-- 2026-11-08 : les pôles du gradient de finalité deviennent des concepts de la famille « Pôles des gradients »
+-- (capacitant, porteur-de-valeur) ; les types d'artefacts du parcours (artefact-capacitant, artefact-porteur-de-valeur)
+-- n'en sont plus les pôles directs mais y « correspondent ».
