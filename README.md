@@ -20,3 +20,11 @@ Glossaire relationnel des concepts de la STC (Manuel Zacklad, Cnam, Dicen-IDF).
 
 Les contenus se modifient dans Supabase : le site se met à jour sans redéploiement.
 Le code du site se modifie ici : chaque `git push` sur `main` republie le site.
+
+## Langues
+
+Le site est disponible en français (référence), en anglais et en espagnol (traductions de travail).
+- Choix de langue : boutons FR / EN / ES, mémorisé dans le navigateur ; lien partageable avec `?lang=en` ou `?lang=es`.
+- Contenus traduits : table `traduction` (table, clé, champ, langue, texte, statut « travail » ou « relue »).
+- Terminologie : voir `TERMINOLOGIE.md` ; sources des traductions dans `supabase/traductions_en.py` et `traductions_es.py`.
+- Ajouter une langue : un bloc dans `I18N` (index.html) et des lignes dans `traduction` ; tout texte non traduit s'affiche en français.

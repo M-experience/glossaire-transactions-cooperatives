@@ -136,6 +136,10 @@ details.famille ul{margin-top:4px}
 .compte{font-family:Inter,sans-serif;font-size:12px;font-weight:500;color:var(--gris);background:#f1f1ee;border-radius:10px;padding:1px 7px;margin-left:4px}
 .telecharger{font-size:13px}
 .telecharger a{font-weight:600}
+.langues{display:inline-flex;gap:2px;margin-left:4px}
+.langues button{font:inherit;font-size:12px;font-weight:600;border:1px solid var(--ligne);background:#fff;border-radius:5px;padding:4px 7px;cursor:pointer;color:var(--gris)}
+.langues button.actif{background:var(--rouge);border-color:var(--rouge);color:#fff}
+.avert-trad{max-width:1180px;margin:10px auto 0;padding:8px 24px;font-size:13px;color:#7a5b00;background:#fff7dd;border:1px solid #f1e2a8;border-radius:6px}
 footer{border-top:1px solid var(--ligne);font-size:12px;color:var(--gris);text-align:center;padding:18px}
 .chargement{color:var(--gris)}
 </style>
@@ -143,25 +147,27 @@ footer{border-top:1px solid var(--ligne);font-size:12px;color:var(--gris);text-a
 <body>
 <header>
   <div class="bandeau">
-    <a class="titre" href="#/"><small>Sémiotique des Transactions Coopératives</small>Glossaire de la STC</a>
+    <a class="titre" href="#/"><small data-i18n="sous_titre">Sémiotique des Transactions Coopératives</small><span data-i18n="titre">Glossaire de la STC</span></a>
     <nav>
-      <a href="#/" data-v="accueil">Concepts</a>
-      <a href="#/graphe" data-v="graphe">Graphe</a>
-      <a href="#/schemas" data-v="schemas">Schémas</a>
+      <a href="#/" data-v="accueil" data-i18n="nav_concepts">Concepts</a>
+      <a href="#/graphe" data-v="graphe" data-i18n="nav_graphe">Graphe</a>
+      <a href="#/schemas" data-v="schemas" data-i18n="nav_schemas">Schémas</a>
       <details class="menu" id="menu-exemples">
-        <summary data-v="artefacts">Exemples</summary>
+        <summary data-v="artefacts" data-i18n="nav_exemples">Exemples</summary>
         <div class="sous-menu">
-          <a href="#/artefacts" data-v="artefacts">Artefacts situés sur les gradients</a>
+          <a href="#/artefacts" data-v="artefacts" data-i18n="nav_artefacts">Artefacts situés sur les gradients</a>
         </div>
       </details>
-      <a href="#/references" data-v="references">Références</a>
+      <a href="#/references" data-v="references" data-i18n="nav_references">Références</a>
       <input id="recherche" type="search" placeholder="Rechercher un concept" aria-label="Rechercher un concept">
+      <span class="langues" id="langues"><button data-l="fr">FR</button><button data-l="en">EN</button><button data-l="es">ES</button></span>
     </nav>
   </div>
 </header>
+<div id="avert-trad" class="avert-trad" hidden></div>
 <main id="vue"><p class="chargement">Chargement du glossaire…</p></main>
 <div id="visionneuse" hidden><button aria-label="Fermer">×</button><img alt=""><p></p></div>
-<footer>Manuel Zacklad · Cnam, Dicen-IDF · Glossaire en cours d'élaboration, version provisoire</footer>
+<footer data-i18n="pied">Manuel Zacklad · Cnam, Dicen-IDF · Glossaire en cours d'élaboration, version provisoire</footer>
 
 <script>
 if(location.protocol==="http:" && location.hostname.endsWith("zacklad.org")) location.replace("https://"+location.host+location.pathname+location.search+location.hash);
@@ -169,6 +175,115 @@ const SUPABASE_URL = "https://jfzyjxtvmambpntpwjrr.supabase.co";
 const SUPABASE_KEY = "sb_publishable_UjuNUsU-SOe6E18QKl18Yg_mXimkrKz";
 const COULEURS = ["#C4122C","#144162","#617CA9","#EC5A64","#2f6f4f","#8a6d1a","#7a3d8c","#0f7c8c","#b8562b","#4a5a1e","#9b2c5d","#3b4cc0","#6b4f2a","#1f7a52","#a0336b","#5a6b7d","#c2841a"];
 const D = {};
+const I18N = {
+fr:{sous_titre:"Sémiotique des Transactions Coopératives",titre:"Glossaire de la STC",titre_long:"Glossaire de la Sémiotique des Transactions Coopératives",
+nav_concepts:"Concepts",nav_graphe:"Graphe",nav_schemas:"Schémas",nav_exemples:"Exemples",nav_artefacts:"Artefacts situés sur les gradients",nav_references:"Références",
+rechercher:"Rechercher un concept",chargement:"Chargement du glossaire…",pied:"Manuel Zacklad · Cnam, Dicen-IDF · Glossaire en cours d'élaboration, version provisoire",trad_avert:"",
+"stabilisé":"stabilisé","provisoire":"provisoire","en discussion":"en discussion","écarté":"écarté",
+inspiration:"inspiration",emprunt:"emprunt",transposition:"transposition","extrait de":"extrait de",source:"source",
+acc_titre:"Concepts de la STC",acc_intro:"Glossaire relationnel de la Sémiotique des Transactions Coopératives. Chaque concept est relié aux autres par des relations typées (pôles, composantes, oppositions, correspondances) ; le graphe permet de parcourir ces relations. Première version établie à partir du cours « Communication et conversation dans la STC » : les résumés sont provisoires, les définitions et les références textuelles seront ajoutées progressivement.",
+compte:"{c} concepts · {r} relations",deplier:"Tout déplier",replier:"Tout replier",diaporama_cours:"Diaporama du cours « Communication et conversation dans la STC »",
+telecharger:"Télécharger",lien:"Lien",diapositive:"Diaporama, diapositive {n}",agrandir:"cliquer pour agrandir",
+remonter:"Remonter",introuvable:"Concept introuvable",retour:"Retour aux concepts",resume_note:"Résumé provisoire, tiré du cours ; la définition de référence reste à établir.",
+schema:"Schéma",schemas:"Schémas",definition:"Définition",version:"Version {v}, {d}",version_courante:"version courante",relations:"Relations",aucune_relation:"Aucune relation enregistrée.",
+termes_ecartes:"Termes écartés",mini_tout:"Tout",mini_hier:"Hiérarchie",mini_lat:"Liens latéraux",mini_aucune_hier:"Aucune relation hiérarchique pour ce concept.",mini_aucun_lat:"Aucun lien latéral pour ce concept.",
+explorer:"Explorer depuis ce concept dans le graphe",auteurs:"Auteurs mobilisés",references:"Références",
+grille_titre:"Artefacts situés sur ce gradient",grille_note:"Positions indicatives, à discuter (diaporama, exercice 2, complété). Voir aussi",grille_lien:"l'ensemble des artefacts situés",
+art_titre:"Artefacts situés sur les quatre gradients",art_intro:"Positions indicatives de {n} artefacts sur les gradients de finalité, de symbolicité, de pérennité et de matérialité. Les cas de dissociation montrent l'indépendance des gradients : le bon repas sans occasion particulière est porteur de valeur mais profane, à la différence du gâteau d'anniversaire ; la consigne et l'explication orales ont même pérennité et même matérialité, mais une finalité différente ; le geste du masseur et le bon repas sont tous deux matériels et porteurs de valeur, mais l'un est éphémère, l'autre pérenne.",art_col:"Artefact",
+parc_titre:"Rôles symétriques dans le parcours transactionnel",parc_moment:"Moment",parc_note:"Les rôles se font face de part et d'autre de l'œuvre : l'offre de l'entrepreneur répond à la demande du commanditaire, l'accomplissement du réalisateur à la réception du bénéficiaire. Une même personne peut tenir plusieurs rôles.",
+sch_intro:"Les schémas et illustrations de la STC, classés par famille de concepts. Sous chaque schéma figurent les concepts qu'il éclaire ; ceux pour lesquels il sert de schéma de référence sont en gras.",aller_a:"Aller à :",concepts_associes:"Concepts associés :",
+gr_titre:"Graphe des concepts",gr_intro:"Cliquez sur un concept pour le sélectionner et voir ses liens ; double-cliquez pour ouvrir sa fiche. « Voisinage » n'affiche que le concept choisi et ses voisins. Cliquez sur une famille pour la masquer ou l'afficher. Les liens en pointillés sont symétriques.",
+gr_aller:"Aller à un concept…",gr_voisinage:"Voisinage :",gr_tout:"tout le graphe",gr_1:"1 lien",gr_2:"2 liens",zoomer:"Zoomer",dezoomer:"Dézoomer",ajuster:"Ajuster",reinit:"Réinitialiser",
+gr_familles:"Familles (clic : masquer ou afficher ; double-clic : n'afficher que celle-ci)",toutes:"Toutes",aucune:"Aucune",recadrer:"Recadrer",recadrer_t:"Recadrer sur les concepts affichés",tout_reafficher:"Tout réafficher",tout_reafficher_t:"Revenir au graphe complet",
+gr_aide:"Molette : défiler la page · Ctrl ou ⌘ + molette : zoomer · Échap : désélectionner",gr_selection:"Sélectionnez un concept dans le graphe.",ouvrir_fiche:"Ouvrir la fiche",voisinage:"Voisinage",
+ref_concepts:"Concepts :",recherche:"Recherche : « {q} »",aucun_resultat:"Aucun résultat.",erreur:"Erreur de chargement"},
+en:{sous_titre:"Semiotics of Cooperative Transactions",titre:"STC Glossary",titre_long:"Glossary of the Semiotics of Cooperative Transactions",
+nav_concepts:"Concepts",nav_graphe:"Graph",nav_schemas:"Diagrams",nav_exemples:"Examples",nav_artefacts:"Artifacts situated on the gradients",nav_references:"References",
+rechercher:"Search a concept",chargement:"Loading the glossary…",pied:"Manuel Zacklad · Cnam, Dicen-IDF · Glossary in progress, provisional version",trad_avert:"Working translation from the French; the French version is the reference. Diagrams and slides are in French.",
+"stabilisé":"stabilized","provisoire":"provisional","en discussion":"under discussion","écarté":"rejected",
+inspiration:"inspiration",emprunt:"borrowing",transposition:"transposition","extrait de":"taken from",source:"source",
+acc_titre:"STC concepts",acc_intro:"Relational glossary of the Semiotics of Cooperative Transactions. Each concept is linked to the others by typed relations (poles, components, oppositions, correspondences); the graph lets you browse these relations. First version drawn from the course “Communication and conversation in the STC”: the summaries are provisional; definitions and textual references will be added progressively.",
+compte:"{c} concepts · {r} relations",deplier:"Expand all",replier:"Collapse all",diaporama_cours:"Course slides “Communication and conversation in the STC” (in French)",
+telecharger:"Download",lien:"Link",diapositive:"Slides, slide {n}",agrandir:"click to enlarge",
+remonter:"Up",introuvable:"Concept not found",retour:"Back to concepts",resume_note:"Provisional summary, drawn from the course; the reference definition remains to be established.",
+schema:"Diagram",schemas:"Diagrams",definition:"Definition",version:"Version {v}, {d}",version_courante:"current version",relations:"Relations",aucune_relation:"No relation recorded.",
+termes_ecartes:"Rejected terms",mini_tout:"All",mini_hier:"Hierarchy",mini_lat:"Lateral links",mini_aucune_hier:"No hierarchical relation for this concept.",mini_aucun_lat:"No lateral link for this concept.",
+explorer:"Explore from this concept in the graph",auteurs:"Authors drawn on",references:"References",
+grille_titre:"Artifacts situated on this gradient",grille_note:"Indicative positions, open to discussion (slides, exercise 2, extended). See also",grille_lien:"all situated artifacts",
+art_titre:"Artifacts situated on the four gradients",art_intro:"Indicative positions of {n} artifacts on the finality, symbolicity, persistence and materiality gradients. The dissociation cases show that the gradients are independent: a good meal on no particular occasion is value-bearing but profane, unlike a birthday cake; the oral instruction and the oral explanation have the same persistence and the same materiality, but a different finality; the masseur's gesture and the good meal are both material and value-bearing, but one is ephemeral and the other persistent.",art_col:"Artifact",
+parc_titre:"Symmetrical roles in the transactional trajectory",parc_moment:"Moment",parc_note:"The roles face each other on either side of the work: the entrepreneur's offer answers the project owner's demand, the performer's accomplishment answers the beneficiary's reception. One person may hold several roles.",
+sch_intro:"The diagrams and illustrations of the STC, sorted by concept family. Under each diagram are the concepts it illuminates; those for which it is the reference diagram are in bold. The diagrams themselves are in French.",aller_a:"Go to:",concepts_associes:"Related concepts:",
+gr_titre:"Concept graph",gr_intro:"Click a concept to select it and see its links; double-click to open its entry. “Neighborhood” shows only the chosen concept and its neighbors. Click a family to hide or show it. Dashed links are symmetrical.",
+gr_aller:"Go to a concept…",gr_voisinage:"Neighborhood:",gr_tout:"whole graph",gr_1:"1 link",gr_2:"2 links",zoomer:"Zoom in",dezoomer:"Zoom out",ajuster:"Fit",reinit:"Reset",
+gr_familles:"Families (click: hide or show; double-click: show only this one)",toutes:"All",aucune:"None",recadrer:"Fit",recadrer_t:"Fit to the displayed concepts",tout_reafficher:"Show all",tout_reafficher_t:"Back to the full graph",
+gr_aide:"Wheel: scroll the page · Ctrl or ⌘ + wheel: zoom · Esc: deselect",gr_selection:"Select a concept in the graph.",ouvrir_fiche:"Open entry",voisinage:"Neighborhood",
+ref_concepts:"Concepts:",recherche:"Search: “{q}”",aucun_resultat:"No results.",erreur:"Loading error"},
+es:{sous_titre:"Semiótica de las Transacciones Cooperativas",titre:"Glosario de la STC",titre_long:"Glosario de la Semiótica de las Transacciones Cooperativas",
+nav_concepts:"Conceptos",nav_graphe:"Grafo",nav_schemas:"Esquemas",nav_exemples:"Ejemplos",nav_artefacts:"Artefactos situados en los gradientes",nav_references:"Referencias",
+rechercher:"Buscar un concepto",chargement:"Cargando el glosario…",pied:"Manuel Zacklad · Cnam, Dicen-IDF · Glosario en elaboración, versión provisional",trad_avert:"Traducción de trabajo a partir del francés; la versión francesa es la referencia. Los esquemas y las diapositivas están en francés.",
+"stabilisé":"estabilizado","provisoire":"provisional","en discussion":"en discusión","écarté":"descartado",
+inspiration:"inspiración",emprunt:"préstamo",transposition:"transposición","extrait de":"extraído de",source:"fuente",
+acc_titre:"Conceptos de la STC",acc_intro:"Glosario relacional de la Semiótica de las Transacciones Cooperativas. Cada concepto está vinculado a los demás por relaciones tipificadas (polos, componentes, oposiciones, correspondencias); el grafo permite recorrer esas relaciones. Primera versión elaborada a partir del curso «Comunicación y conversación en la STC»: los resúmenes son provisionales; las definiciones y las referencias textuales se irán añadiendo progresivamente.",
+compte:"{c} conceptos · {r} relaciones",deplier:"Desplegar todo",replier:"Plegar todo",diaporama_cours:"Diapositivas del curso «Comunicación y conversación en la STC» (en francés)",
+telecharger:"Descargar",lien:"Enlace",diapositive:"Diapositivas, diapositiva {n}",agrandir:"clic para ampliar",
+remonter:"Subir",introuvable:"Concepto no encontrado",retour:"Volver a los conceptos",resume_note:"Resumen provisional, extraído del curso; la definición de referencia está por establecer.",
+schema:"Esquema",schemas:"Esquemas",definition:"Definición",version:"Versión {v}, {d}",version_courante:"versión vigente",relations:"Relaciones",aucune_relation:"Ninguna relación registrada.",
+termes_ecartes:"Términos descartados",mini_tout:"Todo",mini_hier:"Jerarquía",mini_lat:"Vínculos laterales",mini_aucune_hier:"Ninguna relación jerárquica para este concepto.",mini_aucun_lat:"Ningún vínculo lateral para este concepto.",
+explorer:"Explorar desde este concepto en el grafo",auteurs:"Autores movilizados",references:"Referencias",
+grille_titre:"Artefactos situados en este gradiente",grille_note:"Posiciones indicativas, por discutir (diapositivas, ejercicio 2, ampliado). Ver también",grille_lien:"el conjunto de los artefactos situados",
+art_titre:"Artefactos situados en los cuatro gradientes",art_intro:"Posiciones indicativas de {n} artefactos en los gradientes de finalidad, simbolicidad, perennidad y materialidad. Los casos de disociación muestran la independencia de los gradientes: la buena comida sin ocasión particular es portadora de valor pero profana, a diferencia del pastel de cumpleaños; la consigna y la explicación orales tienen la misma perennidad y la misma materialidad, pero distinta finalidad; el gesto del masajista y la buena comida son ambos materiales y portadores de valor, pero uno es efímero y la otra perenne.",art_col:"Artefacto",
+parc_titre:"Roles simétricos en el recorrido transaccional",parc_moment:"Momento",parc_note:"Los roles se enfrentan a uno y otro lado de la obra: la oferta del emprendedor responde a la demanda del comitente, el cumplimiento del realizador a la recepción del beneficiario. Una misma persona puede desempeñar varios roles.",
+sch_intro:"Los esquemas e ilustraciones de la STC, clasificados por familia de conceptos. Bajo cada esquema figuran los conceptos que aclara; aquellos para los que sirve de esquema de referencia aparecen en negrita. Los esquemas están en francés.",aller_a:"Ir a:",concepts_associes:"Conceptos asociados:",
+gr_titre:"Grafo de los conceptos",gr_intro:"Haga clic en un concepto para seleccionarlo y ver sus vínculos; doble clic para abrir su ficha. «Vecindad» muestra solo el concepto elegido y sus vecinos. Haga clic en una familia para ocultarla o mostrarla. Los vínculos discontinuos son simétricos.",
+gr_aller:"Ir a un concepto…",gr_voisinage:"Vecindad:",gr_tout:"todo el grafo",gr_1:"1 vínculo",gr_2:"2 vínculos",zoomer:"Acercar",dezoomer:"Alejar",ajuster:"Ajustar",reinit:"Restablecer",
+gr_familles:"Familias (clic: ocultar o mostrar; doble clic: mostrar solo esta)",toutes:"Todas",aucune:"Ninguna",recadrer:"Encuadrar",recadrer_t:"Encuadrar los conceptos mostrados",tout_reafficher:"Mostrar todo",tout_reafficher_t:"Volver al grafo completo",
+gr_aide:"Rueda: desplazar la página · Ctrl o ⌘ + rueda: zoom · Esc: deseleccionar",gr_selection:"Seleccione un concepto en el grafo.",ouvrir_fiche:"Abrir la ficha",voisinage:"Vecindad",
+ref_concepts:"Conceptos:",recherche:"Búsqueda: «{q}»",aucun_resultat:"Ningún resultado.",erreur:"Error de carga"}
+};
+
+let LANG = (()=>{ const q = new URLSearchParams(location.search).get("lang"); if(q && I18N[q]) return q; try{ const m = localStorage.getItem("langue"); if(m && I18N[m]) return m; }catch(e){} return "fr"; })();
+function t(k, v){ let s = (I18N[LANG] && I18N[LANG][k] !== undefined) ? I18N[LANG][k] : (I18N.fr[k] ?? k); if(v) for(const [a,b] of Object.entries(v)) s = s.replaceAll("{"+a+"}", b); return s; }
+const D0 = {}; const TRAD = {};
+async function chargerTraductions(l){
+  if(l==="fr" || TRAD[l]) return;
+  const rows = await api(`traduction?select=table_nom,cle,champ,texte&langue=eq.${l}`);
+  TRAD[l] = Object.fromEntries(rows.map(r=>[`${r.table_nom}|${r.cle}|${r.champ}`, r.texte]));
+}
+function appliquerLangue(){
+  const T = TRAD[LANG] || {};
+  const tr = (tab, cle, champ, defaut) => T[`${tab}|${cle}|${champ}`] ?? defaut;
+  const clone = x => JSON.parse(JSON.stringify(x));
+  const familles = clone(D0.familles).map(f=>({...f, libelle:tr("famille",f.slug,"libelle",f.libelle), description:tr("famille",f.slug,"description",f.description)}));
+  const illus = i => i && ({...i, titre:tr("illustration",i.fichier,"titre",i.titre), legende:tr("illustration",i.fichier,"legende",i.legende)});
+  const concepts = clone(D0.concepts).map(c=>({...c,
+    libelle:tr("concept",c.slug,"libelle",c.libelle), resume:tr("concept",c.slug,"resume",c.resume),
+    concept_auteur:(c.concept_auteur||[]).map(a=>({...a, commentaire:tr("concept_auteur",`${c.slug}|${a.auteur?.slug}|${a.nature}`,"commentaire",a.commentaire)})),
+    terme_ecarte:(c.terme_ecarte||[]).map(x=>({...x, raison:tr("terme_ecarte",x.id,"raison",x.raison)})),
+    concept_illustration:(c.concept_illustration||[]).map(x=>({...x, illustration:illus(x.illustration)}))
+  }));
+  const relations = clone(D0.relations).map(r=>({...r, libelle:tr("type_relation",r.type_slug,"libelle",r.libelle), libelle_inverse:tr("type_relation",r.type_slug,"libelle_inverse",r.libelle_inverse), commentaire:r.commentaire ? tr("relation",r.id,"commentaire",r.commentaire) : r.commentaire}));
+  const exemples = clone(D0.exemples).map(e=>({...e, libelle:tr("artefact_exemple",e.slug,"libelle",e.libelle), commentaire:e.commentaire ? tr("artefact_exemple",e.slug,"commentaire",e.commentaire) : e.commentaire,
+    positionnement:e.positionnement.map(p=>({...p, libelle:tr("positionnement",`${e.slug}|${p.concept?.slug}`,"libelle",p.libelle), commentaire:p.commentaire ? tr("positionnement",`${e.slug}|${p.concept?.slug}`,"commentaire",p.commentaire) : p.commentaire}))}));
+  D.illustrations = clone(D0.illustrations).map(illus);
+  D.exemples = exemples; D.familles = familles; D.concepts = concepts; D.relations = relations; D.references = D0.references;
+  D.parSlug = Object.fromEntries(concepts.map(c=>[c.slug,c]));
+  D.famille = Object.fromEntries(familles.map((f,i)=>[f.slug,{...f,couleur:COULEURS[i%COULEURS.length]}]));
+}
+function appliquerInterface(){
+  document.documentElement.lang = LANG;
+  document.querySelectorAll("[data-i18n]").forEach(el=>el.textContent = t(el.dataset.i18n));
+  const r = document.getElementById("recherche"); r.placeholder = t("rechercher"); r.setAttribute("aria-label", t("rechercher"));
+  document.querySelectorAll("#langues [data-l]").forEach(b=>b.classList.toggle("actif", b.dataset.l===LANG));
+  const av = document.getElementById("avert-trad"); av.textContent = t("trad_avert"); av.hidden = !t("trad_avert");
+}
+async function changerLangue(l){
+  if(!I18N[l]) return;
+  LANG = l; try{ localStorage.setItem("langue", l); }catch(e){}
+  const u = new URL(location.href); if(l==="fr") u.searchParams.delete("lang"); else u.searchParams.set("lang", l);
+  history.replaceState(null, "", u.pathname + u.search + u.hash);
+  await chargerTraductions(l); appliquerLangue(); appliquerInterface(); router();
+}
+const tStatut = s => t(s);
 
 async function api(chemin){
   const r = await fetch(`${SUPABASE_URL}/rest/v1/${chemin}`, {headers:{apikey:SUPABASE_KEY}});
@@ -178,21 +293,19 @@ async function api(chemin){
 async function charger(){
   const [familles, concepts, relations, references, exemples, illustrations] = await Promise.all([
     api("famille?select=*&order=ordre"),
-    api("concept?select=*,concept_auteur(nature,commentaire,auteur(slug,nom)),concept_reference(role,localisation,reference(cle,citation,type,url)),definition(texte,version,date_version,est_courante,note),terme_ecarte(terme,raison),concept_illustration(principal,illustration(fichier,titre,legende,diapositive))&order=ordre"),
+    api("concept?select=*,concept_auteur(nature,commentaire,auteur(slug,nom)),concept_reference(role,localisation,reference(cle,citation,type,url)),definition(texte,version,date_version,est_courante,note),terme_ecarte(id,terme,raison),concept_illustration(principal,illustration(fichier,titre,legende,diapositive))&order=ordre"),
     api("v_relation?select=*&order=ordre"),
     api("reference?select=*&order=annee"),
     api("artefact_exemple?select=slug,libelle,commentaire,ordre,positionnement(position,libelle,commentaire,concept(slug))&order=ordre"),
     api("illustration?select=fichier,titre,legende,diapositive,ordre,famille_slug,concept_illustration(principal,concept(slug))&order=ordre")
   ]);
-  D.illustrations = illustrations;
-  D.exemples = exemples;
-  D.familles = familles; D.concepts = concepts; D.relations = relations; D.references = references;
-  D.parSlug = Object.fromEntries(concepts.map(c=>[c.slug,c]));
-  D.famille = Object.fromEntries(familles.map((f,i)=>[f.slug,{...f,couleur:COULEURS[i%COULEURS.length]}]));
+  Object.assign(D0, {illustrations, exemples, familles, concepts, relations, references});
+  await chargerTraductions(LANG);
+  appliquerLangue();
 }
 const esc = s => (s??"").replace(/[&<>"]/g, c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;"}[c]));
 const classeStatut = s => s==="stabilisé"?"stabilise":s==="en discussion"?"discussion":"provisoire";
-const badge = s => `<span class="statut ${classeStatut(s)}">${esc(s)}</span>`;
+const badge = s => `<span class="statut ${classeStatut(s)}">${esc(tStatut(s))}</span>`;
 const lien = slug => { const c = D.parSlug[slug]; return c ? `<a href="#/concept/${slug}">${esc(c.libelle)}</a>` : esc(slug); };
 const TYPES_PARENT = ["pole_de","sous_type_de","composante_de","face_de"];
 function parent(slug){
@@ -215,16 +328,16 @@ function curseur(pos, lib){
 function grilleGradient(g){
   const ps = poles(g);
   if(!D.exemples?.length || ps.length<2) return "";
-  let h = `<h2>Artefacts situés sur ce gradient</h2><div class="grille"><div class="ligne entete"><span></span><div class="extremes"><span>${lien(ps[0].slug)}</span><span>${lien(ps[1].slug)}</span></div><span></span></div>`;
+  let h = `<h2>${t("grille_titre")}</h2><div class="grille"><div class="ligne entete"><span></span><div class="extremes"><span>${lien(ps[0].slug)}</span><span>${lien(ps[1].slug)}</span></div><span></span></div>`;
   for(const e of D.exemples){
     const p = e.positionnement.find(x=>x.concept?.slug===g); if(!p) continue;
     h += `<div class="ligne"><span>${esc(e.libelle)}</span>${curseur(Number(p.position), p.libelle)}<span class="com">${esc(p.libelle)}${p.commentaire?" · "+esc(p.commentaire):""}</span></div>`;
   }
-  return h + `</div><p class="note">Positions indicatives, à discuter (diaporama, exercice 2, complété). Voir aussi <a href="#/artefacts">l'ensemble des artefacts situés</a>.</p>`;
+  return h + `</div><p class="note">${t("grille_note")} <a href="#/artefacts">${t("grille_lien")}</a>.</p>`;
 }
 function vueArtefacts(){
-  let h = `<h1>Artefacts situés sur les quatre gradients</h1><p class="intro">Positions indicatives de ${D.exemples.length} artefacts sur les gradients de finalité, de symbolicité, de pérennité et de matérialité. Les cas de dissociation montrent l'indépendance des gradients : le bon repas sans occasion particulière est porteur de valeur mais profane, à la différence du gâteau d'anniversaire ; la consigne et l'explication orales ont même pérennité et même matérialité, mais une finalité différente ; le geste du masseur et le bon repas sont tous deux matériels et porteurs de valeur, mais l'un est éphémère, l'autre pérenne.</p>`;
-  h += `<div class="tableau"><table><thead><tr><th>Artefact</th>${GRADIENTS.map(g=>{const ps=poles(g);return `<th>${lien(g)}<br><span class="note">${esc(ps[0]?.libelle)} ↔ ${esc(ps[1]?.libelle)}</span></th>`;}).join("")}</tr></thead><tbody>`;
+  let h = `<h1>${t("art_titre")}</h1><p class="intro">${t("art_intro",{n:D.exemples.length})}</p>`;
+  h += `<div class="tableau"><table><thead><tr><th>${t("art_col")}</th>${GRADIENTS.map(g=>{const ps=poles(g);return `<th>${lien(g)}<br><span class="note">${esc(ps[0]?.libelle)} ↔ ${esc(ps[1]?.libelle)}</span></th>`;}).join("")}</tr></thead><tbody>`;
   for(const e of D.exemples){
     h += `<tr><td><b>${esc(e.libelle)}</b>${e.commentaire?`<br><span class="com">${esc(e.commentaire)}</span>`:""}</td>`;
     for(const g of GRADIENTS){ const p = e.positionnement.find(x=>x.concept?.slug===g); h += `<td>${p?curseur(Number(p.position),p.libelle)+`<span class="com">${esc(p.libelle)}</span>`:""}</td>`; }
@@ -260,7 +373,7 @@ function miniHierarchique(slug, mode){
     gauche.forEach((l,i)=>pos[l] = {x:-DX*1.6, y:(i-(gauche.length-1)/2)*44});
     droite.forEach((l,i)=>pos[l] = {x:DX*1.6, y:(i-(droite.length-1)/2)*44});
   }
-  if(Object.keys(pos).length===1){ document.getElementById("mini").innerHTML = `<p class="note" style="padding:14px">${mode==="hier"?"Aucune relation hiérarchique pour ce concept.":"Aucun lien latéral pour ce concept."}</p>`; return; }
+  if(Object.keys(pos).length===1){ document.getElementById("mini").innerHTML = `<p class="note" style="padding:14px">${mode==="hier"?t("mini_aucune_hier"):t("mini_aucun_lat")}</p>`; return; }
   document.getElementById("mini").innerHTML = "";
   const ids = new Set(Object.keys(pos));
   const elements = elementsGraphe(ids);
@@ -288,22 +401,22 @@ function tableauParcours(courant){
   const artefacts = m => R.filter(r=>r.type_slug==="mobilise" && r.source_slug===m && D.parSlug[r.cible_slug]?.famille_slug==="artefact").map(r=>r.cible_slug);
   const faces = m => R.filter(r=>r.type_slug==="face_de" && r.cible_slug===m).map(r=>r.source_slug);
   const cell = xs => xs.length ? xs.map(x=>x===courant?`<b>${esc(D.parSlug[x].libelle)}</b>`:lien(x)).join("<br>") : `<span class="note">-</span>`;
-  let h = `<h2>Rôles symétriques dans le parcours transactionnel</h2><div class="tableau"><table class="parcours"><thead><tr><th>Moment</th><th>${cell(["self-realisation"])}</th><th>Artefact médiateur</th><th>${cell(["self-reception"])}</th></tr></thead><tbody>`;
+  let h = `<h2>${t("parc_titre")}</h2><div class="tableau"><table class="parcours"><thead><tr><th>${t("parc_moment")}</th><th>${cell(["self-realisation"])}</th><th>${esc(D.parSlug["artefact-mediateur"]?.libelle||"")}</th><th>${cell(["self-reception"])}</th></tr></thead><tbody>`;
   for(const m of moments){
     const f = faces(m.slug);
     const sous = f.length ? `<br><span class="com">${f.map(lien).join(" / ")}</span>` : "";
     h += `<tr${m.slug===courant?' class="courant"':""}><td>${cell([m.slug])}${sous}</td><td>${cell(roles(m.slug,"real"))}</td><td>${cell(artefacts(m.slug))}</td><td>${cell(roles(m.slug,"recep"))}</td></tr>`;
   }
-  return h + `</tbody></table></div><p class="note">Les rôles se font face de part et d'autre de l'œuvre : l'offre de l'entrepreneur répond à la demande du commanditaire, l'accomplissement du réalisateur à la réception du bénéficiaire. Une même personne peut tenir plusieurs rôles.</p>`;
+  return h + `</tbody></table></div><p class="note">${t("parc_note")}</p>`;
 }
 function telechargements(url){
   if(!url) return "";
-  if(/\.pdf$/i.test(url)) return `<span class="telecharger">Télécharger : <a href="${esc(url)}" target="_blank" rel="noopener">PDF</a> · <a href="${esc(url.replace(/\.pdf$/i,".pptx"))}" download>PowerPoint</a></span>`;
-  return `<a href="${esc(url)}" target="_blank" rel="noopener">Lien</a>`;
+  if(/\.pdf$/i.test(url)) return `<span class="telecharger">${t("telecharger")} : <a href="${esc(url)}" target="_blank" rel="noopener">PDF</a> · <a href="${esc(url.replace(/\.pdf$/i,".pptx"))}" download>PowerPoint</a></span>`;
+  return `<a href="${esc(url)}" target="_blank" rel="noopener">${t("lien")}</a>`;
 }
 function urlDiaporama(){ return D.references.find(r=>r.cle==="diaporama-communication-conversation")?.url; }
 function figure(i){
-  return `<figure class="schema"><img src="schemas/${esc(i.fichier)}" alt="${esc(i.titre)} : ${esc(i.legende)}" loading="lazy" data-zoom="schemas/${esc(i.fichier)}" data-titre="${esc(i.titre)}"><figcaption><b>${esc(i.titre)}</b>. ${esc(i.legende)} <span class="note">${urlDiaporama()?`<a href="${esc(urlDiaporama())}#page=${i.diapositive}" target="_blank" rel="noopener">Diaporama, diapositive ${i.diapositive}</a>`:`Diaporama, diapositive ${i.diapositive}`} · cliquer pour agrandir</span></figcaption></figure>`;
+  return `<figure class="schema"><img src="schemas/${esc(i.fichier)}" alt="${esc(i.titre)} : ${esc(i.legende)}" loading="lazy" data-zoom="schemas/${esc(i.fichier)}" data-titre="${esc(i.titre)}"><figcaption><b>${esc(i.titre)}</b>. ${esc(i.legende)} <span class="note">${urlDiaporama()?`<a href="${esc(urlDiaporama())}#page=${i.diapositive}" target="_blank" rel="noopener">${t("diapositive",{n:i.diapositive})}</a>`:t("diapositive",{n:i.diapositive})} · ${t("agrandir")}</span></figcaption></figure>`;
 }
 function familleSchema(i){
   if(i.famille_slug && D.famille[i.famille_slug]) return i.famille_slug;
@@ -316,14 +429,14 @@ function familleSchema(i){
 function vueSchemas(){
   const groupes = {};
   for(const i of D.illustrations){ const f = familleSchema(i); (groupes[f] ??= []).push(i); }
-  let h = `<h1>Schémas</h1><p class="intro">Les schémas et illustrations de la STC, classés par famille de concepts. Sous chaque schéma figurent les concepts qu'il éclaire ; ceux pour lesquels il sert de schéma de référence sont en gras.</p>`;
-  h += `<p class="note">Aller à : ${D.familles.filter(f=>groupes[f.slug]).map(f=>`<a href="#" data-ancre="sch-${f.slug}">${esc(f.libelle)}</a>`).join(" · ")}</p>`;
+  let h = `<h1>${t("schemas")}</h1><p class="intro">${t("sch_intro")}</p>`;
+  h += `<p class="note">${t("aller_a")} ${D.familles.filter(f=>groupes[f.slug]).map(f=>`<a href="#" data-ancre="sch-${f.slug}">${esc(f.libelle)}</a>`).join(" · ")}</p>`;
   for(const f of D.familles){
     const xs = groupes[f.slug]; if(!xs) continue;
     h += `<h2 id="sch-${f.slug}">${pastille(f.slug)}${esc(f.libelle)}</h2><div class="galerie">`;
     for(const i of xs){
       const cs = i.concept_illustration.filter(x=>x.concept && D.parSlug[x.concept.slug]).sort((a,b)=>(b.principal-a.principal)||(D.parSlug[a.concept.slug].ordre-D.parSlug[b.concept.slug].ordre));
-      h += `<div class="carte-schema">${figure(i)}<div class="concepts-associes"><span class="note">Concepts associés :</span> ${cs.map(x=>`<span class="etiquette">${pastille(D.parSlug[x.concept.slug].famille_slug)}${x.principal?`<b>${lien(x.concept.slug)}</b>`:lien(x.concept.slug)}</span>`).join(" ")}</div></div>`;
+      h += `<div class="carte-schema">${figure(i)}<div class="concepts-associes"><span class="note">${t("concepts_associes")}</span> ${cs.map(x=>`<span class="etiquette">${pastille(D.parSlug[x.concept.slug].famille_slug)}${x.principal?`<b>${lien(x.concept.slug)}</b>`:lien(x.concept.slug)}</span>`).join(" ")}</div></div>`;
     }
     h += `</div>`;
   }
@@ -339,24 +452,24 @@ function brancherAccueil(){
 function vueFamille(slug){
   const f = D.famille[slug]; if(!f) return vueAccueil();
   const cs = D.concepts.filter(c=>c.famille_slug===slug);
-  return `<div class="fil"><a href="#/">Concepts</a></div><h1>${pastille(slug)}${esc(f.libelle)}</h1><p class="intro">${esc(f.description)}</p><ul class="resultats">${cs.map(c=>`<li>${lien(c.slug)} ${c.statut!=="stabilisé"?`<span class="note">(${esc(c.statut)})</span>`:""}<br><span class="com">${esc(c.resume)}</span></li>`).join("")}</ul>`;
+  return `<div class="fil"><a href="#/">${t("nav_concepts")}</a></div><h1>${pastille(slug)}${esc(f.libelle)}</h1><p class="intro">${esc(f.description)}</p><ul class="resultats">${cs.map(c=>`<li>${lien(c.slug)} ${c.statut!=="stabilisé"?`<span class="note">(${esc(tStatut(c.statut))})</span>`:""}<br><span class="com">${esc(c.resume)}</span></li>`).join("")}</ul>`;
 }
 const pastille = fam => `<span class="pastille" style="background:${D.famille[fam]?.couleur||'#999'}"></span>`;
 
 function vueAccueil(){
-  let h = `<h1>Concepts de la STC</h1>
-  <p class="intro">Glossaire relationnel de la Sémiotique des Transactions Coopératives. Chaque concept est relié aux autres par des relations typées (pôles, composantes, oppositions, correspondances) ; le graphe permet de parcourir ces relations. Première version établie à partir du cours « Communication et conversation dans la STC » : les résumés sont provisoires, les définitions et les références textuelles seront ajoutées progressivement.</p>`;
+  let h = `<h1>${t("acc_titre")}</h1>
+  <p class="intro">${t("acc_intro")}</p>`;
   const vue = D.concepts.find(c=>c.slug==="communication")?.concept_illustration?.find(x=>x.illustration?.fichier==="slide12.webp")?.illustration;
   if(vue) h += `<div style="max-width:820px">${figure(vue)}</div>`;
-  if(urlDiaporama()) h += `<p class="note">Diaporama du cours « Communication et conversation dans la STC » · ${telechargements(urlDiaporama())}</p>`;
+  if(urlDiaporama()) h += `<p class="note">${t("diaporama_cours")} · ${telechargements(urlDiaporama())}</p>`;
   let ouvertes = null; try{ ouvertes = JSON.parse(localStorage.getItem("familles-ouvertes")); }catch(e){}
-  h += `<p class="note">${D.concepts.length} concepts · ${D.relations.length} relations · <a href="#" id="tout-deplier">Tout déplier</a> · <a href="#" id="tout-replier">Tout replier</a></p><div class="familles">`;
+  h += `<p class="note">${t("compte",{c:D.concepts.length,r:D.relations.length})} · <a href="#" id="tout-deplier">${t("deplier")}</a> · <a href="#" id="tout-replier">${t("replier")}</a></p><div class="familles">`;
   for(const f of D.familles){
     const cs = D.concepts.filter(c=>c.famille_slug===f.slug);
     if(!cs.length) continue;
     const ouvert = ouvertes ? ouvertes.includes(f.slug) : false;
     h += `<details class="famille" data-f="${f.slug}"${ouvert?" open":""}><summary><h3>${pastille(f.slug)}${esc(f.libelle)} <span class="compte">${cs.length}</span></h3><p>${esc(f.description)}</p></summary><ul>`;
-    h += cs.map(c=>`<li>${lien(c.slug)}${c.statut!=="stabilisé"?` <span class="note">(${esc(c.statut)})</span>`:""}</li>`).join("");
+    h += cs.map(c=>`<li>${lien(c.slug)}${c.statut!=="stabilisé"?` <span class="note">(${esc(tStatut(c.statut))})</span>`:""}</li>`).join("");
     h += `</ul></details>`;
   }
   return h + `</div>`;
@@ -378,40 +491,40 @@ const ANCIENS = {"gradient-d-incarnation":"gradient-de-perennite","incorpore":"e
 function vueConcept(slug){
   if(ANCIENS[slug]){ location.replace(`#/concept/${ANCIENS[slug]}`); return ""; }
   const c = D.parSlug[slug];
-  if(!c) return `<h1>Concept introuvable</h1><p><a href="#/">Retour aux concepts</a></p>`;
+  if(!c) return `<h1>${t("introuvable")}</h1><p><a href="#/">${t("retour")}</a></p>`;
   const f = D.famille[c.famille_slug];
   const groupes = grouperRelations(slug);
   const defs = (c.definition||[]).sort((a,b)=>b.version-a.version);
   const asc = ascendants(slug);
-  let h = `<div class="fil"><a href="#/">Concepts</a> › ${pastille(c.famille_slug)}<a href="#/famille/${c.famille_slug}">${esc(f?.libelle)}</a>${asc.length?`<br>Remonter : ${asc.map(lien).join(" › ")} › <b>${esc(c.libelle)}</b>`:""}</div>
+  let h = `<div class="fil"><a href="#/">${t("nav_concepts")}</a> › ${pastille(c.famille_slug)}<a href="#/famille/${c.famille_slug}">${esc(f?.libelle)}</a>${asc.length?`<br>${t("remonter")} : ${asc.map(lien).join(" › ")} › <b>${esc(c.libelle)}</b>`:""}</div>
   <div class="fiche"><div>
   <h1>${esc(c.libelle)}</h1>${badge(c.statut)}`;
-  if(c.resume) h += `<div class="resume">${esc(c.resume)}</div><p class="note">Résumé provisoire, tiré du cours ; la définition de référence reste à établir.</p>`;
+  if(c.resume) h += `<div class="resume">${esc(c.resume)}</div><p class="note">${t("resume_note")}</p>`;
   const ills = (c.concept_illustration||[]).filter(x=>x.illustration).sort((a,b)=>(b.principal-a.principal)||(a.illustration.diapositive-b.illustration.diapositive));
   if(ills.length){
-    h += `<h2>${ills.length>1?"Schémas":"Schéma"}</h2>` + ills.map(x=>figure(x.illustration)).join("");
+    h += `<h2>${ills.length>1?t("schemas"):t("schema")}</h2>` + ills.map(x=>figure(x.illustration)).join("");
   }
   if(defs.length){
-    h += `<h2>Définition</h2>`;
-    for(const d of defs) h += `<div class="encadre"><p>${esc(d.texte)}</p><p class="note">Version ${d.version}, ${esc(d.date_version)}${d.est_courante?" · version courante":""}${d.note?" · "+esc(d.note):""}</p></div>`;
+    h += `<h2>${t("definition")}</h2>`;
+    for(const d of defs) h += `<div class="encadre"><p>${esc(d.texte)}</p><p class="note">${t("version",{v:d.version,d:esc(d.date_version)})}${d.est_courante?" · "+t("version_courante"):""}${d.note?" · "+esc(d.note):""}</p></div>`;
   }
-  h += `<h2>Relations</h2>`;
+  h += `<h2>${t("relations")}</h2>`;
   const cles = Object.keys(groupes);
-  if(!cles.length) h += `<p class="note">Aucune relation enregistrée.</p>`;
+  if(!cles.length) h += `<p class="note">${t("aucune_relation")}</p>`;
   for(const k of cles){
     h += `<div class="rel"><h4>${esc(k)}</h4><ul>` + groupes[k].map(x=>`<li>${pastille(D.parSlug[x.autre]?.famille_slug)}${lien(x.autre)}${x.com?` <span class="com">· ${esc(x.com)}</span>`:""}</li>`).join("") + `</ul></div>`;
   }
   if(GRADIENTS.includes(slug)) h += grilleGradient(slug);
   if(c.famille_slug==="role" || slug==="parcours-narratif" || ["engagement","competence","performance","bilan","realisation","reception"].includes(slug)) h += tableauParcours(slug);
   if(c.terme_ecarte?.length){
-    h += `<h2>Termes écartés</h2><ul>` + c.terme_ecarte.map(t=>`<li><b>${esc(t.terme)}</b>${t.raison?" : "+esc(t.raison):""}</li>`).join("") + `</ul>`;
+    h += `<h2>${t("termes_ecartes")}</h2><ul>` + c.terme_ecarte.map(t=>`<li><b>${esc(t.terme)}</b>${t.raison?" : "+esc(t.raison):""}</li>`).join("") + `</ul>`;
   }
-  h += `</div><aside><div class="bascule" id="mini-mode"><button data-m="tout" class="actif">Tout</button><button data-m="hier">Hiérarchie</button><button data-m="lat">Liens latéraux</button></div><div id="mini"></div><p class="note" style="margin:6px 0 14px"><a href="#/graphe/${slug}">Explorer depuis ce concept dans le graphe</a></p>`;
+  h += `</div><aside><div class="bascule" id="mini-mode"><button data-m="tout" class="actif">${t("mini_tout")}</button><button data-m="hier">${t("mini_hier")}</button><button data-m="lat">${t("mini_lat")}</button></div><div id="mini"></div><p class="note" style="margin:6px 0 14px"><a href="#/graphe/${slug}">${t("explorer")}</a></p>`;
   if(c.concept_auteur?.length){
-    h += `<div class="encadre" style="margin-top:16px"><h3>Auteurs mobilisés</h3><ul>` + c.concept_auteur.map(a=>`<li>${esc(a.auteur?.nom)} <span class="note">(${esc(a.nature)})</span>${a.commentaire?`<br><span class="com">${esc(a.commentaire)}</span>`:""}</li>`).join("") + `</ul></div>`;
+    h += `<div class="encadre" style="margin-top:16px"><h3>${t("auteurs")}</h3><ul>` + c.concept_auteur.map(a=>`<li>${esc(a.auteur?.nom)} <span class="note">(${esc(t(a.nature))})</span>${a.commentaire?`<br><span class="com">${esc(a.commentaire)}</span>`:""}</li>`).join("") + `</ul></div>`;
   }
   if(c.concept_reference?.length){
-    h += `<div class="encadre"><h3>Références</h3><ul>` + c.concept_reference.map(r=>`<li>${esc(r.reference?.citation)} <span class="note">(${esc(r.role)}${r.localisation?", "+esc(r.localisation):""})</span>${r.reference?.url?`<br>${telechargements(r.reference.url)}`:""}</li>`).join("") + `</ul></div>`;
+    h += `<div class="encadre"><h3>${t("references")}</h3><ul>` + c.concept_reference.map(r=>`<li>${esc(r.reference?.citation)} <span class="note">(${esc(t(r.role))}${r.localisation?", "+esc(r.localisation):""})</span>${r.reference?.url?`<br>${telechargements(r.reference.url)}`:""}</li>`).join("") + `</ul></div>`;
   }
   return h + `</aside></div>`;
 }
@@ -451,31 +564,31 @@ function dessiner(conteneur, elements, centre, disposition){
 }
 const G = { cy:null, masquees:new Set(), focus:null, profondeur:0 };
 function vueGraphe(){
-  return `<h1>Graphe des concepts</h1>
-  <p class="intro">Cliquez sur un concept pour le sélectionner et voir ses liens ; double-cliquez pour ouvrir sa fiche. « Voisinage » n'affiche que le concept choisi et ses voisins. Cliquez sur une famille pour la masquer ou l'afficher. Les liens en pointillés sont symétriques.</p>
+  return `<h1>${t("gr_titre")}</h1>
+  <p class="intro">${t("gr_intro")}</p>
   <div class="outils">
-    <input id="g-cherche" list="g-liste" placeholder="Aller à un concept…" aria-label="Aller à un concept">
+    <input id="g-cherche" list="g-liste" placeholder="${t("gr_aller")}" aria-label="${t("gr_aller")}">
     <datalist id="g-liste">${D.concepts.map(c=>`<option value="${esc(c.libelle)}">`).join("")}</datalist>
-    <span class="groupe">Voisinage :
-      <button data-p="0" class="actif">tout le graphe</button><button data-p="1">1 lien</button><button data-p="2">2 liens</button>
+    <span class="groupe">${t("gr_voisinage")}
+      <button data-p="0" class="actif">${t("gr_tout")}</button><button data-p="1">${t("gr_1")}</button><button data-p="2">${t("gr_2")}</button>
     </span>
-    <span class="groupe"><button id="g-plus" title="Zoomer">+</button><button id="g-moins" title="Dézoomer">−</button><button id="g-ajuster">Ajuster</button><button id="g-reinit">Réinitialiser</button></span>
+    <span class="groupe"><button id="g-plus" title="${t("zoomer")}">+</button><button id="g-moins" title="${t("dezoomer")}">−</button><button id="g-ajuster">${t("ajuster")}</button><button id="g-reinit">${t("reinit")}</button></span>
   </div>
-  <div class="legende familles-filtre"><span class="note">Familles (clic : masquer ou afficher ; double-clic : n'afficher que celle-ci)</span> <button id="g-toutes">Toutes</button><button id="g-aucune">Aucune</button><br>${D.familles.map(f=>`<button data-f="${f.slug}">${pastille(f.slug)}${esc(f.libelle)}</button>`).join("")}</div>
+  <div class="legende familles-filtre"><span class="note">${t("gr_familles")}</span> <button id="g-toutes">${t("toutes")}</button><button id="g-aucune">${t("aucune")}</button><br>${D.familles.map(f=>`<button data-f="${f.slug}">${pastille(f.slug)}${esc(f.libelle)}</button>`).join("")}</div>
   <div class="zone-graphe"><div class="cadre-graphe"><div id="graphe"></div>
-    <div class="flottant"><button id="f-plus" title="Zoomer">+</button><button id="f-moins" title="Dézoomer">−</button><button id="f-ajuster" title="Recadrer sur les concepts affichés">Recadrer</button><button id="f-reinit" title="Revenir au graphe complet">Tout réafficher</button></div>
-    <p class="aide">Molette : défiler la page · Ctrl ou ⌘ + molette : zoomer · Échap : désélectionner</p></div><aside id="g-panneau" class="panneau vide"><p class="note">Sélectionnez un concept dans le graphe.</p></aside></div>`;
+    <div class="flottant"><button id="f-plus" title="${t("zoomer")}">+</button><button id="f-moins" title="${t("dezoomer")}">−</button><button id="f-ajuster" title="${t("recadrer_t")}">${t("recadrer")}</button><button id="f-reinit" title="${t("tout_reafficher_t")}">${t("tout_reafficher")}</button></div>
+    <p class="aide">${t("gr_aide")}</p></div><aside id="g-panneau" class="panneau vide"><p class="note">${t("gr_selection")}</p></aside></div>`;
 }
 function panneauGraphe(slug){
   const el = document.getElementById("g-panneau");
   const c = D.parSlug[slug];
-  if(!c){ el.className="panneau vide"; el.innerHTML = `<p class="note">Sélectionnez un concept dans le graphe.</p>`; return; }
+  if(!c){ el.className="panneau vide"; el.innerHTML = `<p class="note">${t("gr_selection")}</p>`; return; }
   const groupes = grouperRelations(slug);
   el.className = "panneau";
   el.innerHTML = `<div class="fil">${pastille(c.famille_slug)}${esc(D.famille[c.famille_slug]?.libelle)}</div>
   <h3>${esc(c.libelle)}</h3>${badge(c.statut)}
   <p>${esc(c.resume||"")}</p>
-  <p><a class="bouton" href="#/concept/${slug}">Ouvrir la fiche</a> <button class="bouton secondaire" id="g-explorer">Voisinage</button></p>
+  <p><a class="bouton" href="#/concept/${slug}">${t("ouvrir_fiche")}</a> <button class="bouton secondaire" id="g-explorer">${t("voisinage")}</button></p>
   ${Object.entries(groupes).map(([k,xs])=>`<div class="rel"><h4>${esc(k)}</h4><ul>${xs.map(x=>`<li><a href="#" data-aller="${x.autre}">${esc(D.parSlug[x.autre]?.libelle)}</a></li>`).join("")}</ul></div>`).join("")}`;
   document.getElementById("g-explorer").onclick = ()=>{ G.profondeur = Math.max(G.profondeur,1); majBoutons(); selectionner(slug, false); };
   el.querySelectorAll("[data-aller]").forEach(a=>a.onclick = e=>{ e.preventDefault(); selectionner(a.dataset.aller, true); });
@@ -572,10 +685,10 @@ function initGraphe(focus){
   if(focus && D.parSlug[focus]) selectionner(focus, true);
 }
 function vueReferences(){
-  let h = `<h1>Références</h1><ul class="resultats">`;
+  let h = `<h1>${t("references")}</h1><ul class="resultats">`;
   for(const r of D.references){
     const cs = D.concepts.filter(c=>c.concept_reference?.some(x=>x.reference?.cle===r.cle && x.role!=="extrait de"));
-    h += `<li>${esc(r.citation)}${r.url?`<br>${telechargements(r.url)}`:""}${cs.length?`<br><span class="note">Concepts : ${cs.map(c=>lien(c.slug)).join(", ")}</span>`:""}</li>`;
+    h += `<li>${esc(r.citation)}${r.url?`<br>${telechargements(r.url)}`:""}${cs.length?`<br><span class="note">${t("ref_concepts")} ${cs.map(c=>lien(c.slug)).join(", ")}</span>`:""}</li>`;
   }
   return h + `</ul>`;
 }
@@ -584,7 +697,7 @@ function vueRecherche(q){
   const n = norm(q);
   const res = D.concepts.filter(c=>norm(c.libelle).includes(n)||norm(c.resume).includes(n));
   res.sort((a,b)=>(norm(b.libelle).includes(n))-(norm(a.libelle).includes(n)));
-  return `<h1>Recherche : « ${esc(q)} »</h1><ul class="resultats">${res.map(c=>`<li>${pastille(c.famille_slug)}${lien(c.slug)} <span class="note">${esc(D.famille[c.famille_slug]?.libelle)}</span><br><span class="com">${esc(c.resume)}</span></li>`).join("")||"<li>Aucun résultat.</li>"}</ul>`;
+  return `<h1>${t("recherche",{q:esc(q)})}</h1><ul class="resultats">${res.map(c=>`<li>${pastille(c.famille_slug)}${lien(c.slug)} <span class="note">${esc(D.famille[c.famille_slug]?.libelle)}</span><br><span class="com">${esc(c.resume)}</span></li>`).join("")||`<li>${t("aucun_resultat")}</li>`}</ul>`;
 }
 
 function router(){
@@ -598,12 +711,12 @@ function router(){
     el.innerHTML = vueConcept(arg);
     const c = D.parSlug[arg];
     if(c){
-      document.title = `${c.libelle} · Glossaire de la STC`;
+      document.title = `${c.libelle} · ${t("titre")}`;
       miniHierarchique(arg);
     }
     return;
   }
-  document.title = "Glossaire de la Sémiotique des Transactions Coopératives";
+  document.title = t("titre_long");
   if(v==="graphe"){ el.innerHTML = vueGraphe(); initGraphe(arg); }
   else if(v==="references") el.innerHTML = vueReferences();
   else if(v==="artefacts") el.innerHTML = vueArtefacts();
@@ -625,8 +738,10 @@ document.addEventListener("click", e=>{
 });
 document.addEventListener("keydown", e=>{ if(e.key==="Escape") document.getElementById("visionneuse").hidden = true; });
 document.addEventListener("click", e=>{ const m = document.getElementById("menu-exemples"); if(m.open && !m.contains(e.target)) m.open = false; });
-charger().then(router).catch(err=>{
-  document.getElementById("vue").innerHTML = `<h1>Erreur de chargement</h1><p class="note">${esc(String(err.message||err))}</p>`;
+document.querySelectorAll("#langues [data-l]").forEach(b=>b.onclick = ()=>changerLangue(b.dataset.l));
+appliquerInterface();
+charger().then(()=>{ appliquerInterface(); router(); }).catch(err=>{
+  document.getElementById("vue").innerHTML = `<h1>${t("erreur")}</h1><p class="note">${esc(String(err.message||err))}</p>`;
 });
 </script>
 </body>
