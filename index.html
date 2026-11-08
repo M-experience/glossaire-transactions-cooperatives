@@ -1,0 +1,249 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Glossaire de la Sémiotique des Transactions Coopératives</title>
+<meta name="description" content="Glossaire dynamique des concepts de la Sémiotique des Transactions Coopératives (STC), Manuel Zacklad, Cnam, Dicen-IDF.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Source+Serif+4:opsz,wght@8..60,400;8..60,600&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+<script src="https://unpkg.com/cytoscape@3.30.2/dist/cytoscape.min.js"></script>
+<style>
+:root{
+  --rouge:#C4122C; --encre:#1d2330; --gris:#5b6372; --ligne:#e3e5ea; --fond:#fafaf8; --carte:#fff;
+  --stab:#2f6f4f; --prov:#8a6d1a; --disc:#7a3d8c;
+}
+*{box-sizing:border-box}
+body{margin:0;font-family:Inter,system-ui,sans-serif;color:var(--encre);background:var(--fond);line-height:1.55}
+a{color:var(--rouge);text-decoration:none}
+a:hover{text-decoration:underline}
+header{background:#fff;border-bottom:3px solid var(--rouge)}
+.bandeau{max-width:1180px;margin:0 auto;padding:18px 24px;display:flex;gap:24px;align-items:center;flex-wrap:wrap}
+.titre{font-family:"Source Serif 4",Georgia,serif;font-size:22px;font-weight:600;color:var(--encre)}
+.titre small{display:block;font-family:Inter,sans-serif;font-size:12px;font-weight:500;letter-spacing:.08em;text-transform:uppercase;color:var(--rouge)}
+nav{display:flex;gap:18px;margin-left:auto;align-items:center}
+nav a{color:var(--encre);font-weight:500;font-size:14px}
+nav a.actif{color:var(--rouge)}
+#recherche{padding:8px 12px;border:1px solid var(--ligne);border-radius:6px;font:inherit;font-size:14px;width:220px}
+main{max-width:1180px;margin:0 auto;padding:28px 24px 60px}
+h1,h2,h3{font-family:"Source Serif 4",Georgia,serif;font-weight:600}
+h1{font-size:32px;margin:0 0 6px}
+h2{font-size:21px;margin:32px 0 10px;border-bottom:1px solid var(--ligne);padding-bottom:6px}
+.intro{color:var(--gris);max-width:760px}
+.familles{columns:3 300px;column-gap:28px}
+.famille{break-inside:avoid;margin-bottom:22px;background:var(--carte);border:1px solid var(--ligne);border-radius:8px;padding:14px 16px}
+.famille h3{margin:0 0 2px;font-size:17px}
+.famille p{margin:0 0 8px;font-size:13px;color:var(--gris)}
+.famille ul{margin:0;padding:0;list-style:none}
+.famille li{padding:2px 0;font-size:15px}
+.pastille{display:inline-block;width:9px;height:9px;border-radius:50%;margin-right:7px;vertical-align:middle}
+.statut{display:inline-block;font-size:11px;font-weight:600;padding:2px 8px;border-radius:10px;letter-spacing:.03em;text-transform:uppercase}
+.statut.stabilise{background:#e5f1ea;color:var(--stab)}
+.statut.provisoire{background:#f6efd9;color:var(--prov)}
+.statut.discussion{background:#f1e6f4;color:var(--disc)}
+.fiche{display:grid;grid-template-columns:1fr 340px;gap:32px}
+@media (max-width:900px){.fiche{grid-template-columns:1fr}}
+.resume{font-family:"Source Serif 4",Georgia,serif;font-size:19px;background:#fff;border-left:4px solid var(--rouge);padding:14px 18px;margin:16px 0}
+.note{font-size:12px;color:var(--gris)}
+.rel{margin:0 0 14px}
+.rel h4{margin:0 0 4px;font-size:13px;text-transform:uppercase;letter-spacing:.05em;color:var(--gris);font-weight:600}
+.rel ul{margin:0;padding-left:18px}
+.rel li{margin:2px 0}
+.com{color:var(--gris);font-size:13px}
+.encadre{background:#fff;border:1px solid var(--ligne);border-radius:8px;padding:14px 16px;margin-bottom:16px}
+.encadre h3{margin:0 0 8px;font-size:16px}
+#mini,#graphe{background:#fff;border:1px solid var(--ligne);border-radius:8px}
+#mini{height:320px}
+#graphe{height:calc(100vh - 230px);min-height:520px}
+.legende{display:flex;flex-wrap:wrap;gap:6px 16px;font-size:12px;color:var(--gris);margin:10px 0}
+.fil{font-size:13px;color:var(--gris);margin-bottom:8px}
+.resultats li{margin:6px 0}
+footer{border-top:1px solid var(--ligne);font-size:12px;color:var(--gris);text-align:center;padding:18px}
+.chargement{color:var(--gris)}
+</style>
+</head>
+<body>
+<header>
+  <div class="bandeau">
+    <a class="titre" href="#/"><small>Sémiotique des Transactions Coopératives</small>Glossaire de la STC</a>
+    <nav>
+      <a href="#/" data-v="accueil">Concepts</a>
+      <a href="#/graphe" data-v="graphe">Graphe</a>
+      <a href="#/references" data-v="references">Références</a>
+      <input id="recherche" type="search" placeholder="Rechercher un concept" aria-label="Rechercher un concept">
+    </nav>
+  </div>
+</header>
+<main id="vue"><p class="chargement">Chargement du glossaire…</p></main>
+<footer>Manuel Zacklad · Cnam, Dicen-IDF · Glossaire en cours d'élaboration, version provisoire</footer>
+
+<script>
+const SUPABASE_URL = "https://jfzyjxtvmambpntpwjrr.supabase.co";
+const SUPABASE_KEY = "sb_publishable_UjuNUsU-SOe6E18QKl18Yg_mXimkrKz";
+const COULEURS = ["#C4122C","#144162","#617CA9","#EC5A64","#2f6f4f","#8a6d1a","#7a3d8c","#0f7c8c","#b8562b","#4a5a1e","#9b2c5d","#3b4cc0","#6b4f2a","#1f7a52","#a0336b","#5a6b7d","#c2841a"];
+const D = {};
+
+async function api(chemin){
+  const r = await fetch(`${SUPABASE_URL}/rest/v1/${chemin}`, {headers:{apikey:SUPABASE_KEY}});
+  if(!r.ok) throw new Error(await r.text());
+  return r.json();
+}
+async function charger(){
+  const [familles, concepts, relations, references] = await Promise.all([
+    api("famille?select=*&order=ordre"),
+    api("concept?select=*,concept_auteur(nature,commentaire,auteur(slug,nom)),concept_reference(role,localisation,reference(cle,citation,type,url)),definition(texte,version,date_version,est_courante,note),terme_ecarte(terme,raison)&order=ordre"),
+    api("v_relation?select=*&order=ordre"),
+    api("reference?select=*&order=annee")
+  ]);
+  D.familles = familles; D.concepts = concepts; D.relations = relations; D.references = references;
+  D.parSlug = Object.fromEntries(concepts.map(c=>[c.slug,c]));
+  D.famille = Object.fromEntries(familles.map((f,i)=>[f.slug,{...f,couleur:COULEURS[i%COULEURS.length]}]));
+}
+const esc = s => (s??"").replace(/[&<>"]/g, c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;"}[c]));
+const classeStatut = s => s==="stabilisé"?"stabilise":s==="en discussion"?"discussion":"provisoire";
+const badge = s => `<span class="statut ${classeStatut(s)}">${esc(s)}</span>`;
+const lien = slug => { const c = D.parSlug[slug]; return c ? `<a href="#/concept/${slug}">${esc(c.libelle)}</a>` : esc(slug); };
+const pastille = fam => `<span class="pastille" style="background:${D.famille[fam]?.couleur||'#999'}"></span>`;
+
+function vueAccueil(){
+  let h = `<h1>Concepts de la STC</h1>
+  <p class="intro">Glossaire relationnel de la Sémiotique des Transactions Coopératives. Chaque concept est relié aux autres par des relations typées (pôles, composantes, oppositions, correspondances) ; le graphe permet de parcourir ces relations. Première version établie à partir du cours « Communication et conversation dans la STC » : les résumés sont provisoires, les définitions et les références textuelles seront ajoutées progressivement.</p>`;
+  h += `<p class="note">${D.concepts.length} concepts · ${D.relations.length} relations</p><div class="familles">`;
+  for(const f of D.familles){
+    const cs = D.concepts.filter(c=>c.famille_slug===f.slug);
+    if(!cs.length) continue;
+    h += `<section class="famille"><h3>${pastille(f.slug)}${esc(f.libelle)}</h3><p>${esc(f.description)}</p><ul>`;
+    h += cs.map(c=>`<li>${lien(c.slug)}${c.statut!=="stabilisé"?` <span class="note">(${esc(c.statut)})</span>`:""}</li>`).join("");
+    h += `</ul></section>`;
+  }
+  return h + `</div>`;
+}
+
+function grouperRelations(slug){
+  const groupes = {};
+  for(const r of D.relations){
+    let cle, autre, com = r.commentaire;
+    if(r.source_slug===slug){ cle = r.libelle; autre = r.cible_slug; }
+    else if(r.cible_slug===slug){ cle = r.symetrique ? r.libelle : r.libelle_inverse; autre = r.source_slug; }
+    else continue;
+    (groupes[cle] ??= []).push({autre, com});
+  }
+  return groupes;
+}
+
+function vueConcept(slug){
+  const c = D.parSlug[slug];
+  if(!c) return `<h1>Concept introuvable</h1><p><a href="#/">Retour aux concepts</a></p>`;
+  const f = D.famille[c.famille_slug];
+  const groupes = grouperRelations(slug);
+  const defs = (c.definition||[]).sort((a,b)=>b.version-a.version);
+  let h = `<div class="fil"><a href="#/">Concepts</a> › ${pastille(c.famille_slug)}${esc(f?.libelle)}</div>
+  <div class="fiche"><div>
+  <h1>${esc(c.libelle)}</h1>${badge(c.statut)}`;
+  if(c.resume) h += `<div class="resume">${esc(c.resume)}</div><p class="note">Résumé provisoire, tiré du cours ; la définition de référence reste à établir.</p>`;
+  if(defs.length){
+    h += `<h2>Définition</h2>`;
+    for(const d of defs) h += `<div class="encadre"><p>${esc(d.texte)}</p><p class="note">Version ${d.version}, ${esc(d.date_version)}${d.est_courante?" · version courante":""}${d.note?" · "+esc(d.note):""}</p></div>`;
+  }
+  h += `<h2>Relations</h2>`;
+  const cles = Object.keys(groupes);
+  if(!cles.length) h += `<p class="note">Aucune relation enregistrée.</p>`;
+  for(const k of cles){
+    h += `<div class="rel"><h4>${esc(k)}</h4><ul>` + groupes[k].map(x=>`<li>${pastille(D.parSlug[x.autre]?.famille_slug)}${lien(x.autre)}${x.com?` <span class="com">· ${esc(x.com)}</span>`:""}</li>`).join("") + `</ul></div>`;
+  }
+  if(c.terme_ecarte?.length){
+    h += `<h2>Termes écartés</h2><ul>` + c.terme_ecarte.map(t=>`<li><b>${esc(t.terme)}</b>${t.raison?" : "+esc(t.raison):""}</li>`).join("") + `</ul>`;
+  }
+  h += `</div><aside><div id="mini"></div>`;
+  if(c.concept_auteur?.length){
+    h += `<div class="encadre" style="margin-top:16px"><h3>Auteurs mobilisés</h3><ul>` + c.concept_auteur.map(a=>`<li>${esc(a.auteur?.nom)} <span class="note">(${esc(a.nature)})</span>${a.commentaire?`<br><span class="com">${esc(a.commentaire)}</span>`:""}</li>`).join("") + `</ul></div>`;
+  }
+  if(c.concept_reference?.length){
+    h += `<div class="encadre"><h3>Références</h3><ul>` + c.concept_reference.map(r=>`<li>${esc(r.reference?.citation)} <span class="note">(${esc(r.role)}${r.localisation?", "+esc(r.localisation):""})</span></li>`).join("") + `</ul></div>`;
+  }
+  return h + `</aside></div>`;
+}
+
+function elementsGraphe(filtre){
+  const noeuds = D.concepts.filter(c=>!filtre||filtre.has(c.slug)).map(c=>({data:{id:c.slug,label:c.libelle,couleur:D.famille[c.famille_slug]?.couleur||"#999"}}));
+  const ids = new Set(noeuds.map(n=>n.data.id));
+  const aretes = D.relations.filter(r=>ids.has(r.source_slug)&&ids.has(r.cible_slug)).map(r=>({data:{id:r.id,source:r.source_slug,target:r.cible_slug,label:r.libelle,sym:r.symetrique?1:0}}));
+  return [...noeuds,...aretes];
+}
+function dessiner(conteneur, elements, centre, disposition){
+  const cy = cytoscape({
+    container: document.getElementById(conteneur), elements,
+    style:[
+      {selector:"node",style:{"background-color":"data(couleur)","label":"data(label)","font-size":10,"font-family":"Inter","color":"#1d2330","text-valign":"bottom","text-margin-y":4,"width":14,"height":14,"text-wrap":"wrap","text-max-width":110}},
+      {selector:"edge",style:{"width":1,"line-color":"#c9ccd3","target-arrow-color":"#c9ccd3","target-arrow-shape":"triangle","arrow-scale":.7,"curve-style":"bezier"}},
+      {selector:"edge[sym = 1]",style:{"target-arrow-shape":"none","line-style":"dashed"}},
+      {selector:"edge.vis",style:{"label":"data(label)","font-size":8,"color":"#5b6372","text-rotation":"autorotate","text-background-color":"#fff","text-background-opacity":1}},
+      {selector:`node[id = "${centre||""}"]`,style:{"width":22,"height":22,"font-weight":600,"font-size":12,"border-width":3,"border-color":"#1d2330"}},
+      {selector:".attenue",style:{"opacity":.15}}
+    ],
+    layout: disposition || {name:"cose",animate:false,nodeRepulsion:9000,idealEdgeLength:80,padding:20},
+    wheelSensitivity:.2
+  });
+  cy.on("tap","node",e=>{ location.hash = `#/concept/${e.target.id()}`; });
+  cy.on("mouseover","node",e=>{
+    const v = e.target.closedNeighborhood();
+    cy.elements().not(v).addClass("attenue"); v.edges().addClass("vis");
+  });
+  cy.on("mouseout","node",()=>{ cy.elements().removeClass("attenue vis"); });
+  return cy;
+}
+function vueGraphe(){
+  return `<h1>Graphe des concepts</h1><p class="intro">Survolez un concept pour voir ses relations, cliquez pour ouvrir sa fiche. Les liens en pointillés sont symétriques (oppositions, correspondances).</p>
+  <div class="legende">${D.familles.map(f=>`<span>${pastille(f.slug)}${esc(f.libelle)}</span>`).join("")}</div><div id="graphe"></div>`;
+}
+function vueReferences(){
+  let h = `<h1>Références</h1><ul class="resultats">`;
+  for(const r of D.references){
+    const cs = D.concepts.filter(c=>c.concept_reference?.some(x=>x.reference?.cle===r.cle && x.role!=="extrait de"));
+    h += `<li>${esc(r.citation)}${cs.length?`<br><span class="note">Concepts : ${cs.map(c=>lien(c.slug)).join(", ")}</span>`:""}</li>`;
+  }
+  return h + `</ul>`;
+}
+const norm = s => (s||"").normalize("NFD").replace(/[̀-ͯ]/g,"").toLowerCase();
+function vueRecherche(q){
+  const n = norm(q);
+  const res = D.concepts.filter(c=>norm(c.libelle).includes(n)||norm(c.resume).includes(n));
+  res.sort((a,b)=>(norm(b.libelle).includes(n))-(norm(a.libelle).includes(n)));
+  return `<h1>Recherche : « ${esc(q)} »</h1><ul class="resultats">${res.map(c=>`<li>${pastille(c.famille_slug)}${lien(c.slug)} <span class="note">${esc(D.famille[c.famille_slug]?.libelle)}</span><br><span class="com">${esc(c.resume)}</span></li>`).join("")||"<li>Aucun résultat.</li>"}</ul>`;
+}
+
+function router(){
+  const h = decodeURIComponent(location.hash.replace(/^#\/?/,""));
+  const [v, arg] = [h.split("/")[0], h.split("/").slice(1).join("/")];
+  const el = document.getElementById("vue");
+  document.querySelectorAll("nav a").forEach(a=>a.classList.toggle("actif", a.dataset.v===(v||"accueil")));
+  window.scrollTo(0,0);
+  if(v==="concept"){
+    el.innerHTML = vueConcept(arg);
+    const c = D.parSlug[arg];
+    if(c){
+      document.title = `${c.libelle} · Glossaire de la STC`;
+      const voisins = new Set([arg]);
+      D.relations.forEach(r=>{ if(r.source_slug===arg) voisins.add(r.cible_slug); if(r.cible_slug===arg) voisins.add(r.source_slug); });
+      dessiner("mini", elementsGraphe(voisins), arg, {name:"concentric",concentric:n=>n.id()===arg?2:1,levelWidth:()=>1,minNodeSpacing:28,padding:16,animate:false});
+    }
+    return;
+  }
+  document.title = "Glossaire de la Sémiotique des Transactions Coopératives";
+  if(v==="graphe"){ el.innerHTML = vueGraphe(); dessiner("graphe", elementsGraphe()); }
+  else if(v==="references") el.innerHTML = vueReferences();
+  else if(v==="recherche") el.innerHTML = vueRecherche(arg);
+  else el.innerHTML = vueAccueil();
+}
+
+document.getElementById("recherche").addEventListener("input", e=>{
+  const q = e.target.value.trim();
+  location.hash = q ? `#/recherche/${encodeURIComponent(q)}` : "#/";
+});
+window.addEventListener("hashchange", router);
+charger().then(router).catch(err=>{
+  document.getElementById("vue").innerHTML = `<h1>Erreur de chargement</h1><p class="note">${esc(String(err.message||err))}</p>`;
+});
+</script>
+</body>
+</html>
