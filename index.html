@@ -171,7 +171,7 @@ async function charger(){
     api("v_relation?select=*&order=ordre"),
     api("reference?select=*&order=annee"),
     api("artefact_exemple?select=slug,libelle,commentaire,ordre,positionnement(position,libelle,commentaire,concept(slug))&order=ordre"),
-    api("illustration?select=fichier,titre,legende,diapositive,ordre,concept_illustration(principal,concept(slug))&order=ordre")
+    api("illustration?select=fichier,titre,legende,diapositive,ordre,famille_slug,concept_illustration(principal,concept(slug))&order=ordre")
   ]);
   D.illustrations = illustrations;
   D.exemples = exemples;
@@ -289,6 +289,7 @@ function figure(i){
   return `<figure class="schema"><img src="schemas/${esc(i.fichier)}" alt="${esc(i.titre)} : ${esc(i.legende)}" loading="lazy" data-zoom="schemas/${esc(i.fichier)}" data-titre="${esc(i.titre)}"><figcaption><b>${esc(i.titre)}</b>. ${esc(i.legende)} <span class="note">Diaporama, diapositive ${i.diapositive} · cliquer pour agrandir</span></figcaption></figure>`;
 }
 function familleSchema(i){
+  if(i.famille_slug && D.famille[i.famille_slug]) return i.famille_slug;
   const princ = i.concept_illustration.filter(x=>x.principal && x.concept).map(x=>D.parSlug[x.concept.slug]).filter(Boolean);
   const base = princ.length ? princ : i.concept_illustration.map(x=>D.parSlug[x.concept?.slug]).filter(Boolean);
   const compte = {};
