@@ -365,7 +365,9 @@ function grouperRelations(slug){
   return groupes;
 }
 
+const ANCIENS = {"gradient-d-incarnation":"gradient-de-perennite","incorpore":"ephemere","autonome":"perenne"};
 function vueConcept(slug){
+  if(ANCIENS[slug]){ location.replace(`#/concept/${ANCIENS[slug]}`); return ""; }
   const c = D.parSlug[slug];
   if(!c) return `<h1>Concept introuvable</h1><p><a href="#/">Retour aux concepts</a></p>`;
   const f = D.famille[c.famille_slug];
