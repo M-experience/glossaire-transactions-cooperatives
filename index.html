@@ -364,7 +364,7 @@ function panneauGraphe(slug){
   <p>${esc(c.resume||"")}</p>
   <p><a class="bouton" href="#/concept/${slug}">Ouvrir la fiche</a> <button class="bouton secondaire" id="g-explorer">Voisinage</button></p>
   ${Object.entries(groupes).map(([k,xs])=>`<div class="rel"><h4>${esc(k)}</h4><ul>${xs.map(x=>`<li><a href="#" data-aller="${x.autre}">${esc(D.parSlug[x.autre]?.libelle)}</a></li>`).join("")}</ul></div>`).join("")}`;
-  document.getElementById("g-explorer").onclick = ()=>{ G.profondeur = Math.max(G.profondeur,1); appliquerFiltres(); majBoutons(); };
+  document.getElementById("g-explorer").onclick = ()=>{ G.profondeur = Math.max(G.profondeur,1); majBoutons(); selectionner(slug, false); };
   el.querySelectorAll("[data-aller]").forEach(a=>a.onclick = e=>{ e.preventDefault(); selectionner(a.dataset.aller, true); });
 }
 function selectionner(slug, recentrer){
@@ -377,7 +377,7 @@ function selectionner(slug, recentrer){
   if(n.nonempty()){
     const v = n.closedNeighborhood();
     cy.elements().not(v).addClass("attenue"); v.edges().addClass("vis"); n.addClass("choisi");
-    if(recentrer) cy.animate({center:{eles:n}, zoom:Math.max(cy.zoom(),1)}, {duration:350});
+    if(recentrer && G.profondeur===0) cy.animate({center:{eles:n}, zoom:Math.max(cy.zoom(),1)}, {duration:350});
   }
   panneauGraphe(slug);
 }
@@ -409,7 +409,7 @@ function appliquerFiltres(){
   if(G.focus && G.profondeur>0){
     const v1 = voisinage(G.focus,1);
     const lay = vis.layout({name:"concentric",concentric:n=>n.id()===G.focus?3:(v1.has(n.id())?2:1),levelWidth:()=>1,minNodeSpacing:70,nodeDimensionsIncludeLabels:true,animate:false,fit:false});
-    lay.one("layoutstop", ()=>cy.animate({fit:{eles:vis,padding:40}},{duration:300}));
+    lay.one("layoutstop", ()=>{ cy.stop(); cy.fit(vis, 40); });
     lay.run();
   } else {
     cy.animate({fit:{eles:vis,padding:30}},{duration:300});
@@ -430,8 +430,9 @@ function initGraphe(focus){
   document.querySelectorAll(".outils [data-p]").forEach(b=>b.onclick=()=>{
     G.profondeur = Number(b.dataset.p);
     if(G.profondeur===0){ cy.nodes().forEach(n=>n.position(G.positions[n.id()])); }
-    appliquerFiltres(); majBoutons();
-    if(G.focus) selectionner(G.focus, false);
+    majBoutons();
+    if(G.focus && G.profondeur>0) selectionner(G.focus, false);
+    else { appliquerFiltres(); if(G.focus) selectionner(G.focus, false); }
   });
   let minuteur = null;
   document.querySelectorAll(".familles-filtre [data-f]").forEach(b=>{
