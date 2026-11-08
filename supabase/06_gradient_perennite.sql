@@ -1,0 +1,5 @@
+-- 2026-11-08 : le gradient d'incarnation (incorporé ↔ autonome) est remplacé par le gradient de pérennité (éphémère ↔ pérenne).
+-- Concepts renommés en place (identifiants conservés) : gradient-d-incarnation → gradient-de-perennite, incorpore → ephemere, autonome → perenne.
+-- Termes écartés enregistrés avec leurs raisons ; nouveaux concepts « substrat » et « autonomie de l'artefact » (question ouverte) ;
+-- positions des 8 artefacts recalculées d'après le corrigé de la nouvelle version du diaporama ;
+-- matérialité glosée par l'action dyadique / triadique (Peirce) ; schéma de la diapositive 8 refait, diapositive 9 ajoutée.

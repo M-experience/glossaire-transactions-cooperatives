@@ -205,7 +205,7 @@ function ascendants(slug){
   while(p && !chaine.includes(p) && p!==slug && chaine.length<6){ chaine.unshift(p); p = parent(p); }
   return chaine;
 }
-const GRADIENTS = ["gradient-de-finalite","gradient-de-symbolicite","gradient-d-incarnation","gradient-de-materialite"];
+const GRADIENTS = ["gradient-de-finalite","gradient-de-symbolicite","gradient-de-perennite","gradient-de-materialite"];
 function poles(g){ return D.relations.filter(r=>r.type_slug==="pole_de" && r.cible_slug===g).map(r=>D.parSlug[r.source_slug]).sort((a,b)=>a.ordre-b.ordre); }
 function curseur(pos, lib){
   return `<div class="curseur" title="${esc(lib)}"><span style="left:calc(${pos*100}% - 6px)"></span></div>`;
@@ -221,7 +221,7 @@ function grilleGradient(g){
   return h + `</div><p class="note">Positions indicatives, à discuter (diaporama, exercice 2). Voir aussi <a href="#/artefacts">l'ensemble des artefacts situés</a>.</p>`;
 }
 function vueArtefacts(){
-  let h = `<h1>Artefacts situés sur les quatre gradients</h1><p class="intro">Positions indicatives de huit artefacts sur les gradients de finalité, de symbolicité, d'incarnation et de matérialité. Les cas de dissociation montrent l'indépendance des gradients : le bon repas sans occasion particulière est porteur de valeur mais profane, à la différence du gâteau d'anniversaire ; la consigne et l'explication orales ont même incarnation et même matérialité, mais une finalité différente.</p>`;
+  let h = `<h1>Artefacts situés sur les quatre gradients</h1><p class="intro">Positions indicatives de huit artefacts sur les gradients de finalité, de symbolicité, de pérennité et de matérialité. Les cas de dissociation montrent l'indépendance des gradients : le bon repas sans occasion particulière est porteur de valeur mais profane, à la différence du gâteau d'anniversaire ; la consigne et l'explication orales ont même pérennité et même matérialité, mais une finalité différente.</p>`;
   h += `<div class="tableau"><table><thead><tr><th>Artefact</th>${GRADIENTS.map(g=>{const ps=poles(g);return `<th>${lien(g)}<br><span class="note">${esc(ps[0]?.libelle)} ↔ ${esc(ps[1]?.libelle)}</span></th>`;}).join("")}</tr></thead><tbody>`;
   for(const e of D.exemples){
     h += `<tr><td><b>${esc(e.libelle)}</b>${e.commentaire?`<br><span class="com">${esc(e.commentaire)}</span>`:""}</td>`;
