@@ -183,8 +183,8 @@ rechercher:"Rechercher un concept",chargement:"Chargement du glossaire…",pied:
 inspiration:"inspiration",emprunt:"emprunt",transposition:"transposition","extrait de":"extrait de",source:"source",
 acc_titre:"Concepts de la STC",acc_intro:"Glossaire relationnel de la Sémiotique des Transactions Coopératives. Chaque concept est relié aux autres par des relations typées (pôles, composantes, oppositions, correspondances) ; le graphe permet de parcourir ces relations. Première version établie à partir du cours « Communication et conversation dans la STC » : les résumés sont provisoires, les définitions et les références textuelles seront ajoutées progressivement.",
 compte:"{c} concepts · {r} relations",deplier:"Tout déplier",replier:"Tout replier",diaporama_cours:"Diaporama du cours « Communication et conversation dans la STC »",
-telecharger:"Télécharger",lien:"Lien",diapositive:"Diaporama, diapositive {n}",agrandir:"cliquer pour agrandir",
-remonter:"Remonter",introuvable:"Concept introuvable",retour:"Retour aux concepts",resume_note:"Résumé provisoire, tiré du cours ; la définition de référence reste à établir.",
+telecharger:"Télécharger :",lien:"Lien",diapositive:"Diaporama, diapositive {n}",agrandir:"cliquer pour agrandir",
+remonter:"Remonter :",introuvable:"Concept introuvable",retour:"Retour aux concepts",resume_note:"Résumé provisoire, tiré du cours ; la définition de référence reste à établir.",
 schema:"Schéma",schemas:"Schémas",definition:"Définition",version:"Version {v}, {d}",version_courante:"version courante",relations:"Relations",aucune_relation:"Aucune relation enregistrée.",
 termes_ecartes:"Termes écartés",mini_tout:"Tout",mini_hier:"Hiérarchie",mini_lat:"Liens latéraux",mini_aucune_hier:"Aucune relation hiérarchique pour ce concept.",mini_aucun_lat:"Aucun lien latéral pour ce concept.",
 explorer:"Explorer depuis ce concept dans le graphe",auteurs:"Auteurs mobilisés",references:"Références",
@@ -204,8 +204,8 @@ rechercher:"Search a concept",chargement:"Loading the glossary…",pied:"Manuel 
 inspiration:"inspiration",emprunt:"borrowing",transposition:"transposition","extrait de":"taken from",source:"source",
 acc_titre:"STC concepts",acc_intro:"Relational glossary of the Semiotics of Cooperative Transactions. Each concept is linked to the others by typed relations (poles, components, oppositions, correspondences); the graph lets you browse these relations. First version drawn from the course “Communication and conversation in the STC”: the summaries are provisional; definitions and textual references will be added progressively.",
 compte:"{c} concepts · {r} relations",deplier:"Expand all",replier:"Collapse all",diaporama_cours:"Course slides “Communication and conversation in the STC” (in French)",
-telecharger:"Download",lien:"Link",diapositive:"Slides, slide {n}",agrandir:"click to enlarge",
-remonter:"Up",introuvable:"Concept not found",retour:"Back to concepts",resume_note:"Provisional summary, drawn from the course; the reference definition remains to be established.",
+telecharger:"Download:",lien:"Link",diapositive:"Slides, slide {n}",agrandir:"click to enlarge",
+remonter:"Up:",introuvable:"Concept not found",retour:"Back to concepts",resume_note:"Provisional summary, drawn from the course; the reference definition remains to be established.",
 schema:"Diagram",schemas:"Diagrams",definition:"Definition",version:"Version {v}, {d}",version_courante:"current version",relations:"Relations",aucune_relation:"No relation recorded.",
 termes_ecartes:"Rejected terms",mini_tout:"All",mini_hier:"Hierarchy",mini_lat:"Lateral links",mini_aucune_hier:"No hierarchical relation for this concept.",mini_aucun_lat:"No lateral link for this concept.",
 explorer:"Explore from this concept in the graph",auteurs:"Authors drawn on",references:"References",
@@ -225,8 +225,8 @@ rechercher:"Buscar un concepto",chargement:"Cargando el glosario…",pied:"Manue
 inspiration:"inspiración",emprunt:"préstamo",transposition:"transposición","extrait de":"extraído de",source:"fuente",
 acc_titre:"Conceptos de la STC",acc_intro:"Glosario relacional de la Semiótica de las Transacciones Cooperativas. Cada concepto está vinculado a los demás por relaciones tipificadas (polos, componentes, oposiciones, correspondencias); el grafo permite recorrer esas relaciones. Primera versión elaborada a partir del curso «Comunicación y conversación en la STC»: los resúmenes son provisionales; las definiciones y las referencias textuales se irán añadiendo progresivamente.",
 compte:"{c} conceptos · {r} relaciones",deplier:"Desplegar todo",replier:"Plegar todo",diaporama_cours:"Diapositivas del curso «Comunicación y conversación en la STC» (en francés)",
-telecharger:"Descargar",lien:"Enlace",diapositive:"Diapositivas, diapositiva {n}",agrandir:"clic para ampliar",
-remonter:"Subir",introuvable:"Concepto no encontrado",retour:"Volver a los conceptos",resume_note:"Resumen provisional, extraído del curso; la definición de referencia está por establecer.",
+telecharger:"Descargar:",lien:"Enlace",diapositive:"Diapositivas, diapositiva {n}",agrandir:"clic para ampliar",
+remonter:"Subir:",introuvable:"Concepto no encontrado",retour:"Volver a los conceptos",resume_note:"Resumen provisional, extraído del curso; la definición de referencia está por establecer.",
 schema:"Esquema",schemas:"Esquemas",definition:"Definición",version:"Versión {v}, {d}",version_courante:"versión vigente",relations:"Relaciones",aucune_relation:"Ninguna relación registrada.",
 termes_ecartes:"Términos descartados",mini_tout:"Todo",mini_hier:"Jerarquía",mini_lat:"Vínculos laterales",mini_aucune_hier:"Ninguna relación jerárquica para este concepto.",mini_aucun_lat:"Ningún vínculo lateral para este concepto.",
 explorer:"Explorar desde este concepto en el grafo",auteurs:"Autores movilizados",references:"Referencias",
@@ -411,7 +411,7 @@ function tableauParcours(courant){
 }
 function telechargements(url){
   if(!url) return "";
-  if(/\.pdf$/i.test(url)) return `<span class="telecharger">${t("telecharger")} : <a href="${esc(url)}" target="_blank" rel="noopener">PDF</a> · <a href="${esc(url.replace(/\.pdf$/i,".pptx"))}" download>PowerPoint</a></span>`;
+  if(/\.pdf$/i.test(url)) return `<span class="telecharger">${t("telecharger")} <a href="${esc(url)}" target="_blank" rel="noopener">PDF</a> · <a href="${esc(url.replace(/\.pdf$/i,".pptx"))}" download>PowerPoint</a></span>`;
   return `<a href="${esc(url)}" target="_blank" rel="noopener">${t("lien")}</a>`;
 }
 function urlDiaporama(){ return D.references.find(r=>r.cle==="diaporama-communication-conversation")?.url; }
@@ -496,7 +496,7 @@ function vueConcept(slug){
   const groupes = grouperRelations(slug);
   const defs = (c.definition||[]).sort((a,b)=>b.version-a.version);
   const asc = ascendants(slug);
-  let h = `<div class="fil"><a href="#/">${t("nav_concepts")}</a> › ${pastille(c.famille_slug)}<a href="#/famille/${c.famille_slug}">${esc(f?.libelle)}</a>${asc.length?`<br>${t("remonter")} : ${asc.map(lien).join(" › ")} › <b>${esc(c.libelle)}</b>`:""}</div>
+  let h = `<div class="fil"><a href="#/">${t("nav_concepts")}</a> › ${pastille(c.famille_slug)}<a href="#/famille/${c.famille_slug}">${esc(f?.libelle)}</a>${asc.length?`<br>${t("remonter")} ${asc.map(lien).join(" › ")} › <b>${esc(c.libelle)}</b>`:""}</div>
   <div class="fiche"><div>
   <h1>${esc(c.libelle)}</h1>${badge(c.statut)}`;
   if(c.resume) h += `<div class="resume">${esc(c.resume)}</div><p class="note">${t("resume_note")}</p>`;
