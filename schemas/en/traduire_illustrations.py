@@ -5,8 +5,6 @@ import sys, os
 from statistics import median
 from PIL import Image, ImageDraw, ImageFont
 
-SRC, OUT = sys.argv[1], sys.argv[2]
-os.makedirs(OUT, exist_ok=True)
 F = {
  "serif": "/usr/share/fonts/truetype/liberation/LiberationSerif-Regular.ttf",
  "serifb": "/usr/share/fonts/truetype/liberation/LiberationSerif-Bold.ttf",
@@ -183,13 +181,20 @@ T["slide20"] = [
  ((1198, 960, 1475, 1004), ["*Territorialization*"], "serif", 34),
 ]
 
-for nom, blocs in T.items():
-    PLUME = 7 if nom == "slide20" else 2
-    im = Image.open(os.path.join(SRC, nom + ".webp")).convert("RGBA")
-    for b in blocs:
-        box, lignes, police, taille = b[:4]
-        couleur = b[4] if len(b) > 4 else INK
-        align = b[5] if len(b) > 5 else "c"
-        bloc(im, box, lignes, police, taille, couleur, align, zone=b[6] if len(b) > 6 else None)
-    im.convert("RGB").save(os.path.join(OUT, nom + ".webp"), quality=88)
-    print(nom)
+def principal():
+  global PLUME
+  SRC, OUT = sys.argv[1], sys.argv[2]
+  os.makedirs(OUT, exist_ok=True)
+  for nom, blocs in T.items():
+      PLUME = 7 if nom == "slide20" else 2
+      im = Image.open(os.path.join(SRC, nom + ".webp")).convert("RGBA")
+      for b in blocs:
+          box, lignes, police, taille = b[:4]
+          couleur = b[4] if len(b) > 4 else INK
+          align = b[5] if len(b) > 5 else "c"
+          bloc(im, box, lignes, police, taille, couleur, align, zone=b[6] if len(b) > 6 else None)
+      im.convert("RGB").save(os.path.join(OUT, nom + ".webp"), quality=88)
+      print(nom)
+
+if __name__ == "__main__":
+    principal()
