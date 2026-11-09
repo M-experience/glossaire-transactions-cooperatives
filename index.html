@@ -495,7 +495,9 @@ function telechargements(url){
 function urlDiaporama(){ return D.references.find(r=>r.cle==="diaporama-communication-conversation")?.url; }
 const ILLUSTRATIONS_EN = ["slide12","slide14","slide17","slide20"];
 const SCHEMAS_EN = ["slide04","slide05","slide08","slide09","slide19","slide23","slide30","slide31","slide32","slide33","slide39"];
-function fichierSchema(f){
+const VERSION_SCHEMAS = "20261109b";
+function fichierSchema(f){ return cheminSchema(f) + "?v=" + VERSION_SCHEMAS; }
+function cheminSchema(f){
   const base = String(f).replace(/\.[a-z0-9]+$/i,"");
   if(LANG === "fr") return `schemas/${f}`;
   if(SCHEMAS_EN.includes(base)) return `schemas/${["es","de","pt","it"].includes(LANG) ? LANG : "en"}/${base}.svg`;
