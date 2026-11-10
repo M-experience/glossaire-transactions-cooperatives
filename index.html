@@ -421,6 +421,8 @@ const RACINE_CONFIG = "configuration-institutionnelle";
 function vueConfigurations(){
   const cols = ["valeur","lien","environnement","artefacts","temporalite"];
   let h = `<h1>${t("cfg_titre")}</h1><p class="intro">${t("cfg_intro")} <a href="documents/configurations-institutionnelles.docx" download>${t("cfg_document")}</a>.</p>`;
+  const ill = (D.illustrations||[]).find(i=>i.fichier==="configurations.svg");
+  if(ill) h += figure(ill);
   h += `<div class="tableau tableau-cfg"><table><thead><tr><th>${t("cfg_col_type")}</th>${cols.map(k=>`<th>${t("attr_"+k)}</th>`).join("")}</tr></thead><tbody>`;
   const parcours = (slug, niveau)=>{
     const kids = enfants(slug).filter(k=>D.parSlug[k]?.famille_slug==="configuration").sort((a,b)=>D.parSlug[a].ordre-D.parSlug[b].ordre);
