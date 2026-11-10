@@ -610,7 +610,7 @@ function grouperRelations(slug){
   return groupes;
 }
 
-const ANCIENS = {"gradient-d-incarnation":"gradient-de-perennite","incorpore":"ephemere","autonome":"perenne"};
+const ANCIENS = {"configuration-culturelle":"configuration-culturelle-artistique","gradient-d-incarnation":"gradient-de-perennite","incorpore":"ephemere","autonome":"perenne"};
 function vueConcept(slug){
   if(ANCIENS[slug]){ location.replace(`#/concept/${ANCIENS[slug]}`); return ""; }
   const c = D.parSlug[slug];

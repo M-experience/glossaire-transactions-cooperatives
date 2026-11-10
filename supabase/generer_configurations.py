@@ -25,7 +25,7 @@ FEUILLES = {
  "Client-fournisseur": ("configuration-client-fournisseur", "Configuration client-fournisseur", "configuration-marchande-contractuelle"),
  "Usager-prestataire": ("configuration-usager-prestataire", "Configuration usager-prestataire", "configuration-marchande-contractuelle"),
  "Religieuses": ("configuration-religieuse", "Configuration religieuse", "configuration-cultuelle-culturelle"),
- "Culturelles": ("configuration-culturelle", "Configuration culturelle", "configuration-cultuelle-culturelle"),
+ "Culturelles-artistiques": ("configuration-culturelle-artistique", "Configuration culturelle-artistique", "configuration-cultuelle-culturelle"),
 }
 # Concepts de regroupement : slug, libellé, résumé, parent, relation
 GROUPES = [
@@ -36,14 +36,14 @@ GROUPES = [
  ("configuration-secondaire", "Configuration institutionnelle secondaire", "Se caractérise par l'appartenance du self à un collectif institué visant des finalités spécifiques. Elle se déploie sur deux versants : de sociabilité, et administratif et gestionnaire.", "configuration-institutionnelle", "sous_type_de"),
  ("configuration-de-sociabilite", "Configuration de sociabilité", "Versant de sociabilité des configurations secondaires : foules et rassemblements, amicales et réticulaires, groupales, communautaires informelles, communautaires formelles.", "configuration-secondaire", "face_de"),
  ("configuration-administrative-gestionnaire", "Configuration administrative et gestionnaire", "Versant administratif et gestionnaire des configurations secondaires : publiques, de l'économie sociale, entrepreneuriales.", "configuration-secondaire", "face_de"),
- ("configuration-tertiaire", "Configuration institutionnelle tertiaire", "Se caractérise par l'inscription des selfs dans un ordre symbolique relevant du droit, du sacré ou de l'œuvre d'art. Sous-familles : civiques et marchandes-contractuelles, fondées sur l'autorité du droit ; cultuelles-culturelles, qui relèvent de l'autorité du sacré (religieuses) ou de l'œuvre d'art (culturelles).", "configuration-institutionnelle", "sous_type_de"),
+ ("configuration-tertiaire", "Configuration institutionnelle tertiaire", "Se caractérise par l'inscription des selfs dans un ordre symbolique relevant du droit, du sacré ou de l'œuvre d'art. Sous-familles : civiques et marchandes-contractuelles, fondées sur l'autorité du droit ; cultuelles-culturelles, qui relèvent de l'autorité du sacré (religieuses) ou de l'œuvre d'art (culturelles-artistiques).", "configuration-institutionnelle", "sous_type_de"),
  ("configuration-civique", "Configuration civique", "Configuration tertiaire fondée sur l'autorité du droit : citoyenne, juridico-administrative, participative.", "configuration-tertiaire", "sous_type_de"),
  ("configuration-marchande-contractuelle", "Configuration marchande-contractuelle", "Configuration tertiaire fondée sur l'autorité du droit : client-fournisseur, usager-prestataire.", "configuration-tertiaire", "sous_type_de"),
- ("configuration-cultuelle-culturelle", "Configuration cultuelle-culturelle", "Configuration tertiaire qui relève de l'autorité du sacré (religieuse) ou de l'œuvre d'art (culturelle).", "configuration-tertiaire", "sous_type_de"),
+ ("configuration-cultuelle-culturelle", "Configuration cultuelle-culturelle", "Configuration tertiaire qui relève de l'autorité du sacré (religieuse) ou de l'œuvre d'art (culturelle-artistique).", "configuration-tertiaire", "sous_type_de"),
  ("ordre-symbolique", "Ordre symbolique", "Ordre dans lequel les configurations tertiaires inscrivent les selfs ; il relève de l'autorité du droit, du sacré ou de l'œuvre d'art.", None, None),
  ("autorite-du-droit", "Autorité du droit", "Fonde les configurations civiques et marchandes-contractuelles.", "ordre-symbolique", "composante_de"),
  ("autorite-du-sacre", "Autorité du sacré", "Fonde les configurations religieuses.", "ordre-symbolique", "composante_de"),
- ("autorite-de-l-oeuvre-d-art", "Autorité de l'œuvre d'art", "Fonde les configurations culturelles (artistiques).", "ordre-symbolique", "composante_de"),
+ ("autorite-de-l-oeuvre-d-art", "Autorité de l'œuvre d'art", "Fonde les configurations culturelles-artistiques.", "ordre-symbolique", "composante_de"),
 ]
 ATTR = [("exemples", "exemples"), ("valeur", "Valeur dominante"), ("lien", "Nature du lien constituant les selfs"),
         ("environnement", "Environnement et coordination"), ("artefacts", "Artefacts générés"), ("temporalite", "Temporalité dominante")]
@@ -66,7 +66,7 @@ rels += [
  ("configuration-civique", "releve_de", "autorite-du-droit", None),
  ("configuration-marchande-contractuelle", "releve_de", "autorite-du-droit", None),
  ("configuration-religieuse", "releve_de", "autorite-du-sacre", None),
- ("configuration-culturelle", "releve_de", "autorite-de-l-oeuvre-d-art", None),
+ ("configuration-culturelle-artistique", "releve_de", "autorite-de-l-oeuvre-d-art", None),
  ("configuration-communautaire-informelle", "oppose_a", "configuration-communautaire-formelle", None),
  ("self", "intervient_dans", "configuration-institutionnelle", "les configurations se distinguent par la nature du lien qui constitue les selfs"),
  ("configuration-institutionnelle", "intervient_dans", "organisation", "l'organisation explicite et stabilise les configurations institutionnelles qui légitiment l'agencement"),
@@ -74,7 +74,7 @@ rels += [
  ("configuration-entrepreneuriale", "distingue_de", "configuration-marchande-contractuelle", "collectif institué (secondaire) et relation contractuelle fondée sur le droit (tertiaire)"),
 ]
 
-o = ["-- Généré par generer_configurations.py : configurations institutionnelles (tableau v4 de M. Zacklad, 10 novembre 2026). Statut provisoire.",
+o = ["-- Généré par generer_configurations.py : configurations institutionnelles (tableau v4.1 de M. Zacklad, 10 novembre 2026 ; termes du gradient de pérennité). Statut provisoire.",
      "insert into famille (slug, libelle, description, ordre) values ('configuration', 'Configurations institutionnelles', 'Types idéaux des configurations institutionnelles de l''action collective', 18) on conflict (slug) do update set libelle = excluded.libelle, description = excluded.description, ordre = excluded.ordre;",
      "with c(slug, libelle, resume, ordre) as (values"]
 o.append(",\n".join(f" ({q(s)}, {q(l)}, {q(r)}, {n})" for s, l, r, n in concepts))
