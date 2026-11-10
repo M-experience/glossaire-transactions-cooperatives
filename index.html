@@ -539,7 +539,7 @@ function cheminSchema(f){
 }
 function figure(i){
   const src = fichierSchema(i.fichier);
-  return `<figure class="schema"><img src="${esc(src)}" alt="${esc(i.titre)} : ${esc(i.legende)}" loading="lazy" data-zoom="${esc(src)}" data-titre="${esc(i.titre)}"><figcaption><b>${esc(i.titre)}</b>. ${esc(i.legende)} <span class="note">${urlDiaporama()?`<a href="${esc(urlDiaporama())}#page=${i.diapositive}" target="_blank" rel="noopener">${t("diapositive",{n:i.diapositive})}</a>`:t("diapositive",{n:i.diapositive})} · ${t("agrandir")}</span></figcaption></figure>`;
+  return `<figure class="schema"><img src="${esc(src)}" alt="${esc(i.titre)} : ${esc(i.legende)}" loading="lazy" data-zoom="${esc(src)}" data-titre="${esc(i.titre)}"><figcaption><b>${esc(i.titre)}</b>. ${esc(i.legende)} <span class="note">${i.diapositive ? (urlDiaporama()?`<a href="${esc(urlDiaporama())}#page=${i.diapositive}" target="_blank" rel="noopener">${t("diapositive",{n:i.diapositive})}</a>`:t("diapositive",{n:i.diapositive})) + " · " : ""}${t("agrandir")}</span></figcaption></figure>`;
 }
 function familleSchema(i){
   if(i.famille_slug && D.famille[i.famille_slug]) return i.famille_slug;
