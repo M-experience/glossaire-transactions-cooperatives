@@ -144,6 +144,14 @@ details.famille ul{margin-top:4px}
 .avert-trad{max-width:1180px;margin:10px auto 0;padding:8px 24px;font-size:13px;color:#7a5b00;background:#fff7dd;border:1px solid #f1e2a8;border-radius:6px}
 footer{border-top:1px solid var(--ligne);font-size:12px;color:var(--gris);text-align:center;padding:18px}
 .chargement{color:var(--gris)}
+dl.attributs{display:grid;grid-template-columns:minmax(150px,220px) 1fr;gap:6px 16px;margin:8px 0 14px}
+dl.attributs dt{font-weight:600;color:#55606e}
+dl.attributs dd{margin:0}
+.tableau-cfg td,.tableau-cfg th{vertical-align:top;font-size:.88rem;line-height:1.4}
+.tableau-cfg tr.titre-n1 th{background:#efe9df;font-size:1rem;text-align:left}
+.tableau-cfg tr.titre-n2 th{background:#f7f3ec;text-align:left;padding-left:22px}
+.tableau-cfg td:first-child{min-width:170px}
+@media (max-width:700px){dl.attributs{grid-template-columns:1fr}}
 </style>
 </head>
 <body>
@@ -158,6 +166,7 @@ footer{border-top:1px solid var(--ligne);font-size:12px;color:var(--gris);text-a
         <summary data-v="artefacts" data-i18n="nav_exemples">Exemples</summary>
         <div class="sous-menu">
           <a href="#/artefacts" data-v="artefacts" data-i18n="nav_artefacts">Artefacts situés sur les gradients</a>
+          <a href="#/configurations" data-v="configurations" data-i18n="nav_configurations">Configurations institutionnelles</a>
         </div>
       </details>
       <a href="#/references" data-v="references" data-i18n="nav_references">Références</a>
@@ -181,7 +190,7 @@ const COULEURS = ["#C4122C","#144162","#617CA9","#EC5A64","#2f6f4f","#8a6d1a","#
 const D = {};
 const I18N = {
 fr:{sous_titre:"Sémiotique des Transactions Coopératives",titre:"Glossaire de la STC",titre_long:"Glossaire de la Sémiotique des Transactions Coopératives",
-nav_concepts:"Concepts",nav_graphe:"Graphe",nav_schemas:"Schémas",nav_exemples:"Exemples",nav_artefacts:"Artefacts situés sur les gradients",nav_references:"Références",
+nav_concepts:"Concepts",nav_graphe:"Graphe",nav_schemas:"Schémas",nav_exemples:"Tableaux",nav_artefacts:"Artefacts situés sur les gradients",nav_configurations:"Configurations institutionnelles",caracteristiques:"Caractéristiques",cfg_voir:"Voir le tableau des configurations institutionnelles",cfg_titre:"Configurations institutionnelles de l\'action collective",cfg_intro:"Typologie en types idéaux : configurations primaires, secondaires et tertiaires, selon la valeur dominante, la nature du lien constituant les selfs, l\'environnement et la coordination, les artefacts générés et la temporalité dominante.",cfg_document:"Télécharger le document (Word)",cfg_col_type:"Type de configuration",attr_exemples:"Exemples",attr_valeur:"Valeur dominante",attr_lien:"Nature du lien constituant les selfs",attr_environnement:"Environnement et coordination",attr_artefacts:"Artefacts générés",attr_temporalite:"Temporalité dominante",nav_references:"Références",
 rechercher:"Rechercher un concept",chargement:"Chargement du glossaire…",pied:"Manuel Zacklad · Cnam, Dicen-IDF · Glossaire en cours d'élaboration, version provisoire",trad_avert:"",
 "stabilisé":"stabilisé","provisoire":"provisoire","en discussion":"en discussion","écarté":"écarté",
 inspiration:"inspiration",emprunt:"emprunt",transposition:"transposition","extrait de":"extrait de",source:"source",
@@ -202,7 +211,7 @@ gr_familles:"Familles (clic : masquer ou afficher ; double-clic : n'afficher que
 gr_aide:"Molette : défiler la page · Ctrl ou ⌘ + molette : zoomer · Échap : désélectionner",gr_selection:"Sélectionnez un concept dans le graphe.",ouvrir_fiche:"Ouvrir la fiche",voisinage:"Voisinage",
 ref_concepts:"Concepts :",recherche:"Recherche : « {q} »",aucun_resultat:"Aucun résultat.",erreur:"Erreur de chargement"},
 en:{sous_titre:"Semiotics of Cooperative Transactions",titre:"STC Glossary",titre_long:"Glossary of the Semiotics of Cooperative Transactions",
-nav_concepts:"Concepts",nav_graphe:"Graph",nav_schemas:"Diagrams",nav_exemples:"Examples",nav_artefacts:"Artifacts situated on the gradients",nav_references:"References",
+nav_concepts:"Concepts",nav_graphe:"Graph",nav_schemas:"Diagrams",nav_exemples:"Tables",nav_artefacts:"Artifacts situated on the gradients",nav_configurations:"Institutional configurations",caracteristiques:"Characteristics",cfg_voir:"See the table of institutional configurations",cfg_titre:"Institutional configurations of collective action",cfg_intro:"Typology in ideal types: primary, secondary and tertiary configurations, according to the dominant value, the nature of the bond constituting the selves, environment and coordination, the artifacts generated and the dominant temporality.",cfg_document:"Download the document (Word, in French)",cfg_col_type:"Type of configuration",attr_exemples:"Examples",attr_valeur:"Dominant value",attr_lien:"Nature of the bond constituting the selves",attr_environnement:"Environment and coordination",attr_artefacts:"Artifacts generated",attr_temporalite:"Dominant temporality",nav_references:"References",
 rechercher:"Search a concept",chargement:"Loading the glossary…",pied:"Manuel Zacklad · Cnam, Dicen-IDF · Glossary in progress, provisional version",trad_avert:"Working translation from the French; the French version is the reference. Diagrams and illustrations are shown in English; the slides are in French.",
 "stabilisé":"stabilized","provisoire":"provisional","en discussion":"under discussion","écarté":"rejected",
 inspiration:"inspiration",emprunt:"borrowing",transposition:"transposition","extrait de":"taken from",source:"source",
@@ -223,7 +232,7 @@ gr_familles:"Families (click: hide or show; double-click: show only this one)",t
 gr_aide:"Wheel: scroll the page · Ctrl or ⌘ + wheel: zoom · Esc: deselect",gr_selection:"Select a concept in the graph.",ouvrir_fiche:"Open entry",voisinage:"Neighborhood",
 ref_concepts:"Concepts:",recherche:"Search: “{q}”",aucun_resultat:"No results.",erreur:"Loading error"},
 es:{sous_titre:"Semiótica de las Transacciones Cooperativas",titre:"Glosario de la STC",titre_long:"Glosario de la Semiótica de las Transacciones Cooperativas",
-nav_concepts:"Conceptos",nav_graphe:"Grafo",nav_schemas:"Esquemas",nav_exemples:"Ejemplos",nav_artefacts:"Artefactos situados en los gradientes",nav_references:"Referencias",
+nav_concepts:"Conceptos",nav_graphe:"Grafo",nav_schemas:"Esquemas",nav_exemples:"Tablas",nav_artefacts:"Artefactos situados en los gradientes",nav_configurations:"Configuraciones institucionales",caracteristiques:"Características",cfg_voir:"Ver la tabla de las configuraciones institucionales",cfg_titre:"Configuraciones institucionales de la acción colectiva",cfg_intro:"Tipología en tipos ideales: configuraciones primarias, secundarias y terciarias, según el valor dominante, la naturaleza del vínculo que constituye a los selfs, el entorno y la coordinación, los artefactos generados y la temporalidad dominante.",cfg_document:"Descargar el documento (Word, en francés)",cfg_col_type:"Tipo de configuración",attr_exemples:"Ejemplos",attr_valeur:"Valor dominante",attr_lien:"Naturaleza del vínculo que constituye a los selfs",attr_environnement:"Entorno y coordinación",attr_artefacts:"Artefactos generados",attr_temporalite:"Temporalidad dominante",nav_references:"Referencias",
 rechercher:"Buscar un concepto",chargement:"Cargando el glosario…",pied:"Manuel Zacklad · Cnam, Dicen-IDF · Glosario en elaboración, versión provisional",trad_avert:"Traducción de trabajo a partir del francés; la versión francesa es la referencia. Las ilustraciones se muestran en inglés; las diapositivas están en francés.",
 "stabilisé":"estabilizado","provisoire":"provisional","en discussion":"en discusión","écarté":"descartado",
 inspiration:"inspiración",emprunt:"préstamo",transposition:"transposición","extrait de":"extraído de",source:"fuente",
@@ -244,7 +253,7 @@ gr_familles:"Familias (clic: ocultar o mostrar; doble clic: mostrar solo esta)",
 gr_aide:"Rueda: desplazar la página · Ctrl o ⌘ + rueda: zoom · Esc: deseleccionar",gr_selection:"Seleccione un concepto en el grafo.",ouvrir_fiche:"Abrir la ficha",voisinage:"Vecindad",
 ref_concepts:"Conceptos:",recherche:"Búsqueda: «{q}»",aucun_resultat:"Ningún resultado.",erreur:"Error de carga"},
 de:{sous_titre:"Semiotik der kooperativen Transaktionen",titre:"STC-Glossar",titre_long:"Glossar der Semiotik der kooperativen Transaktionen",
-nav_concepts:"Begriffe",nav_graphe:"Graph",nav_schemas:"Schemata",nav_exemples:"Beispiele",nav_artefacts:"Auf den Gradienten verortete Artefakte",nav_references:"Literatur",
+nav_concepts:"Begriffe",nav_graphe:"Graph",nav_schemas:"Schemata",nav_exemples:"Tabellen",nav_artefacts:"Auf den Gradienten verortete Artefakte",nav_configurations:"Institutionelle Konfigurationen",caracteristiques:"Merkmale",cfg_voir:"Tabelle der institutionellen Konfigurationen ansehen",cfg_titre:"Institutionelle Konfigurationen kollektiven Handelns",cfg_intro:"Typologie in Idealtypen: primäre, sekundäre und tertiäre Konfigurationen nach dominantem Wert, Art der die Selfs konstituierenden Bindung, Umwelt und Koordination, erzeugten Artefakten und dominanter Zeitlichkeit.",cfg_document:"Dokument herunterladen (Word, auf Französisch)",cfg_col_type:"Konfigurationstyp",attr_exemples:"Beispiele",attr_valeur:"Dominanter Wert",attr_lien:"Art der die Selfs konstituierenden Bindung",attr_environnement:"Umwelt und Koordination",attr_artefacts:"Erzeugte Artefakte",attr_temporalite:"Dominante Zeitlichkeit",nav_references:"Literatur",
 rechercher:"Begriff suchen",chargement:"Glossar wird geladen…",pied:"Manuel Zacklad · Cnam, Dicen-IDF · Glossar in Bearbeitung, vorläufige Fassung",trad_avert:"Arbeitsübersetzung aus dem Französischen; die französische Fassung ist maßgeblich. Die Abbildungen werden auf Englisch gezeigt; die Folien sind auf Französisch.",
 "stabilisé":"gefestigt","provisoire":"vorläufig","en discussion":"in Diskussion","écarté":"verworfen",
 inspiration:"Inspiration",emprunt:"Entlehnung",transposition:"Übertragung","extrait de":"entnommen aus",source:"Quelle",
@@ -265,7 +274,7 @@ gr_familles:"Familien (Klick: aus- oder einblenden; Doppelklick: nur diese zeige
 gr_aide:"Mausrad: Seite blättern · Strg oder ⌘ + Mausrad: zoomen · Esc: Auswahl aufheben",gr_selection:"Wählen Sie einen Begriff im Graphen.",ouvrir_fiche:"Eintrag öffnen",voisinage:"Nachbarschaft",
 ref_concepts:"Begriffe:",recherche:"Suche: „{q}“",aucun_resultat:"Keine Ergebnisse.",erreur:"Ladefehler"},
 pt:{sous_titre:"Semiótica das Transações Cooperativas",titre:"Glossário da STC",titre_long:"Glossário da Semiótica das Transações Cooperativas",
-nav_concepts:"Conceitos",nav_graphe:"Grafo",nav_schemas:"Esquemas",nav_exemples:"Exemplos",nav_artefacts:"Artefatos situados nos gradientes",nav_references:"Referências",
+nav_concepts:"Conceitos",nav_graphe:"Grafo",nav_schemas:"Esquemas",nav_exemples:"Tabelas",nav_artefacts:"Artefatos situados nos gradientes",nav_configurations:"Configurações institucionais",caracteristiques:"Características",cfg_voir:"Ver a tabela das configurações institucionais",cfg_titre:"Configurações institucionais da ação coletiva",cfg_intro:"Tipologia em tipos ideais: configurações primárias, secundárias e terciárias, segundo o valor dominante, a natureza do vínculo que constitui os selfs, o ambiente e a coordenação, os artefatos gerados e a temporalidade dominante.",cfg_document:"Baixar o documento (Word, em francês)",cfg_col_type:"Tipo de configuração",attr_exemples:"Exemplos",attr_valeur:"Valor dominante",attr_lien:"Natureza do vínculo que constitui os selfs",attr_environnement:"Ambiente e coordenação",attr_artefacts:"Artefatos gerados",attr_temporalite:"Temporalidade dominante",nav_references:"Referências",
 rechercher:"Buscar um conceito",chargement:"Carregando o glossário…",pied:"Manuel Zacklad · Cnam, Dicen-IDF · Glossário em elaboração, versão provisória",trad_avert:"Tradução de trabalho a partir do francês; a versão francesa é a referência. As ilustrações são apresentadas em inglês; os diapositivos estão em francês.",
 "stabilisé":"estabilizado","provisoire":"provisório","en discussion":"em discussão","écarté":"descartado",
 inspiration:"inspiração",emprunt:"empréstimo",transposition:"transposição","extrait de":"extraído de",source:"fonte",
@@ -286,7 +295,7 @@ gr_familles:"Famílias (clique: ocultar ou mostrar; duplo clique: mostrar só es
 gr_aide:"Roda: rolar a página · Ctrl ou ⌘ + roda: zoom · Esc: desmarcar",gr_selection:"Selecione um conceito no grafo.",ouvrir_fiche:"Abrir a ficha",voisinage:"Vizinhança",
 ref_concepts:"Conceitos:",recherche:"Busca: «{q}»",aucun_resultat:"Nenhum resultado.",erreur:"Erro de carregamento"},
 it:{sous_titre:"Semiotica delle Transazioni Cooperative",titre:"Glossario della STC",titre_long:"Glossario della Semiotica delle Transazioni Cooperative",
-nav_concepts:"Concetti",nav_graphe:"Grafo",nav_schemas:"Schemi",nav_exemples:"Esempi",nav_artefacts:"Artefatti situati sui gradienti",nav_references:"Riferimenti",
+nav_concepts:"Concetti",nav_graphe:"Grafo",nav_schemas:"Schemi",nav_exemples:"Tabelle",nav_artefacts:"Artefatti situati sui gradienti",nav_configurations:"Configurazioni istituzionali",caracteristiques:"Caratteristiche",cfg_voir:"Vedi la tabella delle configurazioni istituzionali",cfg_titre:"Configurazioni istituzionali dell\'azione collettiva",cfg_intro:"Tipologia in tipi ideali: configurazioni primarie, secondarie e terziarie, secondo il valore dominante, la natura del legame che costituisce i self, l\'ambiente e il coordinamento, gli artefatti generati e la temporalità dominante.",cfg_document:"Scarica il documento (Word, in francese)",cfg_col_type:"Tipo di configurazione",attr_exemples:"Esempi",attr_valeur:"Valore dominante",attr_lien:"Natura del legame che costituisce i self",attr_environnement:"Ambiente e coordinamento",attr_artefacts:"Artefatti generati",attr_temporalite:"Temporalità dominante",nav_references:"Riferimenti",
 rechercher:"Cerca un concetto",chargement:"Caricamento del glossario…",pied:"Manuel Zacklad · Cnam, Dicen-IDF · Glossario in elaborazione, versione provvisoria",trad_avert:"Traduzione di lavoro dal francese; la versione francese fa fede. Le illustrazioni sono presentate in inglese; le diapositive sono in francese.",
 "stabilisé":"consolidato","provisoire":"provvisorio","en discussion":"in discussione","écarté":"scartato",
 inspiration:"ispirazione",emprunt:"prestito",transposition:"trasposizione","extrait de":"tratto da",source:"fonte",
@@ -327,7 +336,8 @@ function appliquerLangue(){
     libelle:tr("concept",c.slug,"libelle",c.libelle), resume:tr("concept",c.slug,"resume",c.resume),
     concept_auteur:(c.concept_auteur||[]).map(a=>({...a, commentaire:tr("concept_auteur",`${c.slug}|${a.auteur?.slug}|${a.nature}`,"commentaire",a.commentaire)})),
     terme_ecarte:(c.terme_ecarte||[]).map(x=>({...x, raison:tr("terme_ecarte",x.id,"raison",x.raison)})),
-    concept_illustration:(c.concept_illustration||[]).map(x=>({...x, illustration:illus(x.illustration)}))
+    concept_illustration:(c.concept_illustration||[]).map(x=>({...x, illustration:illus(x.illustration)})),
+    concept_attribut:(c.concept_attribut||[]).sort((a,b)=>a.ordre-b.ordre).map(x=>({...x, valeur:tr("concept_attribut",`${c.slug}|${x.attribut}`,"valeur",x.valeur)}))
   }));
   const relations = clone(D0.relations).map(r=>({...r, libelle:tr("type_relation",r.type_slug,"libelle",r.libelle), libelle_inverse:tr("type_relation",r.type_slug,"libelle_inverse",r.libelle_inverse), commentaire:r.commentaire ? tr("relation",r.id,"commentaire",r.commentaire) : r.commentaire}));
   const exemples = clone(D0.exemples).map(e=>({...e, libelle:tr("artefact_exemple",e.slug,"libelle",e.libelle), commentaire:e.commentaire ? tr("artefact_exemple",e.slug,"commentaire",e.commentaire) : e.commentaire,
@@ -362,7 +372,7 @@ async function api(chemin){
 async function charger(){
   const [familles, concepts, relations, references, exemples, illustrations] = await Promise.all([
     api("famille?select=*&order=ordre"),
-    api("concept?select=*,concept_auteur(nature,commentaire,auteur(slug,nom)),concept_reference(role,localisation,reference(cle,citation,type,url)),definition(texte,version,date_version,est_courante,note),terme_ecarte(id,terme,raison),concept_illustration(principal,illustration(fichier,titre,legende,diapositive))&order=ordre"),
+    api("concept?select=*,concept_auteur(nature,commentaire,auteur(slug,nom)),concept_reference(role,localisation,reference(cle,citation,type,url)),definition(texte,version,date_version,est_courante,note),terme_ecarte(id,terme,raison),concept_illustration(principal,illustration(fichier,titre,legende,diapositive)),concept_attribut(attribut,valeur,ordre)&order=ordre"),
     api("v_relation?select=*&order=ordre"),
     api("reference?select=*&order=annee"),
     api("artefact_exemple?select=slug,libelle,commentaire,ordre,positionnement(position,libelle,commentaire,concept(slug))&order=ordre"),
@@ -403,6 +413,29 @@ function grilleGradient(g){
     h += `<div class="ligne"><span>${esc(e.libelle)}</span>${curseur(Number(p.position), p.libelle)}<span class="com">${esc(p.libelle)}${p.commentaire?" · "+esc(p.commentaire):""}</span></div>`;
   }
   return h + `</div><p class="note">${t("grille_note")} <a href="#/artefacts">${t("grille_lien")}</a>.</p>`;
+}
+function valeurAttribut(a){
+  return esc(a.valeur).split("\n").map(l=>l.replace(/^([^:]{2,40}) :/, "<b>$1 :</b>")).join("<br>");
+}
+const RACINE_CONFIG = "configuration-institutionnelle";
+function vueConfigurations(){
+  const cols = ["valeur","lien","environnement","artefacts","temporalite"];
+  let h = `<h1>${t("cfg_titre")}</h1><p class="intro">${t("cfg_intro")} <a href="documents/configurations-institutionnelles.docx" download>${t("cfg_document")}</a>.</p>`;
+  h += `<div class="tableau tableau-cfg"><table><thead><tr><th>${t("cfg_col_type")}</th>${cols.map(k=>`<th>${t("attr_"+k)}</th>`).join("")}</tr></thead><tbody>`;
+  const parcours = (slug, niveau)=>{
+    const kids = enfants(slug).filter(k=>D.parSlug[k]?.famille_slug==="configuration").sort((a,b)=>D.parSlug[a].ordre-D.parSlug[b].ordre);
+    for(const k of kids){
+      const c = D.parSlug[k]; const at = Object.fromEntries((c.concept_attribut||[]).map(a=>[a.attribut,a]));
+      if(enfants(k).some(x=>D.parSlug[x]?.famille_slug==="configuration")){
+        h += `<tr class="titre-n${niveau}"><th colspan="${cols.length+1}">${lien(k)}</th></tr>`;
+        parcours(k, niveau+1);
+      } else {
+        h += `<tr><td>${lien(k)}${at.exemples?`<br><span class="com">${esc(at.exemples.valeur)}</span>`:""}</td>${cols.map(x=>`<td>${at[x]?valeurAttribut(at[x]):""}</td>`).join("")}</tr>`;
+      }
+    }
+  };
+  parcours(RACINE_CONFIG, 1);
+  return h + `</tbody></table></div>`;
 }
 function vueArtefacts(){
   let h = `<h1>${t("art_titre")}</h1><p class="intro">${t("art_intro",{n:D.exemples.length})}</p>`;
@@ -590,6 +623,9 @@ function vueConcept(slug){
   <div class="fiche"><div>
   <h1>${esc(c.libelle)}</h1>${badge(c.statut)}`;
   if(c.resume) h += `<div class="resume">${esc(c.resume)}</div><p class="note">${t("resume_note")}</p>`;
+  const attrs = (c.concept_attribut||[]).filter(a=>a.attribut!=="lien");
+  if(attrs.length) h += `<h2>${t("caracteristiques")}</h2><dl class="attributs">` + attrs.map(a=>`<dt>${t("attr_"+a.attribut)}</dt><dd>${valeurAttribut(a)}</dd>`).join("") + `</dl>`;
+  if(c.famille_slug==="configuration") h += `<p class="note"><a href="#/configurations">${t("cfg_voir")}</a></p>`;
   const ills = (c.concept_illustration||[]).filter(x=>x.illustration).sort((a,b)=>(b.principal-a.principal)||(a.illustration.diapositive-b.illustration.diapositive));
   if(ills.length){
     h += `<h2>${ills.length>1?t("schemas"):t("schema")}</h2>` + ills.map(x=>figure(x.illustration)).join("");
@@ -796,7 +832,7 @@ function router(){
   const h = decodeURIComponent(location.hash.replace(/^#\/?/,""));
   const [v, arg] = [h.split("/")[0], h.split("/").slice(1).join("/")];
   const el = document.getElementById("vue");
-  document.querySelectorAll("nav a, nav summary").forEach(a=>a.classList.toggle("actif", a.dataset.v===(v||"accueil")));
+  document.querySelectorAll("nav a, nav summary").forEach(a=>a.classList.toggle("actif", a.dataset.v===(v||"accueil") || (a.tagName==="SUMMARY" && ["artefacts","configurations"].includes(v))));
   document.getElementById("menu-exemples").open = false;
   window.scrollTo(0,0);
   if(v==="concept"){
@@ -812,6 +848,7 @@ function router(){
   if(v==="graphe"){ el.innerHTML = vueGraphe(); initGraphe(arg); }
   else if(v==="references") el.innerHTML = vueReferences();
   else if(v==="artefacts") el.innerHTML = vueArtefacts();
+  else if(v==="configurations") el.innerHTML = vueConfigurations();
   else if(v==="schemas"){ el.innerHTML = vueSchemas(); el.querySelectorAll("[data-ancre]").forEach(a=>a.onclick=e=>{ e.preventDefault(); document.getElementById(a.dataset.ancre).scrollIntoView({behavior:"smooth"}); }); }
   else if(v==="famille") el.innerHTML = vueFamille(arg);
   else if(v==="recherche") el.innerHTML = vueRecherche(arg);
