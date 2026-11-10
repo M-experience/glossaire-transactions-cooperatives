@@ -1,0 +1,204 @@
+{
+ "colonnes": [
+  "Sous-types et exemples",
+  "Valeur dominante",
+  "Nature du lien constituant les selfs",
+  "Environnement et coordination",
+  "Artefacts générés",
+  "Temporalité dominante"
+ ],
+ "lignes": [
+  {
+   "titre": "I. Configurations primaires"
+  },
+  {
+   "titre": "I.a. Domestiques"
+  },
+  {
+   "nom": "Conjugales",
+   "exemples": "Mariage, PACS, concubinage, union libre",
+   "Valeur dominante": "Réciprocité affective, intimité partagée",
+   "Nature du lien constituant les selfs": "Alliance élective qui institue les partenaires comme couple ; chacun se constitue comme conjoint par et pour l'autre",
+   "Environnement et coordination": "Foyer, espace domestique ; coordination par négociation quotidienne, routines et division des tâches",
+   "Artefacts générés": "Constitutifs : alliance, contrat de mariage ou PACS, foyer commun\nGénérés incorporés : gestes de tendresse, routines domestiques partagées, langue et code privés du couple\nGénérés autonomes : patrimoine commun, photos et récits, correspondances",
+   "Temporalité dominante": "Biographique, durée de l'union"
+  },
+  {
+   "nom": "Familiales",
+   "exemples": "Famille nucléaire, élargie, recomposée ; fratries, ascendants, descendants",
+   "Valeur dominante": "Care, transmission, filiation",
+   "Nature du lien constituant les selfs": "Filiation et parenté qui inscrivent le sujet dans une lignée ; les selfs deviennent fils/fille, parent, frère/sœur avant tout choix personnel",
+   "Environnement et coordination": "Foyer d'origine et réseau parental ; coordination par autorité générationnelle, obligations tacites, événements familiaux",
+   "Artefacts générés": "Constitutifs : livret de famille, maison familiale, repas rituels\nGénérés incorporés : gestes de care, manières de table, tours de main transmis\nGénérés autonomes : patrimoine et héritage, arbre généalogique, albums de famille",
+   "Temporalité dominante": "Multigénérationnelle, vie entière"
+  },
+  {
+   "titre": "I.b. Électives"
+  },
+  {
+   "nom": "Amitiés intimes",
+   "exemples": "Amis proches d'une vie, confidents, compagnons de route",
+   "Valeur dominante": "Confiance inconditionnelle, reconnaissance mutuelle",
+   "Nature du lien constituant les selfs": "Élection réciproque et durable ; les selfs se reconnaissent mutuellement dans leur singularité, hors des rôles institués",
+   "Environnement et coordination": "Espaces partagés variables (domicile, cafés, voyages) ; coordination par disponibilité mutuelle, rythmes personnels",
+   "Artefacts générés": "Constitutifs : rituels d'amitié, disponibilité mutuelle, occasions de retrouvailles\nGénérés incorporés : gestes de la confidence, façons d'être ensemble, complicités gestuelles\nGénérés autonomes : correspondances, cadeaux et souvenirs partagés, photos communes",
+   "Temporalité dominante": "Biographique, durable sans obligation de continuité"
+  },
+  {
+   "titre": "II. Configurations secondaires"
+  },
+  {
+   "titre": "II.a. De sociabilité"
+  },
+  {
+   "nom": "Foules et rassemblements",
+   "exemples": "Manifestations, publics d'événements, foules de circulation, attroupements, mobilisations éphémères",
+   "Valeur dominante": "Attention partagée, effervescence collective",
+   "Nature du lien constituant les selfs": "Coprésence sans lien préalable ; les selfs individuels s'effacent temporairement dans un « nous » situationnel indifférencié",
+   "Environnement et coordination": "Espace public, lieu d'événement ; coordination par foyer attentionnel commun, contagion émotionnelle, dispositifs d'encadrement",
+   "Artefacts générés": "Constitutifs : lieu d'événement, signalétique, dispositifs d'encadrement\nGénérés incorporés : gestes collectifs (applaudir, scander, marcher en cortège), postures partagées\nGénérés autonomes : banderoles et pancartes, captations vidéo, hashtags, images d'archive",
+   "Temporalité dominante": "Brève, indexée sur la situation"
+  },
+  {
+   "nom": "Amicales et réticulaires",
+   "exemples": "Cercles d'amis, camaraderies, carnets d'adresses, réseaux personnels, réseaux socio-numériques",
+   "Valeur dominante": "Sociabilité affinitaire, entretien du lien",
+   "Nature du lien constituant les selfs": "Liens électifs faibles à moyens ; les selfs se déploient en nœuds multi-facettés d'un réseau de connaissances",
+   "Environnement et coordination": "Sociabilités multi-situées, plateformes numériques ; coordination par entretien du lien, intermédiations, recommandations",
+   "Artefacts générés": "Constitutifs : plateformes, moyens de communication, occasions de sociabilité\nGénérés incorporés : arts de l'entretien du lien, savoir-faire de recommandation, gestes d'attention\nGénérés autonomes : carnets d'adresses, profils numériques, correspondances archivées",
+   "Temporalité dominante": "Intermittente, ponctuelle, latente"
+  },
+  {
+   "nom": "Groupales",
+   "exemples": "Équipes de travail, ateliers, groupes de pairs, collectifs de projet",
+   "Valeur dominante": "Coopération, action conjointe",
+   "Nature du lien constituant les selfs": "Appartenance à un petit collectif structuré ; chaque self endosse un rôle contributif dans une équipe qui l'attend et le complète",
+   "Environnement et coordination": "Lieu de travail commun ou espace de projet ; coordination par répartition des rôles, réunions, ajustement mutuel",
+   "Artefacts générés": "Constitutifs : règles du jeu, plannings, outils partagés\nGénérés incorporés : savoir-faire coopératifs, ajustements mutuels, gestes coordonnés\nGénérés autonomes : livrables communs (documents, prototypes, produits), comptes rendus",
+   "Temporalité dominante": "Durée du projet ou de l'activité commune"
+  },
+  {
+   "nom": "Communautaires informelles",
+   "exemples": "Communautés de pratique, collectifs émergents, scènes culturelles",
+   "Valeur dominante": "Apprentissage situé, reconnaissance par les pairs",
+   "Nature du lien constituant les selfs": "Participation à une pratique partagée ; les selfs se transforment en praticiens légitimes selon une trajectoire du périphérique au central",
+   "Environnement et coordination": "Espaces de la pratique (physiques ou numériques) ; coordination par imitation, mentorat informel, circulation du répertoire",
+   "Artefacts générés": "Constitutifs : espaces d'échange, répertoire partagé, mentorat informel\nGénérés incorporés : tours de main, savoir-faire du métier, gestes techniques transmis, énoncés du jargon en situation\nGénérés autonomes : traces de travail, forums et fils de discussion, artefacts emblématiques",
+   "Temporalité dominante": "Durée de la pratique partagée, trajectoire de participation"
+  },
+  {
+   "nom": "Communautaires formelles",
+   "exemples": "Clubs, ordres, confréries, sociétés savantes, loges",
+   "Valeur dominante": "Reconnaissance entre pairs, appartenance instituée",
+   "Nature du lien constituant les selfs": "Admission qui fait accéder au statut de membre à part entière ; les selfs se distinguent des non-membres par une identité collective portée par le statut",
+   "Environnement et coordination": "Locaux propres, événements réservés ; coordination par règlement, conseil, cotisations, procédure d'admission",
+   "Artefacts générés": "Constitutifs : statuts et règlement intérieur, locaux, cotisations\nGénérés incorporés : gestes rituels d'appartenance, port des insignes, manières distinctives\nGénérés autonomes : insignes et blasons, annuaires, registres, archives",
+   "Temporalité dominante": "Durée de la qualité de membre, renouvelable"
+  },
+  {
+   "titre": "II.b. Administratives et gestionnaires"
+  },
+  {
+   "nom": "Publiques",
+   "exemples": "Administrations d'État, collectivités, opérateurs publics ; relations internes",
+   "Valeur dominante": "Service public, continuité et neutralité",
+   "Nature du lien constituant les selfs": "Statut de la fonction publique ; les selfs entrent dans un corps et un grade qui les identifient comme agents, fonctionnaires, cadres A/B/C",
+   "Environnement et coordination": "Ministères, collectivités, opérateurs ; coordination par hiérarchie administrative, tutelle, procédures, statut",
+   "Artefacts générés": "Constitutifs : statut de la fonction publique, hiérarchie administrative, circulaires\nGénérés incorporés : gestes de l'expertise administrative, routines procédurales, formulations réglementaires\nGénérés autonomes : actes administratifs, dossiers instruits, rapports et notes",
+   "Temporalité dominante": "Carrière statutaire, longue durée"
+  },
+  {
+   "nom": "De l'économie sociale",
+   "exemples": "Associations loi 1901, coopératives, mutuelles, fondations, structures ESS",
+   "Valeur dominante": "Projet collectif, gouvernance démocratique",
+   "Nature du lien constituant les selfs": "Adhésion à un projet et gouvernance partagée ; les selfs prennent qualité de membres, sociétaires ou administrateurs engagés",
+   "Environnement et coordination": "Locaux associatifs ou coopératifs ; coordination par assemblée générale, projet associatif, engagement bénévole ou salarié",
+   "Artefacts générés": "Constitutifs : statuts, projet associatif, assemblées générales\nGénérés incorporés : gestes d'engagement, savoir-faire bénévoles, prises de parole en AG\nGénérés autonomes : services rendus, procès-verbaux d'AG, bilans d'activité",
+   "Temporalité dominante": "Durée de l'engagement, mandats renouvelables"
+  },
+  {
+   "nom": "Entrepreneuriales",
+   "exemples": "Entreprises, sociétés, relation salariale, partenariats productifs",
+   "Valeur dominante": "Production de valeur économique, performance",
+   "Nature du lien constituant les selfs": "Contrat de travail ou d'association ; les selfs deviennent salariés, associés, cadres ou dirigeants selon une identité professionnelle instituée",
+   "Environnement et coordination": "Lieu de travail, marché ; coordination par hiérarchie, processus, division du travail, indicateurs de performance",
+   "Artefacts générés": "Constitutifs : contrat de travail, organigramme, outils de gestion\nGénérés incorporés : compétences professionnelles, gestes de métier, routines de travail\nGénérés autonomes : produits et prestations, comptabilité et bilans, marque et propriété intellectuelle",
+   "Temporalité dominante": "Durée du contrat ou de l'association"
+  },
+  {
+   "titre": "III. Configurations tertiaires"
+  },
+  {
+   "titre": "III.0. Civiques"
+  },
+  {
+   "nom": "Citoyennes",
+   "exemples": "Droits et devoirs civiques, participation électorale, appartenance nationale",
+   "Valeur dominante": "Souveraineté populaire, égalité civique",
+   "Nature du lien constituant les selfs": "Citoyenneté ; les selfs sont institués comme membres du corps politique et porteurs d'une identité nationale ou supranationale",
+   "Environnement et coordination": "Nation, collectivité, espace public ; coordination par droit constitutionnel, élections, débat public",
+   "Artefacts générés": "Constitutifs : Constitution, droit électoral, débat public\nGénérés incorporés : gestes du vote, participation aux débats, prises de position publiques\nGénérés autonomes : cartes d'identité et passeports, bulletins de vote et résultats, décisions politiques",
+   "Temporalité dominante": "Permanente (vie durant), scandée par les scrutins"
+  },
+  {
+   "nom": "Juridico-administratives",
+   "exemples": "Impôt, régulation sectorielle, police administrative, obligations déclaratives",
+   "Valeur dominante": "Ordre public, intérêt général, redistribution",
+   "Nature du lien constituant les selfs": "Assujettissement au droit ; les selfs deviennent administrés, sujets de droits et d'obligations face à la puissance publique",
+   "Environnement et coordination": "Espaces réglementés, guichets administratifs, portails numériques ; coordination par loi, règlement, contrôle",
+   "Artefacts générés": "Constitutifs : codes et règlements, administrations de contrôle\nGénérés incorporés : gestes de conformité, remplissage de formulaires, routines déclaratives\nGénérés autonomes : avis d'imposition, notifications administratives, sanctions et amendes, jurisprudence",
+   "Temporalité dominante": "Récurrente selon calendrier légal"
+  },
+  {
+   "nom": "Participatives",
+   "exemples": "Conseils citoyens, budgets participatifs, conventions citoyennes, référendums locaux",
+   "Valeur dominante": "Délibération, coproduction de la décision publique",
+   "Nature du lien constituant les selfs": "Participation à la décision publique ; les selfs deviennent citoyens actifs, délibérants, contributifs",
+   "Environnement et coordination": "Espaces de délibération dédiés, plateformes participatives ; coordination par méthodologie de délibération, animation, restitution",
+   "Artefacts générés": "Constitutifs : dispositifs de délibération, méthodologies de participation, plateformes\nGénérés incorporés : gestes délibératifs, prises de parole argumentées, animation de groupes\nGénérés autonomes : comptes rendus délibératifs, rapports de synthèse, décisions restituées",
+   "Temporalité dominante": "Durée du dispositif participatif"
+  },
+  {
+   "titre": "III.a. Marchandes-contractuelles"
+  },
+  {
+   "nom": "Client-fournisseur",
+   "exemples": "Relations B2C, B2B, achats de biens et services, relations commerciales récurrentes",
+   "Valeur dominante": "Équivalence marchande, satisfaction du client",
+   "Nature du lien constituant les selfs": "Contrat marchand qui constitue les selfs comme acheteur et vendeur ; identités transitoires liées à la transaction",
+   "Environnement et coordination": "Marché, points de vente, plateformes de commerce ; coordination par prix, contrat, catalogue, prescription",
+   "Artefacts générés": "Constitutifs : contrats commerciaux, catalogues et CGV, dispositifs de prescription\nGénérés incorporés : gestes de choix et d'essayage, manipulations d'achat, gestes de consommation courante\nGénérés autonomes : biens de consommation, factures, avis et notations, monnaie échangée",
+   "Temporalité dominante": "Ponctuelle ou récurrente, indexée sur la transaction"
+  },
+  {
+   "nom": "Usager-prestataire",
+   "exemples": "Patient/hôpital, étudiant/université, bénéficiaire/structure médico-sociale, usager/service public local",
+   "Valeur dominante": "Qualité de service, droits du destinataire",
+   "Nature du lien constituant les selfs": "Rôle d'usager institué hors régime marchand ; les selfs sont institués destinataires d'une prestation dont ils attendent un service dû",
+   "Environnement et coordination": "Établissement prestataire, dispositif de service ; coordination par convention de service, dossier d'usager, référentiel qualité",
+   "Artefacts générés": "Constitutifs : convention de service, dossier d'usager, référentiel qualité\nGénérés incorporés : gestes de recours au service, manipulation du dossier, prises de rendez-vous, formulation de demandes\nGénérés autonomes : dossiers constitués, prestations effectuées, enquêtes de satisfaction",
+   "Temporalité dominante": "Indexée sur la prestation ou le suivi"
+  },
+  {
+   "titre": "III.b. Cultuelles-culturelles"
+  },
+  {
+   "nom": "Religieuses",
+   "exemples": "Église, temple, sangha, tradition spirituelle instituée ou diffuse",
+   "Valeur dominante": "Salut, transcendance, communion",
+   "Nature du lien constituant les selfs": "Foi ou pratique adressée à une transcendance ; les selfs deviennent fidèles, croyants, pratiquants, disciples et portent une identité spirituelle",
+   "Environnement et coordination": "Lieu de culte, communauté des fidèles ; coordination par liturgie, autorité doctrinale, transmission des textes",
+   "Artefacts générés": "Constitutifs : textes sacrés, lieux de culte, clergé, calendrier liturgique\nGénérés incorporés : gestes rituels (prière, signe de croix, prosternation), disciplines corporelles, chants\nGénérés autonomes : rites accomplis, offrandes, ex-voto, patrimoine sacré construit",
+   "Temporalité dominante": "Vie durant, scandée par le calendrier liturgique"
+  },
+  {
+   "nom": "Culturelles",
+   "exemples": "Lectorat, spectateurs, auditeurs, cinéphiles, mélomanes, amateurs, fandoms",
+   "Valeur dominante": "Émotion, admiration, transport",
+   "Nature du lien constituant les selfs": "Rapport à l'œuvre ou à la figure ; les selfs deviennent lecteurs, spectateurs, fans, avec des identités de récepteurs plus ou moins durables",
+   "Environnement et coordination": "Institutions culturelles (musée, salle, édition), plateformes, espaces de fandom ; coordination par programmation, critique, communauté d'amateurs",
+   "Artefacts générés": "Constitutifs : institutions culturelles, programmation, critique\nGénérés incorporés : gestes de la réception (lire, écouter, regarder), émotions rituellement partagées, applaudissements, silences d'écoute\nGénérés autonomes : productions dérivées de fans, collections, billets et catalogues conservés",
+   "Temporalité dominante": "Ponctuelle (réception) ou biographique (passion durable)"
+  }
+ ]
+}
