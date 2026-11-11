@@ -530,7 +530,7 @@ function telechargements(url){
 function urlDiaporama(){ return D.references.find(r=>r.cle==="diaporama-communication-conversation")?.url; }
 const ILLUSTRATIONS_EN = ["slide12","slide14","slide17","slide20"];
 const SCHEMAS_EN = ["slide04","slide05","slide08","slide09","slide19","slide23","slide30","slide31","slide32","slide33","slide39"];
-const VERSION_SCHEMAS = "20261109b";
+const VERSION_SCHEMAS = "20261111a";
 function fichierSchema(f){ return cheminSchema(f) + "?v=" + VERSION_SCHEMAS; }
 function cheminSchema(f){
   const base = String(f).replace(/\.[a-z0-9]+$/i,"");
@@ -612,7 +612,7 @@ function grouperRelations(slug){
   return groupes;
 }
 
-const ANCIENS = {"configuration-culturelle":"configuration-culturelle-artistique","gradient-d-incarnation":"gradient-de-perennite","incorpore":"ephemere","autonome":"perenne"};
+const ANCIENS = {"configuration-culturelle":"configuration-artistique","configuration-culturelle-artistique":"configuration-artistique","configuration-juridico-administrative":"configuration-etatique-administrative","configuration-citoyenne":"configuration-citoyenne-participative","configuration-participative":"configuration-citoyenne-participative","configuration-communautaire-informelle":"configuration-communautaire","configuration-communautaire-formelle":"configuration-communautaire","configuration-cultuelle-culturelle":"configuration-tertiaire","gradient-d-incarnation":"gradient-de-perennite","incorpore":"ephemere","autonome":"perenne"};
 function vueConcept(slug){
   if(ANCIENS[slug]){ location.replace(`#/concept/${ANCIENS[slug]}`); return ""; }
   const c = D.parSlug[slug];

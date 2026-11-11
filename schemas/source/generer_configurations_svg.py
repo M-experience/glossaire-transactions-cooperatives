@@ -40,20 +40,21 @@ COLS = [
       sous=[(["Domestiques"], ["Conjugales", "Familiales"]), (["Électives"], ["Amitiés intimes"])]),
  dict(x=490, w=540, titre="Configurations secondaires", fond="#dcebc9", trait="#4f7a28", clair="#f0f6e8",
       def_=["Appartenance du self à un collectif institué", "visant des finalités spécifiques"],
-      sous=[(["De sociabilité"], ["Foules et rassemblements", "Amicales et réticulaires", "Groupales", "Communautaires informelles", "Communautaires formelles"]),
-            (["Administratives", "et gestionnaires"], ["Publiques", "De l’économie sociale", "Entrepreneuriales"])]),
+      sous=[(["De sociabilité"], ["Foules et rassemblements", "Amicales et réticulaires", "Groupales", "Communautaires"]),
+            (["Administratives", "et gestionnaires"], ["De l’économie sociale", "Entrepreneuriales", "Publiques"])]),
  dict(x=1060, w=600, titre="Configurations tertiaires", fond="#d6e5f6", trait="#2e5f92", clair="#edf3fb",
-      poids=[1, 1, 1.45],
+      poids=[1.3, 1.15, 0.9, 0.9],
       def_=["Inscription des selfs dans un ordre symbolique", "relevant du droit, du sacré ou de l’œuvre d’art"],
-      sous=[(["Civiques"], ["Citoyennes", "Juridico-", "Participatives"]),
+      sous=[(["Civiques"], ["Politiques", "Étatique et administrative", "Citoyenne et participative"]),
             (["Marchandes-", "contractuelles"], ["Client-fournisseur", "Usager-prestataire"]),
-            (["Cultuelles-", "culturelles"], ["Religieuses", "Culturelles-", "artistiques"])]),
+            (["Religieuses"], ["Religieuses"]),
+            (["Artistiques"], ["Artistiques"])]),
 ]
 # feuilles sur deux lignes
 DEUX = {"Juridico-": ["Juridico-administratives"], "Culturelles-": ["Culturelles-artistiques"]}
 
 W, Y0 = 1700, 96
-H_SUB = hauteur(5)
+H_SUB = hauteur(4) + 16
 COL_TOP, HEAD_H = Y0 + 34, 128
 COL_H = HEAD_H + H_SUB + 28
 b = t(40, 58, "Configurations institutionnelles de l’action collective", 28, 700, anc="start")
@@ -87,7 +88,7 @@ for c in COLS:
                 coupe = f.find("-") + 1 if "-" in f else f.rfind(" ", 0, len(f) // 2 + 4)
                 lignes = [f[:coupe].strip(), f[coupe:].strip()]
             hh = PILL_H if len(lignes) == 1 else PILL_H + 16
-            fond = {"Religieuses": "#f6ead0", "Culturelles-artistiques": "#f5dde8"}.get(f, c["fond"])
+            fond = {"Religieuses": "#f6ead0", "Artistiques": "#f5dde8"}.get(f, c["fond"])
             s += r(sx + 10, yy, sw - 20, hh, fond, "none", 20, 0) + ct(sx + sw / 2, yy + hh / 2, lignes, 14, 400, INK, 1.2)
             yy += hh + PILL_G
         b += s
@@ -96,7 +97,7 @@ for c in COLS:
 # autorités sous les tertiaires
 ya = COL_TOP + COL_H + 34
 tert = COLS[2]
-(cx0, cw0), (cx1, cw1), (cx2, cw2) = (positions[(tert["titre"], i)] for i in range(3))
+(cx0, cw0), (cx1, cw1), (cx2, cw2), (cx3, cw3) = (positions[(tert["titre"], i)] for i in range(4))
 AUT = "#5b4a8c"
 def autorite(x, w, lignes, coul=AUT, fond="#ece8f6"):
     return r(x, ya, w, 56, fond, coul, 28, 1.5) + ct(x + w / 2, ya + 28, lignes, 14, 700, coul)
@@ -105,10 +106,10 @@ def fleche(x, AUT=AUT):
     return (f'<line x1="{x}" y1="{y1}" x2="{x}" y2="{y2 + 8}" stroke="{AUT}" stroke-width="2"/>'
             f'<polygon points="{x - 6},{y2 + 10} {x + 6},{y2 + 10} {x},{y2}" fill="{AUT}"/>')
 b += autorite(cx0, cx1 + cw1 - cx0, "Autorité du droit") + fleche(cx0 + cw0 / 2) + fleche(cx1 + cw1 / 2)
-b += autorite(cx2, cw2 / 2 - 4, ["Autorité", "du sacré"], "#8a5d0c", "#f6ead0") + fleche(cx2 + cw2 / 4, "#8a5d0c")
-b += autorite(cx2 + cw2 / 2 + 4, cw2 / 2 - 4, ["Autorité de", "l’œuvre d’art"], "#a33a6b", "#f5dde8") + fleche(cx2 + 3 * cw2 / 4, "#a33a6b")
+b += autorite(cx2, cw2, ["Autorité", "du sacré"], "#8a5d0c", "#f6ead0") + fleche(cx2 + cw2 / 2, "#8a5d0c")
+b += autorite(cx3, cw3, ["Autorité de", "l’œuvre d’art"], "#a33a6b", "#f5dde8") + fleche(cx3 + cw3 / 2, "#a33a6b")
 b += t(tert["x"] + tert["w"] / 2, ya + 84, "Ordre symbolique", 15, 600, AUT, style=' font-style="italic"')
-b += t(40, ya + 84, "D’après M. Zacklad, typologie des configurations institutionnelles (version 4.2)", 13, 400, GRIS, anc="start")
+b += t(40, ya + 84, "D’après M. Zacklad, typologie des configurations institutionnelles (version 9)", 13, 400, GRIS, anc="start")
 
 H = ya + 104
 svg = (f'<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 {W} {H}" width="{W}" height="{H}" font-family="{FONT}">'

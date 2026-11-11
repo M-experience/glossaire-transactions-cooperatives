@@ -78,34 +78,16 @@
    "Temporalité dominante": "Durée du projet ou de l'activité commune"
   },
   {
-   "nom": "Communautaires informelles",
-   "exemples": "Communautés de pratique, collectifs émergents, scènes culturelles",
-   "Valeur dominante": "Apprentissage situé, reconnaissance par les pairs",
-   "Nature du lien constituant les selfs": "Participation à une pratique partagée ; les selfs se transforment en praticiens légitimes selon une trajectoire du périphérique au central",
-   "Environnement et coordination": "Espaces de la pratique (physiques ou numériques) ; coordination par imitation, mentorat informel, circulation du répertoire",
-   "Artefacts générés": "Constitutifs : espaces d'échange, répertoire partagé, mentorat informel\nGénérés éphémères : tours de main, savoir-faire du métier, gestes techniques transmis, énoncés du jargon en situation\nGénérés pérennes : traces de travail, forums et fils de discussion, artefacts emblématiques",
-   "Temporalité dominante": "Durée de la pratique partagée, trajectoire de participation"
-  },
-  {
-   "nom": "Communautaires formelles",
-   "exemples": "Clubs, ordres, confréries, sociétés savantes, loges",
-   "Valeur dominante": "Reconnaissance entre pairs, appartenance instituée",
-   "Nature du lien constituant les selfs": "Admission qui fait accéder au statut de membre à part entière ; les selfs se distinguent des non-membres par une identité collective portée par le statut",
-   "Environnement et coordination": "Locaux propres, événements réservés ; coordination par règlement, conseil, cotisations, procédure d'admission",
-   "Artefacts générés": "Constitutifs : statuts et règlement intérieur, locaux, cotisations\nGénérés éphémères : gestes rituels d'appartenance, port des insignes, manières distinctives\nGénérés pérennes : insignes et blasons, annuaires, registres, archives",
-   "Temporalité dominante": "Durée de la qualité de membre, renouvelable"
+   "nom": "Communautaires",
+   "exemples": "Communautés de pratique, scènes culturelles, collectifs émergents ; clubs, ordres, confréries, sociétés savantes, loges",
+   "Valeur dominante": "Reconnaissance par les pairs, appartenance partagée",
+   "Nature du lien constituant les selfs": "Participation à une pratique ou à un milieu partagés, de manière informelle ou instituée par admission ; les selfs se transforment en praticiens légitimes ou accèdent au statut de membre reconnu",
+   "Environnement et coordination": "Espaces de la pratique, locaux propres, événements réservés ; coordination par imitation, mentorat, répertoire partagé, ou par règlement, cotisations et procédure d'admission",
+   "Artefacts générés": "Constitutifs : espaces d'échange, répertoire partagé, statuts et règlement intérieur, cotisations\nGénérés éphémères : tours de main, gestes techniques transmis, gestes rituels d'appartenance, port des insignes, manières distinctives\nGénérés pérennes : traces de travail, forums et fils de discussion, insignes et blasons, annuaires, registres, archives",
+   "Temporalité dominante": "Durée de la pratique ou de la qualité de membre, renouvelable"
   },
   {
    "titre": "II.b. Administratives et gestionnaires"
-  },
-  {
-   "nom": "Publiques",
-   "exemples": "Administrations d'État, collectivités, opérateurs publics ; relations internes",
-   "Valeur dominante": "Service public, continuité et neutralité",
-   "Nature du lien constituant les selfs": "Statut de la fonction publique ; les selfs entrent dans un corps et un grade qui les identifient comme agents, fonctionnaires, cadres A/B/C",
-   "Environnement et coordination": "Ministères, collectivités, opérateurs ; coordination par hiérarchie administrative, tutelle, procédures, statut",
-   "Artefacts générés": "Constitutifs : statut de la fonction publique, hiérarchie administrative, circulaires\nGénérés éphémères : gestes de l'expertise administrative, routines procédurales, formulations réglementaires\nGénérés pérennes : actes administratifs, dossiers instruits, rapports et notes",
-   "Temporalité dominante": "Carrière statutaire, longue durée"
   },
   {
    "nom": "De l'économie sociale",
@@ -119,30 +101,39 @@
   {
    "nom": "Entrepreneuriales",
    "exemples": "Entreprises, sociétés, relation salariale, partenariats productifs",
-   "Valeur dominante": "Production de valeur économique, performance",
+   "Valeur dominante": "Production de valeur économique, performance économique",
    "Nature du lien constituant les selfs": "Contrat de travail ou d'association ; les selfs deviennent salariés, associés, cadres ou dirigeants selon une identité professionnelle instituée",
    "Environnement et coordination": "Lieu de travail, marché ; coordination par hiérarchie, processus, division du travail, indicateurs de performance",
    "Artefacts générés": "Constitutifs : contrat de travail, organigramme, outils de gestion\nGénérés éphémères : compétences professionnelles, gestes de métier, routines de travail\nGénérés pérennes : produits et prestations, comptabilité et bilans, marque et propriété intellectuelle",
    "Temporalité dominante": "Durée du contrat ou de l'association"
   },
   {
+   "nom": "Publiques",
+   "exemples": "Administrations d'État, collectivités, opérateurs publics ; enseignement et santé ; relations internes",
+   "Valeur dominante": "Service public, continuité et neutralité",
+   "Nature du lien constituant les selfs": "Statut de la fonction publique ; les selfs entrent dans un corps et un grade qui les identifient comme agents, fonctionnaires, cadres A/B/C",
+   "Environnement et coordination": "Ministères, collectivités, opérateurs ; coordination par hiérarchie administrative, tutelle, procédures, statut",
+   "Artefacts générés": "Constitutifs : statut de la fonction publique, hiérarchie administrative, circulaires\nGénérés éphémères : gestes de l'expertise administrative, routines procédurales, formulations réglementaires\nGénérés pérennes : actes administratifs, dossiers instruits, rapports et notes",
+   "Temporalité dominante": "Carrière statutaire, longue durée"
+  },
+  {
    "titre": "III. Configurations tertiaires"
   },
   {
-   "titre": "III.0. Civiques"
+   "titre": "III.a. Civiques"
   },
   {
-   "nom": "Citoyennes",
-   "exemples": "Droits et devoirs civiques, participation électorale, appartenance nationale",
-   "Valeur dominante": "Souveraineté populaire, égalité civique",
-   "Nature du lien constituant les selfs": "Citoyenneté ; les selfs sont institués comme membres du corps politique et porteurs d'une identité nationale ou supranationale",
-   "Environnement et coordination": "Nation, collectivité, espace public ; coordination par droit constitutionnel, élections, débat public",
-   "Artefacts générés": "Constitutifs : Constitution, droit électoral, débat public\nGénérés éphémères : gestes du vote, participation aux débats, prises de position publiques\nGénérés pérennes : cartes d'identité et passeports, bulletins de vote et résultats, décisions politiques",
-   "Temporalité dominante": "Permanente (vie durant), scandée par les scrutins"
+   "nom": "Politiques",
+   "exemples": "Gouvernement, parlement, partis politiques, exécutif ; élections, référendums décisionnels, décisions publiques",
+   "Valeur dominante": "Souveraineté populaire, pouvoir politique, légitimité",
+   "Nature du lien constituant les selfs": "Pouvoir politique ; les selfs se constituent en gouvernants et gouvernés, représentants et représentés, porteurs du corps politique souverain",
+   "Environnement et coordination": "Institutions politiques, parlement, espace public ; coordination par Constitution, élections, délibération politique",
+   "Artefacts générés": "Constitutifs : Constitution, droit électoral, lois\nGénérés éphémères : gestes du vote, discours politique, débat parlementaire\nGénérés pérennes : bulletins de vote et résultats, lois promulguées, décisions politiques",
+   "Temporalité dominante": "Scandée par les mandats et les scrutins"
   },
   {
-   "nom": "Juridico-administratives",
-   "exemples": "Impôt, régulation sectorielle, police administrative, obligations déclaratives",
+   "nom": "Étatique et administrative",
+   "exemples": "Impôt, régulation sectorielle, police, obligations déclaratives",
    "Valeur dominante": "Ordre public, intérêt général, redistribution",
    "Nature du lien constituant les selfs": "Assujettissement au droit ; les selfs deviennent administrés, sujets de droits et d'obligations face à la puissance publique",
    "Environnement et coordination": "Espaces réglementés, guichets administratifs, portails numériques ; coordination par loi, règlement, contrôle",
@@ -150,16 +141,16 @@
    "Temporalité dominante": "Récurrente selon calendrier légal"
   },
   {
-   "nom": "Participatives",
-   "exemples": "Conseils citoyens, budgets participatifs, conventions citoyennes, référendums locaux",
-   "Valeur dominante": "Délibération, coproduction de la décision publique",
-   "Nature du lien constituant les selfs": "Participation à la décision publique ; les selfs deviennent citoyens actifs, délibérants, contributifs",
-   "Environnement et coordination": "Espaces de délibération dédiés, plateformes participatives ; coordination par méthodologie de délibération, animation, restitution",
-   "Artefacts générés": "Constitutifs : dispositifs de délibération, méthodologies de participation, plateformes\nGénérés éphémères : gestes délibératifs, prises de parole argumentées, animation de groupes\nGénérés pérennes : comptes rendus délibératifs, rapports de synthèse, décisions restituées",
-   "Temporalité dominante": "Durée du dispositif participatif"
+   "nom": "Citoyenne et participative",
+   "exemples": "Droits et devoirs civiques, appartenance nationale ; conseils citoyens, budgets participatifs, conventions citoyennes, référendums locaux",
+   "Valeur dominante": "Égalité civique, délibération, coproduction de la décision publique",
+   "Nature du lien constituant les selfs": "Citoyenneté active ; les selfs sont membres du corps politique porteurs d'une identité nationale ou supranationale, et deviennent citoyens délibérants et contributifs",
+   "Environnement et coordination": "Nation, espaces de délibération dédiés, plateformes participatives ; coordination par droit, méthodologies de délibération, animation",
+   "Artefacts générés": "Constitutifs : appartenance nationale, dispositifs de délibération, méthodologies de participation\nGénérés éphémères : gestes du débat, prises de parole argumentées, animation de groupes\nGénérés pérennes : cartes d'identité et passeports, comptes rendus délibératifs, décisions restituées",
+   "Temporalité dominante": "Permanente (vie durant), scandée par les dispositifs participatifs"
   },
   {
-   "titre": "III.a. Marchandes-contractuelles"
+   "titre": "III.b. Marchandes-contractuelles"
   },
   {
    "nom": "Client-fournisseur",
@@ -180,7 +171,7 @@
    "Temporalité dominante": "Indexée sur la prestation ou le suivi"
   },
   {
-   "titre": "III.b. Cultuelles-culturelles"
+   "titre": "III.c. Religieuses"
   },
   {
    "nom": "Religieuses",
@@ -192,8 +183,11 @@
    "Temporalité dominante": "Vie durant, scandée par le calendrier liturgique"
   },
   {
-   "nom": "Culturelles-artistiques",
-   "exemples": "Lectorat, spectateurs, auditeurs, cinéphiles, mélomanes, amateurs, fandoms",
+   "titre": "III.d. Artistiques"
+  },
+  {
+   "nom": "Artistiques",
+   "exemples": "Lectorat, spectateurs, auditeurs, cinéphiles, mélomanes, amateurs",
    "Valeur dominante": "Émotion, admiration, transport",
    "Nature du lien constituant les selfs": "Rapport à l'œuvre ou à la figure ; les selfs deviennent lecteurs, spectateurs, fans, avec des identités de récepteurs plus ou moins durables",
    "Environnement et coordination": "Institutions culturelles (musée, salle, édition), plateformes, espaces de fandom ; coordination par programmation, critique, communauté d'amateurs",
