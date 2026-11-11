@@ -432,6 +432,7 @@ function vueConfigurations(){
         h += `<tr class="titre-n${niveau}"><th colspan="${cols.length+1}">${lien(k)}</th></tr>`;
         parcours(k, niveau+1);
       } else {
+        if(niveau===2) h += `<tr class="titre-n2"><th colspan="${cols.length+1}">${esc(D.parSlug[k].libelle)}</th></tr>`;
         h += `<tr><td>${lien(k)}${at.exemples?`<br><span class="com">${esc(at.exemples.valeur)}</span>`:""}</td>${cols.map(x=>`<td>${at[x]?valeurAttribut(at[x]):""}</td>`).join("")}</tr>`;
       }
     }
