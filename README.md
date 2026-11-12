@@ -28,3 +28,9 @@ Le site est disponible en français (référence), en anglais, espagnol, alleman
 - Contenus traduits : table `traduction` (table, clé, champ, langue, texte, statut « travail » ou « relue »).
 - Terminologie : voir `TERMINOLOGIE.md` ; sources des traductions dans `supabase/traductions_en.py` et `traductions_es.py`.
 - Ajouter une langue : un bloc dans `I18N` (index.html) et des lignes dans `traduction` ; tout texte non traduit s'affiche en français.
+
+## Atelier STC (exercices du cours M2)
+
+- Étudiants : `atelier/index.html` (https://transactions-cooperatives.zacklad.org/atelier/, option `?classe=CODE`)
+- Enseignant : `atelier/enseignant.html`, protégée par un code enseignant
+- Données : tables `atelier_reponse` et `atelier_secret` dans `glossaire-stc` (voir `supabase/08_atelier_reponses.sql`). Aucun accès direct à la table : dépôt par `atelier_deposer`, lecture par `atelier_lire` (code vérifié côté serveur, seul son hachage est stocké).

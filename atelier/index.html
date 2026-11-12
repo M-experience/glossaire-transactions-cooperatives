@@ -1,0 +1,523 @@
+<!doctype html>
+<html lang="fr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<meta name="robots" content="noindex">
+<link rel="icon" href="../favicon.svg" type="image/svg+xml">
+<title>Atelier STC M2</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=EB+Garamond:wght@500;600&family=Public+Sans:wght@400;600;700&display=swap">
+<style>
+/* Layout : une colonne de travail, des onglets qui suivent l'ordre de la carte Miro (1, 2, 4), une synthèse à copier. */
+:root {
+  --bg: #FAF7F2; --surface: #FFFFFF; --sunk: #F1ECE3; --line: #E2DCD2;
+  --ink: #1E2230; --muted: #5E6372; --red: #C4122C; --blue: #2F5D8A;
+  --orange-bg: #FCE7D6; --orange-ink: #8A3D06; --blue-bg: #DDE9F5; --blue-ink: #1F4A73;
+  --ok: #1E7A46; --ok-bg: #E2F3E8; --warn: #9A5B00; --warn-bg: #FBEFD9;
+  --serif: 'EB Garamond', Georgia, 'Times New Roman', serif;
+  --sans: 'Public Sans', system-ui, -apple-system, 'Segoe UI', Arial, sans-serif;
+  --radius: 12px;
+}
+@media (prefers-color-scheme: dark) { :root:not([data-theme="light"]) {
+  --bg: #16181F; --surface: #1F222B; --sunk: #262A35; --line: #343947;
+  --ink: #ECEAE5; --muted: #A4A8B5; --red: #F06A7C; --blue: #8DB6E2;
+  --orange-bg: #4A2C14; --orange-ink: #FFC99B; --blue-bg: #1C3550; --blue-ink: #BFD8F2;
+  --ok: #7FD3A0; --ok-bg: #173826; --warn: #F2C27A; --warn-bg: #3D2E12; color-scheme: dark } }
+:root[data-theme="dark"] {
+  --bg: #16181F; --surface: #1F222B; --sunk: #262A35; --line: #343947;
+  --ink: #ECEAE5; --muted: #A4A8B5; --red: #F06A7C; --blue: #8DB6E2;
+  --orange-bg: #4A2C14; --orange-ink: #FFC99B; --blue-bg: #1C3550; --blue-ink: #BFD8F2;
+  --ok: #7FD3A0; --ok-bg: #173826; --warn: #F2C27A; --warn-bg: #3D2E12; color-scheme: dark }
+html { color-scheme: light } body { margin: 0 } :root { padding-top: env(safe-area-inset-top, 0px); padding-bottom: env(safe-area-inset-bottom, 0px) } img { max-width: 100% }
+* { box-sizing: border-box }
+[hidden] { display: none !important }
+body { background: var(--bg); color: var(--ink); font-family: var(--sans); font-size: 16px; line-height: 1.5 }
+.wrap { max-width: 1080px; margin: 0 auto; padding-block: 28px 64px;
+  padding-left: max(16px, env(safe-area-inset-left, 0px)); padding-right: max(16px, env(safe-area-inset-right, 0px)) }
+header.top { display: flex; flex-direction: column; gap: 6px; padding-bottom: 18px }
+.eyebrow { font-size: 13px; font-weight: 700; letter-spacing: .12em; text-transform: uppercase; color: var(--red) }
+h1 { font-family: var(--serif); font-weight: 500; font-size: clamp(34px, 5vw, 52px); line-height: 1.05; margin: 0; text-wrap: balance }
+h2 { font-family: var(--serif); font-weight: 500; font-size: clamp(26px, 3.4vw, 34px); line-height: 1.1; margin: 0; text-wrap: balance }
+h3 { font-size: 17px; margin: 0 }
+.lede { color: var(--muted); max-width: 68ch; margin: 0 }
+.ident { display: grid; grid-template-columns: minmax(0, .7fr) minmax(0, 1fr) minmax(0, 2fr); gap: 12px; margin-top: 14px }
+label.f { display: flex; flex-direction: column; gap: 4px; font-size: 13px; font-weight: 600; color: var(--muted); min-width: 0 }
+input[type=text], textarea, select { font: inherit; color: var(--ink); background: var(--surface); border: 1px solid var(--line); border-radius: 10px; padding: 10px 12px; width: 100% }
+textarea { min-height: 84px; resize: vertical }
+input:focus-visible, textarea:focus-visible, button:focus-visible, select:focus-visible { outline: 3px solid color-mix(in srgb, var(--blue) 45%, transparent); outline-offset: 2px }
+nav.tabs { position: sticky; top: env(safe-area-inset-top, 0px); z-index: 5; background: var(--bg); display: flex; gap: 6px; overflow-x: auto; padding-block: 10px; border-bottom: 1px solid var(--line); margin-bottom: 24px }
+body::before { content: ""; position: fixed; inset: 0 0 auto; height: env(safe-area-inset-top, 0px); z-index: 10; background: var(--bg) }
+nav.tabs a { flex: 0 0 auto; text-decoration: none; color: var(--muted); font-weight: 600; font-size: 15px; padding: 8px 14px; border-radius: 999px; border: 1px solid transparent; display: inline-flex; gap: 8px; align-items: center }
+nav.tabs a .n { font-family: var(--serif); font-size: 19px; color: var(--red); line-height: 1 }
+nav.tabs a[aria-current="page"] { background: var(--surface); border-color: var(--line); color: var(--ink) }
+section.view { display: flex; flex-direction: column; gap: 20px }
+.head { display: flex; flex-direction: column; gap: 6px }
+.panel { background: var(--surface); border: 1px solid var(--line); border-radius: var(--radius); padding: 18px; display: flex; flex-direction: column; gap: 14px; min-width: 0 }
+.grid2 { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 16px }
+.cards { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 12px }
+.gcard { background: var(--surface); border: 1px solid var(--line); border-radius: var(--radius); padding: 14px 16px; display: flex; flex-direction: column; gap: 10px; min-width: 0 }
+.gcard .q { font-weight: 600; font-size: 16px }
+.choice { display: flex; flex-wrap: wrap; align-items: center; gap: 6px }
+.choice .lab { font-size: 12px; font-weight: 700; letter-spacing: .06em; text-transform: uppercase; color: var(--muted); width: 112px }
+.seg { display: inline-flex; border: 1px solid var(--line); border-radius: 999px; overflow: hidden }
+.seg button { font: inherit; font-size: 14px; border: 0; background: transparent; color: var(--ink); padding: 6px 12px; cursor: pointer }
+.seg button + button { border-left: 1px solid var(--line) }
+.seg button[aria-pressed="true"].mat { background: var(--orange-bg); color: var(--orange-ink); font-weight: 700 }
+.seg button[aria-pressed="true"].sem { background: var(--blue-bg); color: var(--blue-ink); font-weight: 700 }
+.seg button[aria-pressed="true"].neu { background: var(--sunk); font-weight: 700 }
+.fb { font-size: 14px; border-radius: 10px; padding: 8px 10px }
+.fb.ok { background: var(--ok-bg); color: var(--ok) }
+.fb.ko { background: var(--warn-bg); color: var(--warn) }
+.fb b { display: block }
+.bar { display: flex; flex-wrap: wrap; gap: 10px; align-items: center }
+button.btn { font: inherit; font-weight: 600; font-size: 15px; border-radius: 10px; padding: 10px 16px; cursor: pointer; border: 1px solid var(--ink); background: var(--ink); color: var(--bg) }
+button.btn.ghost { background: transparent; color: var(--ink); border-color: var(--line) }
+button.btn.danger { background: transparent; color: var(--red); border-color: var(--red) }
+button.link { font: inherit; font-size: 14px; background: none; border: 0; color: var(--blue); cursor: pointer; padding: 4px 0; text-decoration: underline; text-underline-offset: 3px }
+.score { font-family: var(--serif); font-size: 28px; line-height: 1 }
+.muted { color: var(--muted); font-size: 14px }
+.own-row { display: grid; grid-template-columns: minmax(0, 1fr) auto auto auto; gap: 8px; align-items: center }
+.x { font: inherit; border: 1px solid var(--line); background: transparent; color: var(--muted); border-radius: 8px; width: 36px; height: 36px; cursor: pointer }
+.map { display: grid; grid-template-columns: 30px repeat(2, minmax(0, 1fr)); grid-template-rows: repeat(2, minmax(110px, auto)) 26px; gap: 6px }
+.map .q { background: var(--sunk); border-radius: 10px; padding: 8px; display: flex; flex-wrap: wrap; gap: 6px; align-content: flex-start; min-width: 0 }
+.map .ax { font-size: 12px; color: var(--muted); display: flex; align-items: center; justify-content: center }
+.map .ax.v { writing-mode: vertical-rl; transform: rotate(180deg) }
+.chip { font-size: 13px; padding: 4px 8px; border-radius: 6px; max-width: 100%; overflow-wrap: anywhere }
+.chip.mat { background: var(--orange-bg); color: var(--orange-ink) }
+.chip.sem { background: var(--blue-bg); color: var(--blue-ink) }
+.forme { display: flex; gap: 6px; flex-wrap: wrap }
+.forme button { font: inherit; font-size: 14px; border: 1px solid var(--line); background: var(--surface); color: var(--ink); border-radius: 999px; padding: 6px 14px; cursor: pointer }
+.forme button[aria-pressed="true"] { border-color: var(--blue); background: var(--blue-bg); color: var(--blue-ink); font-weight: 700 }
+.seq { display: flex; flex-direction: column; gap: 8px; counter-reset: g }
+.seq .row { display: grid; grid-template-columns: 28px minmax(0, 1fr) 36px; gap: 8px; align-items: center }
+.seq .row .num { font-family: var(--serif); font-size: 20px; color: var(--red); text-align: center }
+.rng { display: grid; grid-template-columns: 70px minmax(0, 1fr) 24px; gap: 10px; align-items: center; font-size: 14px }
+.rng input { width: 100%; accent-color: var(--blue) }
+.rng output { font-weight: 700; font-variant-numeric: tabular-nums; text-align: right }
+.cmp { display: grid; grid-template-columns: 76px minmax(0, 1fr); gap: 6px 12px; align-items: center; font-size: 14px }
+.bars { display: flex; flex-direction: column; gap: 4px }
+.bars div { height: 14px; border-radius: 4px; min-width: 2px }
+.bars .a { background: var(--blue) }
+.bars .b { background: var(--red) }
+.legend { display: flex; gap: 16px; font-size: 13px; color: var(--muted) }
+.legend span::before { content: ""; display: inline-block; width: 10px; height: 10px; border-radius: 3px; margin-right: 6px; vertical-align: -1px; background: var(--c) }
+.tri { display: grid; grid-template-columns: 120px repeat(3, minmax(0, 1fr)); gap: 8px; align-items: stretch }
+.tri .rh { font-size: 14px; font-weight: 700; display: flex; flex-direction: column; justify-content: center; color: var(--blue) }
+.tri .rh small { font-weight: 400; color: var(--muted) }
+.tri textarea { min-height: 96px }
+.example { background: var(--sunk); border-radius: var(--radius); padding: 14px 16px; font-size: 14px }
+.example table { border-collapse: collapse; width: 100%; min-width: 520px }
+.example th, .example td { text-align: left; vertical-align: top; padding: 6px 8px; border-bottom: 1px solid var(--line) }
+.scroll { overflow-x: auto }
+pre.out { white-space: pre-wrap; overflow-wrap: anywhere; background: var(--surface); border: 1px solid var(--line); border-radius: var(--radius); padding: 16px; font-size: 14px; line-height: 1.55; margin: 0; max-height: 60vh; overflow: auto; font-family: ui-monospace, 'SF Mono', Menlo, Consolas, monospace }
+.toast { font-size: 14px; color: var(--ok) }
+.confirm { display: flex; flex-wrap: wrap; gap: 8px; align-items: center; background: var(--warn-bg); color: var(--warn); border-radius: 10px; padding: 10px 12px; font-size: 14px }
+@media (max-width: 760px) {
+  .ident, .grid2, .cards { grid-template-columns: minmax(0, 1fr) }
+  .tri { grid-template-columns: minmax(0, 1fr) }
+  .tri .rh { padding-top: 6px }
+  .tri .colh { display: none }
+  .own-row { grid-template-columns: minmax(0, 1fr) auto; }
+}
+@media (prefers-reduced-motion: no-preference) { .fb { animation: in .25s ease-out } @keyframes in { from { opacity: .4; transform: translateY(-2px) } to { opacity: 1; transform: none } } }
+</style>
+</head>
+<body>
+
+
+<div class="wrap">
+  <header class="top">
+    <span class="eyebrow">Sémiotique des transactions coopératives · M2 TNR-CIME</span>
+    <h1>Atelier STC</h1>
+    <p class="lede">Trois exercices à faire sur une situation de votre structure, dans l’ordre de la carte Miro. Vos réponses sont gardées dans ce navigateur. Dans l’onglet Synthèse, envoyez-les à l’enseignant et copiez-les pour votre frame Miro.</p>
+    <div class="ident">
+      <label class="f" for="classe">Code de la classe<input type="text" id="classe" placeholder="Ex. M2-26-27"></label>
+      <label class="f" for="nom">Prénom et nom<input type="text" id="nom" placeholder="Ex. Camille Martin" autocomplete="name"></label>
+      <label class="f" for="situation">Situation transactionnelle<input type="text" id="situation" placeholder="Ex. La préparation du rapport mensuel pour la direction commerciale"></label>
+    </div>
+  </header>
+
+  <nav class="tabs" aria-label="Exercices">
+    <a href="#gestes" data-v="gestes"><span class="n">1</span>Gestes et artefacts</a>
+    <a href="#conversations" data-v="conversations"><span class="n">2</span>Deux conversations</a>
+    <a href="#regards" data-v="regards"><span class="n">4</span>Trois regards</a>
+    <a href="#synthese" data-v="synthese"><span class="n">·</span>Synthèse</a>
+  </nav>
+
+  <!-- 1 -->
+  <section class="view" id="v-gestes">
+    <div class="head">
+      <h2>Dominante et pérennité</h2>
+      <p class="lede">Pour chaque geste, choisissez sa dominante, puis la pérennité de l’artefact qu’il forme. La pérennité dépend du substrat et se mesure par rapport à l’instant du geste. Vérifiez quand vous avez tout classé.</p>
+    </div>
+    <div class="cards" id="cards"></div>
+    <div class="bar">
+      <button class="btn" id="check" type="button">Vérifier mes réponses</button>
+      <button class="btn ghost" id="reset1" type="button">Recommencer</button>
+      <span id="score" class="muted" aria-live="polite"></span>
+    </div>
+    <div class="panel">
+      <div class="head">
+        <h3>Vos propres gestes</h3>
+        <p class="muted">Ajoutez les gestes de votre situation. Ils se placent sur la carte comme dans la zone 1 de Miro.</p>
+      </div>
+      <div id="own" class="seq"></div>
+      <div class="bar"><button class="btn ghost" id="addOwn" type="button">Ajouter un geste</button></div>
+      <div class="map" aria-label="Carte pérennité et matérialité">
+        <div class="ax v">signe</div><div class="q" id="q-es"></div><div class="q" id="q-ps"></div>
+        <div class="ax v">force</div><div class="q" id="q-em"></div><div class="q" id="q-pm"></div>
+        <div></div><div class="ax">éphémère</div><div class="ax">pérenne</div>
+      </div>
+    </div>
+  </section>
+
+  <!-- 2 -->
+  <section class="view" id="v-conversations" hidden>
+    <div class="head">
+      <h2>Forme et intensité transactionnelle</h2>
+      <p class="lede">Reconstituez deux conversations de votre situation, geste par geste. Qualifiez leur forme, puis estimez de 0 à 3 ce que chacune transforme. La comparaison se met à jour en bas.</p>
+    </div>
+    <div class="grid2" id="convs"></div>
+    <div class="panel">
+      <h3>Comparaison</h3>
+      <div class="legend"><span style="--c: var(--blue)" id="lgA">A</span><span style="--c: var(--red)" id="lgB">B</span></div>
+      <div class="cmp" id="cmp"></div>
+      <p id="cmpText" class="muted"></p>
+    </div>
+  </section>
+
+  <!-- 4 -->
+  <section class="view" id="v-regards" hidden>
+    <div class="head">
+      <h2>Un artefact, trois regards</h2>
+      <p class="lede">Choisissez un artefact central de votre situation et décrivez comment trois acteurs le comprennent, sur les registres sensible, pratique et conceptuel.</p>
+    </div>
+    <div class="panel">
+      <label class="f" for="artefact">Artefact étudié<input type="text" id="artefact" placeholder="Ex. Le tableau de bord des ventes"></label>
+      <div class="tri" id="tri"></div>
+      <label class="f" for="expertise">Où l’expertise déplace-t-elle l’interprétation ?<textarea id="expertise"></textarea></label>
+      <div><button class="link" id="toggleEx" type="button" aria-expanded="false">Voir l’exemple du cours</button></div>
+      <div class="example scroll" id="ex" hidden>
+        <table>
+          <thead><tr><th>Le schéma technique</th><th>La cliente</th><th>Le réparateur</th><th>Le gérant</th></tr></thead>
+          <tbody>
+            <tr><th>Sensible</th><td>Des traits et des chiffres illisibles</td><td>Le repère de la pièce défectueuse</td><td>Un document parmi d’autres</td></tr>
+            <tr><th>Pratique</th><td>« Un papier de professionnel »</td><td>Lecture routinière du circuit</td><td>La référence pour commander la pièce</td></tr>
+            <tr><th>Conceptuelle</th><td>(peu mobilisée)</td><td>Le modèle du fonctionnement de l’appareil</td><td>Coût de la réparation, garantie</td></tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </section>
+
+  <!-- synthese -->
+  <section class="view" id="v-synthese" hidden>
+    <div class="head">
+      <h2>Synthèse à copier</h2>
+      <p class="lede">Le texte ci-dessous rassemble vos réponses. Envoyez-les à l’enseignant, puis copiez le texte pour le coller dans votre frame Miro.</p>
+    </div>
+    <div class="panel">
+      <h3>Envoyer à l’enseignant</h3>
+      <p class="muted">Vous pouvez envoyer plusieurs fois : l’enseignant voit votre dernier envoi. Seuls le code de classe, votre nom et vos réponses sont transmis.</p>
+      <div class="bar">
+        <button class="btn" id="send" type="button">Envoyer mes réponses</button>
+        <span id="sent" class="muted" aria-live="polite"></span>
+      </div>
+    </div>
+    <div class="bar">
+      <button class="btn ghost" id="copy" type="button">Copier la synthèse</button>
+      <span id="copied" class="toast" aria-live="polite"></span>
+    </div>
+    <pre class="out" id="out" tabindex="0"></pre>
+    <div class="bar">
+      <button class="btn danger" id="wipe" type="button">Effacer toutes mes réponses</button>
+      <div id="wipeConfirm" class="confirm" hidden>
+        <span>Toutes vos réponses seront effacées de ce navigateur. Ce que vous avez déjà envoyé reste chez l’enseignant.</span>
+        <button class="btn danger" id="wipeYes" type="button">Effacer</button>
+        <button class="btn ghost" id="wipeNo" type="button">Annuler</button>
+      </div>
+    </div>
+  </section>
+</div>
+
+<script>
+(function () {
+  const KEY = 'atelier-stc-m2-web-v1';
+  const GESTES = [
+    { t: 'Expliquer une consigne à voix haute', d: 'sem', p: ['eph'], e: 'Une forme codifiée, la langue. L’air ne garde pas la forme : l’artefact ne dure que le temps du geste.' },
+    { t: 'Visser une étagère au mur', d: 'mat', p: ['per'], e: 'Le geste agit par la force ; l’étagère fixée survit au geste qui l’a formée.' },
+    { t: 'Envoyer un mail de relance', d: 'sem', p: ['per'], e: 'Le fichier conserve la forme : le mail peut être repris plus tard, et par d’autres.' },
+    { t: 'Hocher la tête pendant une réunion', d: 'sem', p: ['eph'], e: 'Un signe d’assentiment, porté par le corps. Composante secondaire matérielle : le mouvement lui-même.' },
+    { t: 'Préparer un gâteau d’anniversaire', d: 'mat', p: ['per'], e: 'La pérennité se mesure à l’instant du geste : le gâteau sera mangé, mais il survit au geste qui l’a formé.' },
+    { t: 'Écrire au feutre sur le tableau blanc', d: 'sem', p: ['per', 'eph'], e: 'Cas limite, les deux réponses se défendent : la forme dure jusqu’à l’effacement, plus que la voix, moins qu’un compte rendu.' },
+    { t: 'Ranger les dossiers dans l’armoire partagée', d: 'mat', p: ['per'], e: 'Le geste transforme la disposition du milieu (territorialisation) ; l’ordre obtenu persiste.' },
+    { t: 'Signer un devis', d: 'sem', p: ['per'], e: 'La signature engage par l’interprétation qu’on en fait. Composante secondaire matérielle : le tracé sur le papier.' }
+  ];
+  const LBL = { mat: 'Matérielle', sem: 'Sémiosique', eph: 'Éphémère', per: 'Pérenne' };
+  const FORMES = ['Ordinaire', 'Rituelle', 'Inventive'];
+  const DIMS = [['oeuvre', 'Œuvre'], ['selfs', 'Selfs'], ['milieu', 'Milieu']];
+  const REGS = [['sens', 'Sensible', 'signal, singulier'], ['prat', 'Pratique', 'type, genre'], ['conc', 'Conceptuelle', 'concept, catégorie']];
+
+  const blankConv = (t) => ({ titre: t, forme: '', gestes: ['', '', ''], i: { oeuvre: 0, selfs: 0, milieu: 0 }, justif: '' });
+  const blank = () => ({
+    classe: '', nom: '', situation: '', cle: '', lastSent: '',
+    g1: GESTES.map(() => ({ d: '', p: '' })), checked: false,
+    own: [{ t: '', d: '', p: '' }],
+    convs: [blankConv('Conversation A'), blankConv('Conversation B')],
+    artefact: '', acteurs: ['', '', ''], grid: { sens: ['', '', ''], prat: ['', '', ''], conc: ['', '', ''] }, expertise: ''
+  });
+
+  let S = blank();
+  try { const raw = localStorage.getItem(KEY); if (raw) S = Object.assign(blank(), JSON.parse(raw)); } catch (e) {}
+  let saveT = null;
+  function save() { clearTimeout(saveT); saveT = setTimeout(() => { try { localStorage.setItem(KEY, JSON.stringify(S)); } catch (e) {} }, 250); }
+
+  const $ = (id) => document.getElementById(id);
+  function el(tag, attrs, kids) {
+    const n = document.createElement(tag);
+    if (attrs) for (const k in attrs) {
+      if (k === 'text') n.textContent = attrs[k];
+      else if (k === 'on') for (const ev in attrs.on) n.addEventListener(ev, attrs.on[ev]);
+      else n.setAttribute(k, attrs[k]);
+    }
+    (kids || []).forEach(c => c && n.appendChild(c));
+    return n;
+  }
+  function seg(options, value, onPick) {
+    const s = el('div', { class: 'seg', role: 'group' });
+    options.forEach(([v, label, cls]) => {
+      s.appendChild(el('button', { type: 'button', class: cls, 'aria-pressed': String(value === v), text: label,
+        on: { click: () => onPick(value === v ? '' : v) } }));
+    });
+    return s;
+  }
+
+  /* ---------- identité ---------- */
+  (function () { const q = new URLSearchParams(location.search).get('classe'); if (q && !S.classe) S.classe = q.slice(0, 40); if (!S.classe) S.classe = 'M2-26-27'; if (!S.cle) S.cle = (crypto.randomUUID ? crypto.randomUUID() : String(Date.now()) + Math.random().toString(36).slice(2)); save(); })();
+  ['classe', 'nom', 'situation'].forEach(k => { const i = $(k); i.value = S[k] || ''; i.addEventListener('input', () => { S[k] = i.value; save(); }); });
+
+  /* ---------- 1. gestes ---------- */
+  function renderCards() {
+    const box = $('cards'); box.textContent = '';
+    let good = 0;
+    GESTES.forEach((g, i) => {
+      const a = S.g1[i];
+      const card = el('div', { class: 'gcard' }, [el('div', { class: 'q', text: g.t })]);
+      card.appendChild(el('div', { class: 'choice' }, [el('span', { class: 'lab', text: 'Dominante' }),
+        seg([['mat', 'Matérielle', 'mat'], ['sem', 'Sémiosique', 'sem']], a.d, v => { a.d = v; S.checked = false; save(); renderCards(); })]));
+      card.appendChild(el('div', { class: 'choice' }, [el('span', { class: 'lab', text: 'Artefact formé' }),
+        seg([['eph', 'Éphémère', 'neu'], ['per', 'Pérenne', 'neu']], a.p, v => { a.p = v; S.checked = false; save(); renderCards(); })]));
+      if (S.checked) {
+        const okD = a.d === g.d, okP = g.p.includes(a.p), ok = okD && okP;
+        if (ok) good++;
+        const expect = LBL[g.d] + ' · ' + g.p.map(x => LBL[x]).join(' ou ');
+        card.appendChild(el('div', { class: 'fb ' + (ok ? 'ok' : 'ko') }, [
+          el('b', { text: ok ? 'Juste.' : 'À revoir : ' + expect + '.' }), document.createTextNode(g.e)]));
+      }
+      box.appendChild(card);
+    });
+    $('score').textContent = S.checked ? good + ' sur ' + GESTES.length + ' bien classés.' : '';
+  }
+  $('check').addEventListener('click', () => { S.checked = true; save(); renderCards(); });
+  $('reset1').addEventListener('click', () => { S.g1 = GESTES.map(() => ({ d: '', p: '' })); S.checked = false; save(); renderCards(); });
+
+  function renderOwn() {
+    const box = $('own'); box.textContent = '';
+    S.own.forEach((o, i) => {
+      const inp = el('input', { type: 'text', id: 'own-' + i, 'aria-label': 'Geste ' + (i + 1), placeholder: 'Décrire le geste' });
+      inp.value = o.t;
+      inp.addEventListener('input', () => { o.t = inp.value; save(); renderMap(); });
+      const row = el('div', { class: 'own-row' }, [inp,
+        seg([['mat', 'Mat.', 'mat'], ['sem', 'Sém.', 'sem']], o.d, v => { o.d = v; save(); renderOwn(); }),
+        seg([['eph', 'Éph.', 'neu'], ['per', 'Pér.', 'neu']], o.p, v => { o.p = v; save(); renderOwn(); }),
+        el('button', { type: 'button', class: 'x', 'aria-label': 'Retirer ce geste', text: '×', on: { click: () => { S.own.splice(i, 1); if (!S.own.length) S.own.push({ t: '', d: '', p: '' }); save(); renderOwn(); } } })
+      ]);
+      box.appendChild(row);
+    });
+    renderMap();
+  }
+  $('addOwn').addEventListener('click', () => { S.own.push({ t: '', d: '', p: '' }); save(); renderOwn(); const last = $('own-' + (S.own.length - 1)); if (last) last.focus(); });
+  function renderMap() {
+    ['q-es', 'q-ps', 'q-em', 'q-pm'].forEach(id => $(id).textContent = '');
+    S.own.forEach(o => {
+      if (!o.t || !o.d || !o.p) return;
+      const id = 'q-' + (o.p === 'eph' ? 'e' : 'p') + (o.d === 'sem' ? 's' : 'm');
+      $(id).appendChild(el('span', { class: 'chip ' + o.d, text: o.t }));
+    });
+  }
+
+  /* ---------- 2. conversations ---------- */
+  function renderConvs() {
+    const box = $('convs'); box.textContent = '';
+    S.convs.forEach((c, ci) => {
+      const p = el('div', { class: 'panel' });
+      const tt = el('input', { type: 'text', id: 'ct-' + ci, 'aria-label': 'Titre de la conversation ' + (ci ? 'B' : 'A') });
+      tt.value = c.titre; tt.addEventListener('input', () => { c.titre = tt.value; save(); renderCmp(); });
+      p.appendChild(tt);
+      const fm = el('div', { class: 'forme', role: 'group', 'aria-label': 'Forme' });
+      FORMES.forEach(f => fm.appendChild(el('button', { type: 'button', 'aria-pressed': String(c.forme === f), text: f,
+        on: { click: () => { c.forme = c.forme === f ? '' : f; save(); renderConvs(); } } })));
+      p.appendChild(el('div', {}, [el('div', { class: 'muted', text: 'Forme' }), fm]));
+      const seq = el('div', { class: 'seq' });
+      c.gestes.forEach((g, gi) => {
+        const inp = el('input', { type: 'text', id: 'cg-' + ci + '-' + gi, 'aria-label': 'Geste ' + (gi + 1), placeholder: gi ? 'répond au geste précédent' : 'premier geste' });
+        inp.value = g; inp.addEventListener('input', () => { c.gestes[gi] = inp.value; save(); });
+        seq.appendChild(el('div', { class: 'row' }, [el('span', { class: 'num', text: String(gi + 1) }), inp,
+          el('button', { type: 'button', class: 'x', 'aria-label': 'Retirer le geste ' + (gi + 1), text: '×', on: { click: () => { c.gestes.splice(gi, 1); if (!c.gestes.length) c.gestes.push(''); save(); renderConvs(); } } })]));
+      });
+      p.appendChild(el('div', {}, [el('div', { class: 'muted', text: 'Séquence des gestes' }), seq]));
+      if (c.gestes.length < 8) p.appendChild(el('div', {}, [el('button', { type: 'button', class: 'link', text: 'Ajouter un geste',
+        on: { click: () => { c.gestes.push(''); save(); renderConvs(); const n = $('cg-' + ci + '-' + (c.gestes.length - 1)); if (n) n.focus(); } } })]));
+      p.appendChild(el('div', { class: 'muted', text: 'Intensité transactionnelle : ce que la conversation transforme' }));
+      DIMS.forEach(([k, lab]) => {
+        const id = 'ci-' + ci + '-' + k;
+        const r = el('input', { type: 'range', min: '0', max: '3', step: '1', id, 'aria-label': lab });
+        r.value = c.i[k];
+        const o = el('output', { for: id, text: String(c.i[k]) });
+        r.addEventListener('input', () => { c.i[k] = Number(r.value); o.textContent = r.value; save(); renderCmp(); });
+        p.appendChild(el('div', { class: 'rng' }, [el('span', { text: lab }), r, o]));
+      });
+      const j = el('textarea', { id: 'cj-' + ci, 'aria-label': 'Justification', placeholder: 'Justifiez la forme et l’intensité retenues.' });
+      j.value = c.justif; j.addEventListener('input', () => { c.justif = j.value; save(); });
+      p.appendChild(j);
+      box.appendChild(p);
+    });
+    renderCmp();
+  }
+  function total(c) { return c.i.oeuvre + c.i.selfs + c.i.milieu; }
+  function renderCmp() {
+    const [A, B] = S.convs;
+    $('lgA').textContent = A.titre || 'A'; $('lgB').textContent = B.titre || 'B';
+    const box = $('cmp'); box.textContent = '';
+    DIMS.forEach(([k, lab]) => {
+      box.appendChild(el('span', { text: lab }));
+      const bars = el('div', { class: 'bars' });
+      [['a', A], ['b', B]].forEach(([cls, c]) => { const d = el('div', { class: cls, title: (c.titre || '') + ' : ' + c.i[k] }); d.style.width = (c.i[k] / 3 * 100) + '%'; bars.appendChild(d); });
+      box.appendChild(bars);
+    });
+    const tA = total(A), tB = total(B);
+    let txt;
+    if (!tA && !tB) txt = 'Réglez les curseurs pour comparer les deux conversations.';
+    else if (tA === tB) txt = 'Les deux conversations ont une intensité comparable (' + tA + ' sur 9). Regardez ce qu’elles transforment : est-ce la même chose ?';
+    else {
+      const [hi, lo] = tA > tB ? [A, B] : [B, A];
+      const dims = DIMS.filter(([k]) => hi.i[k] > lo.i[k]).map(([, l]) => l.toLowerCase());
+      txt = '« ' + (hi.titre || 'La première') + ' » transforme davantage (' + total(hi) + ' sur 9 contre ' + total(lo) + '), surtout ' + (dims.length ? dims.join(', ') : 'sur l’ensemble') + '.';
+      if (hi.forme && lo.forme && hi.forme === lo.forme) txt += ' Même forme (' + hi.forme.toLowerCase() + '), intensité différente : la forme ne dit pas l’intensité.';
+      if (hi.forme === 'Ordinaire' && lo.forme === 'Inventive') txt += ' Une conversation inventive peut rester faiblement transactionnelle : à justifier.';
+    }
+    $('cmpText').textContent = txt;
+  }
+
+  /* ---------- 4. trois regards ---------- */
+  function renderTri() {
+    const box = $('tri'); box.textContent = '';
+    box.appendChild(el('div', { class: 'colh' }));
+    S.acteurs.forEach((a, i) => {
+      const inp = el('input', { type: 'text', id: 'ac-' + i, 'aria-label': 'Acteur ' + (i + 1), placeholder: 'Acteur ' + (i + 1) });
+      inp.value = a; inp.addEventListener('input', () => { S.acteurs[i] = inp.value; save(); });
+      box.appendChild(inp);
+    });
+    REGS.forEach(([k, lab, sub]) => {
+      box.appendChild(el('div', { class: 'rh' }, [document.createTextNode(lab), el('small', { text: sub })]));
+      S.grid[k].forEach((v, i) => {
+        const t = el('textarea', { id: 'gr-' + k + '-' + i, 'aria-label': lab + ', acteur ' + (i + 1) });
+        t.placeholder = S.acteurs[i] || 'Acteur ' + (i + 1);
+        t.value = v; t.addEventListener('input', () => { S.grid[k][i] = t.value; save(); });
+        box.appendChild(t);
+      });
+    });
+  }
+  ['artefact', 'expertise'].forEach(k => { const i = $(k); i.value = S[k] || ''; i.addEventListener('input', () => { S[k] = i.value; save(); }); });
+  $('toggleEx').addEventListener('click', (e) => { const x = $('ex'); x.hidden = !x.hidden; e.currentTarget.setAttribute('aria-expanded', String(!x.hidden)); e.currentTarget.textContent = x.hidden ? 'Voir l’exemple du cours' : 'Masquer l’exemple'; });
+
+  /* ---------- synthèse ---------- */
+  function synth() {
+    const L = [];
+    const v = (s) => (s && s.trim()) ? s.trim() : '(non renseigné)';
+    L.push('ATELIER STC · ' + v(S.nom));
+    L.push('Situation transactionnelle : ' + v(S.situation));
+    L.push('');
+    L.push('1. GESTES ET ARTEFACTS');
+    if (S.checked) {
+      const good = GESTES.filter((g, i) => S.g1[i].d === g.d && g.p.includes(S.g1[i].p)).length;
+      L.push('Classement des gestes du cours : ' + good + ' sur ' + GESTES.length);
+    } else L.push('Classement des gestes du cours : non vérifié');
+    const own = S.own.filter(o => o.t.trim());
+    if (own.length) {
+      L.push('Gestes de ma situation :');
+      own.forEach(o => L.push('- ' + o.t.trim() + ' : dominante ' + (o.d ? LBL[o.d].toLowerCase() : '?') + ', artefact ' + (o.p ? LBL[o.p].toLowerCase() : '?')));
+    }
+    L.push('');
+    L.push('2. DEUX CONVERSATIONS');
+    S.convs.forEach(c => {
+      L.push((c.titre || 'Conversation') + ' · forme : ' + (c.forme ? c.forme.toLowerCase() : '?') + ' · intensité ' + total(c) + '/9 (œuvre ' + c.i.oeuvre + ', selfs ' + c.i.selfs + ', milieu ' + c.i.milieu + ')');
+      const gs = c.gestes.filter(g => g.trim());
+      if (gs.length) L.push('  Séquence : ' + gs.map(g => g.trim()).join(' → '));
+      if (c.justif.trim()) L.push('  Justification : ' + c.justif.trim());
+    });
+    L.push('  Comparaison : ' + $('cmpText').textContent);
+    L.push('');
+    L.push('4. UN ARTEFACT, TROIS REGARDS');
+    L.push('Artefact : ' + v(S.artefact));
+    S.acteurs.forEach((a, i) => {
+      L.push('- ' + (a.trim() || 'Acteur ' + (i + 1)) + ' : sensible : ' + v(S.grid.sens[i]) + ' ; pratique : ' + v(S.grid.prat[i]) + ' ; conceptuel : ' + v(S.grid.conc[i]));
+    });
+    L.push('Déplacement par l’expertise : ' + v(S.expertise));
+    return L.join('\n');
+  }
+  $('copy').addEventListener('click', () => {
+    const text = $('out').textContent;
+    const done = () => { $('copied').textContent = 'Synthèse copiée.'; setTimeout(() => $('copied').textContent = '', 2500); };
+    const fallback = () => { const r = document.createRange(); r.selectNodeContents($('out')); const s = getSelection(); s.removeAllRanges(); s.addRange(r); $('copied').textContent = 'Texte sélectionné : copiez-le avec Ctrl+C ou Cmd+C.'; };
+    try { navigator.clipboard.writeText(text).then(done, fallback); } catch (e) { fallback(); }
+  });
+  const API = 'https://jfzyjxtvmambpntpwjrr.supabase.co/rest/v1/rpc/atelier_deposer';
+  const KEYPUB = 'sb_publishable_UjuNUsU-SOe6E18QKl18Yg_mXimkrKz';
+  function scoreG1() { return GESTES.filter((g, i) => S.g1[i].d === g.d && g.p.includes(S.g1[i].p)).length; }
+  function showSent() { $('sent').textContent = S.lastSent ? 'Dernier envoi : ' + new Date(S.lastSent).toLocaleString('fr-FR', { dateStyle: 'short', timeStyle: 'short' }) + '.' : 'Rien d’envoyé pour l’instant.'; }
+  $('send').addEventListener('click', async () => {
+    if (!S.nom.trim()) { $('sent').textContent = 'Indiquez votre prénom et votre nom en haut de la page avant d’envoyer.'; $('nom').focus(); return; }
+    if (!S.classe.trim()) { $('sent').textContent = 'Indiquez le code de la classe en haut de la page.'; $('classe').focus(); return; }
+    const btn = $('send'); btn.disabled = true; $('sent').textContent = 'Envoi en cours…';
+    const payload = { v: 1, situation: S.situation, checked: S.checked, score: S.checked ? scoreG1() : null, g1: S.g1, own: S.own,
+      convs: S.convs, artefact: S.artefact, acteurs: S.acteurs, grid: S.grid, expertise: S.expertise, synthese: synth() };
+    try {
+      const r = await fetch(API, { method: 'POST', headers: { 'apikey': KEYPUB, 'Content-Type': 'application/json' },
+        body: JSON.stringify({ p_classe: S.classe.trim(), p_eleve: S.nom.trim(), p_cle: S.cle, p_payload: payload }) });
+      if (!r.ok) { const t = await r.text(); throw new Error(t.includes('trop_d_envois') ? 'Trop d’envois en une heure : réessayez plus tard.' : 'Le serveur a refusé l’envoi.'); }
+      S.lastSent = new Date().toISOString(); save(); showSent();
+      $('sent').textContent = 'Réponses envoyées. ' + $('sent').textContent;
+    } catch (e) {
+      $('sent').textContent = (e && e.message && !/fetch/i.test(e.message) ? e.message : 'Envoi impossible : vérifiez votre connexion.') + ' Vos réponses restent enregistrées ici.';
+    } finally { btn.disabled = false; }
+  });
+  $('wipe').addEventListener('click', () => { $('wipeConfirm').hidden = false; });
+  $('wipeNo').addEventListener('click', () => { $('wipeConfirm').hidden = true; });
+  $('wipeYes').addEventListener('click', () => {
+    S = blank(); try { localStorage.removeItem(KEY); } catch (e) {}
+    $('wipeConfirm').hidden = true;
+    S.classe = $('classe').value || 'M2-26-27'; S.cle = (crypto.randomUUID ? crypto.randomUUID() : String(Date.now())); save();
+    ['nom', 'situation', 'artefact', 'expertise'].forEach(k => $(k).value = '');
+    renderAll(); $('out').textContent = synth();
+  });
+
+  /* ---------- routage ---------- */
+  const VIEWS = ['gestes', 'conversations', 'regards', 'synthese'];
+  function route() {
+    const h = (location.hash || '').replace('#', '');
+    const cur = VIEWS.includes(h) ? h : 'gestes';
+    VIEWS.forEach(v => { $('v-' + v).hidden = v !== cur; });
+    document.querySelectorAll('nav.tabs a').forEach(a => { if (a.dataset.v === cur) a.setAttribute('aria-current', 'page'); else a.removeAttribute('aria-current'); });
+    if (cur === 'synthese') { $('out').textContent = synth(); showSent(); }
+  }
+  window.addEventListener('hashchange', route);
+
+  function renderAll() { renderCards(); renderOwn(); renderConvs(); renderTri(); }
+  renderAll(); route();
+})();
+</script>
+
+</body>
+</html>

@@ -1,0 +1,255 @@
+<!doctype html>
+<html lang="fr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<meta name="robots" content="noindex">
+<link rel="icon" href="../favicon.svg" type="image/svg+xml">
+<title>Atelier STC · enseignant</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=EB+Garamond:wght@500;600&family=Public+Sans:wght@400;600;700&display=swap">
+<style>
+/* Vue de classe : résumé en tête, puis un bloc par exercice, puis les copies individuelles. */
+:root {
+  --bg: #FAF7F2; --surface: #FFFFFF; --sunk: #F1ECE3; --line: #E2DCD2;
+  --ink: #1E2230; --muted: #5E6372; --red: #C4122C; --blue: #2F5D8A;
+  --orange-bg: #FCE7D6; --orange-ink: #8A3D06; --blue-bg: #DDE9F5; --blue-ink: #1F4A73;
+  --ok: #1E7A46; --ok-bg: #E2F3E8; --warn: #9A5B00; --warn-bg: #FBEFD9;
+  --serif: 'EB Garamond', Georgia, 'Times New Roman', serif;
+  --sans: 'Public Sans', system-ui, -apple-system, 'Segoe UI', Arial, sans-serif;
+  color-scheme: light;
+}
+@media (prefers-color-scheme: dark) { :root {
+  --bg: #16181F; --surface: #1F222B; --sunk: #262A35; --line: #343947;
+  --ink: #ECEAE5; --muted: #A4A8B5; --red: #F06A7C; --blue: #8DB6E2;
+  --orange-bg: #4A2C14; --orange-ink: #FFC99B; --blue-bg: #1C3550; --blue-ink: #BFD8F2;
+  --ok: #7FD3A0; --ok-bg: #173826; --warn: #F2C27A; --warn-bg: #3D2E12; color-scheme: dark } }
+* { box-sizing: border-box }
+[hidden] { display: none !important }
+html, body { margin: 0 }
+body { background: var(--bg); color: var(--ink); font-family: var(--sans); font-size: 15px; line-height: 1.5 }
+.wrap { max-width: 1180px; margin: 0 auto; padding-block: 28px 64px;
+  padding-left: max(16px, env(safe-area-inset-left, 0px)); padding-right: max(16px, env(safe-area-inset-right, 0px)); display: flex; flex-direction: column; gap: 22px }
+.eyebrow { font-size: 13px; font-weight: 700; letter-spacing: .12em; text-transform: uppercase; color: var(--red) }
+h1 { font-family: var(--serif); font-weight: 500; font-size: clamp(32px, 4.5vw, 46px); line-height: 1.05; margin: 4px 0 0 }
+h2 { font-family: var(--serif); font-weight: 500; font-size: 28px; line-height: 1.1; margin: 0 }
+h3 { font-size: 16px; margin: 0 }
+.muted { color: var(--muted); font-size: 14px }
+.panel { background: var(--surface); border: 1px solid var(--line); border-radius: 12px; padding: 18px; display: flex; flex-direction: column; gap: 14px; min-width: 0 }
+.bar { display: flex; flex-wrap: wrap; gap: 10px; align-items: end }
+label.f { display: flex; flex-direction: column; gap: 4px; font-size: 13px; font-weight: 600; color: var(--muted) }
+input[type=text], input[type=password], select { font: inherit; color: var(--ink); background: var(--surface); border: 1px solid var(--line); border-radius: 10px; padding: 9px 12px; min-width: 0 }
+button.btn { font: inherit; font-weight: 600; border-radius: 10px; padding: 9px 16px; cursor: pointer; border: 1px solid var(--ink); background: var(--ink); color: var(--bg) }
+button.btn.ghost { background: transparent; color: var(--ink); border-color: var(--line) }
+button:focus-visible, input:focus-visible, select:focus-visible { outline: 3px solid color-mix(in srgb, var(--blue) 45%, transparent); outline-offset: 2px }
+.kpis { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 12px }
+.kpi { background: var(--surface); border: 1px solid var(--line); border-radius: 12px; padding: 14px 16px }
+.kpi b { display: block; font-family: var(--serif); font-size: 34px; font-weight: 500; line-height: 1; font-variant-numeric: tabular-nums }
+.kpi span { font-size: 13px; color: var(--muted) }
+.scroll { overflow-x: auto }
+table { border-collapse: collapse; width: 100%; font-size: 14px }
+th, td { text-align: left; vertical-align: top; padding: 8px 10px; border-bottom: 1px solid var(--line) }
+th { font-size: 12px; text-transform: uppercase; letter-spacing: .06em; color: var(--muted); font-weight: 700 }
+td.num { font-variant-numeric: tabular-nums; white-space: nowrap }
+.split { display: flex; height: 12px; border-radius: 4px; overflow: hidden; min-width: 140px; background: var(--sunk) }
+.split i { display: block; height: 100% }
+.mat { background: #E8833A } .sem { background: var(--blue) } .eph { background: #A79C8C } .per { background: #5B7A5A }
+.lg { display: flex; gap: 14px; flex-wrap: wrap; font-size: 12px; color: var(--muted) }
+.lg span::before { content: ""; display: inline-block; width: 10px; height: 10px; border-radius: 3px; margin-right: 5px; vertical-align: -1px; background: var(--c) }
+.good { color: var(--ok); font-weight: 700 } .weak { color: var(--warn); font-weight: 700 }
+.pill { display: inline-block; font-size: 12px; padding: 2px 8px; border-radius: 999px; background: var(--sunk); white-space: nowrap }
+.pill.Ordinaire { background: var(--sunk) } .pill.Rituelle { background: var(--orange-bg); color: var(--orange-ink) } .pill.Inventive { background: var(--blue-bg); color: var(--blue-ink) }
+.dims { display: grid; grid-template-columns: 70px minmax(0, 1fr) 36px; gap: 6px 10px; align-items: center; font-size: 14px }
+.track { height: 12px; background: var(--sunk); border-radius: 4px; overflow: hidden }
+.track i { display: block; height: 100%; background: var(--blue) }
+.grid2 { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 16px }
+details { border: 1px solid var(--line); border-radius: 10px; background: var(--surface) }
+details summary { cursor: pointer; padding: 10px 14px; font-weight: 600; display: flex; gap: 10px; flex-wrap: wrap; align-items: baseline }
+details summary .muted { font-weight: 400 }
+details pre { margin: 0; padding: 12px 14px; border-top: 1px solid var(--line); white-space: pre-wrap; overflow-wrap: anywhere; font-family: ui-monospace, 'SF Mono', Menlo, Consolas, monospace; font-size: 13px; line-height: 1.55 }
+.err { color: var(--red); font-size: 14px }
+.list { display: flex; flex-direction: column; gap: 8px }
+@media (max-width: 760px) { .kpis { grid-template-columns: repeat(2, minmax(0, 1fr)) } .grid2 { grid-template-columns: minmax(0, 1fr) } }
+</style>
+</head>
+<body>
+<div class="wrap">
+  <header>
+    <span class="eyebrow">Atelier STC · vue enseignant</span>
+    <h1>Réponses de la classe</h1>
+  </header>
+
+  <form class="panel" id="login">
+    <div class="bar">
+      <label class="f" for="code">Code enseignant<input type="password" id="code" autocomplete="current-password" required></label>
+      <label class="f" for="classe">Classe (vide : toutes)<input type="text" id="classe" placeholder="M2-26-27"></label>
+      <button class="btn" type="submit">Afficher</button>
+      <button class="btn ghost" type="button" id="refresh" hidden>Actualiser</button>
+      <label class="f" for="auto" style="flex-direction:row;align-items:center;gap:6px" id="autoWrap" hidden><input type="checkbox" id="auto"> Actualiser toutes les 30 s</label>
+    </div>
+    <p id="status" class="muted" aria-live="polite">Saisissez le code enseignant pour charger les réponses.</p>
+  </form>
+
+  <div id="main" hidden style="display:flex;flex-direction:column;gap:22px">
+    <div class="kpis" id="kpis"></div>
+
+    <section class="panel">
+      <h2>1 · Dominante et pérennité</h2>
+      <div class="lg"><span style="--c:#E8833A">matérielle</span><span style="--c:var(--blue)">sémiosique</span><span style="--c:#A79C8C">éphémère</span><span style="--c:#5B7A5A">pérenne</span></div>
+      <div class="scroll"><table id="t1"></table></div>
+      <p class="muted" id="t1note"></p>
+    </section>
+
+    <section class="panel">
+      <h2>2 · Forme et intensité des conversations</h2>
+      <div class="grid2">
+        <div class="list"><h3>Formes choisies</h3><div id="formes"></div></div>
+        <div class="list"><h3>Intensité moyenne (0 à 3)</h3><div class="dims" id="dims"></div></div>
+      </div>
+      <div class="scroll"><table id="t2"></table></div>
+    </section>
+
+    <section class="panel">
+      <h2>4 · Un artefact, trois regards</h2>
+      <div class="scroll"><table id="t4"></table></div>
+    </section>
+
+    <section class="panel">
+      <h2>Copies individuelles</h2>
+      <p class="muted">Dernier envoi de chaque étudiant, tel qu’il apparaît dans son onglet Synthèse.</p>
+      <div class="list" id="copies"></div>
+    </section>
+  </div>
+</div>
+
+<script>
+(function () {
+  const API = 'https://jfzyjxtvmambpntpwjrr.supabase.co/rest/v1/rpc/atelier_lire';
+  const KEYPUB = 'sb_publishable_UjuNUsU-SOe6E18QKl18Yg_mXimkrKz';
+  const GESTES = [
+    { t: 'Expliquer une consigne à voix haute', d: 'sem', p: ['eph'] },
+    { t: 'Visser une étagère au mur', d: 'mat', p: ['per'] },
+    { t: 'Envoyer un mail de relance', d: 'sem', p: ['per'] },
+    { t: 'Hocher la tête pendant une réunion', d: 'sem', p: ['eph'] },
+    { t: 'Préparer un gâteau d’anniversaire', d: 'mat', p: ['per'] },
+    { t: 'Écrire au feutre sur le tableau blanc', d: 'sem', p: ['per', 'eph'] },
+    { t: 'Ranger les dossiers dans l’armoire partagée', d: 'mat', p: ['per'] },
+    { t: 'Signer un devis', d: 'sem', p: ['per'] }
+  ];
+  const $ = (id) => document.getElementById(id);
+  function el(tag, attrs, kids) {
+    const n = document.createElement(tag);
+    if (attrs) for (const k in attrs) { if (k === 'text') n.textContent = attrs[k]; else if (k === 'style') n.style.cssText = attrs[k]; else n.setAttribute(k, attrs[k]); }
+    (kids || []).forEach(c => c != null && n.appendChild(typeof c === 'string' ? document.createTextNode(c) : c));
+    return n;
+  }
+  const pct = (a, b) => b ? Math.round(a / b * 100) : 0;
+  let code = '';
+  try { code = sessionStorage.getItem('atelier-code') || ''; $('classe').value = localStorage.getItem('atelier-classe') || ''; } catch (e) {}
+  if (code) $('code').value = code;
+  let timer = null;
+
+  async function load() {
+    code = $('code').value.trim();
+    const classe = $('classe').value.trim();
+    if (!code) return;
+    $('status').textContent = 'Chargement…';
+    try {
+      const r = await fetch(API, { method: 'POST', headers: { apikey: KEYPUB, 'Content-Type': 'application/json' }, body: JSON.stringify({ p_code: code, p_classe: classe || null }) });
+      const body = await r.json().catch(() => null);
+      if (!r.ok) { $('status').innerHTML = ''; $('status').appendChild(el('span', { class: 'err', text: body && /code_invalide/.test(JSON.stringify(body)) ? 'Code enseignant incorrect.' : 'Le serveur a refusé la demande.' })); return; }
+      try { sessionStorage.setItem('atelier-code', code); localStorage.setItem('atelier-classe', classe); } catch (e) {}
+      render(body || []);
+      $('status').textContent = (body.length ? body.length + ' étudiant' + (body.length > 1 ? 's' : '') : 'Aucun envoi pour l’instant') + (classe ? ' dans la classe ' + classe : ', toutes classes') + ' · mis à jour à ' + new Date().toLocaleTimeString('fr-FR', { hour: '2-digit', minute: '2-digit' }) + '.';
+      $('refresh').hidden = false; $('autoWrap').hidden = false; $('main').hidden = false;
+    } catch (e) { $('status').textContent = 'Connexion impossible : vérifiez le réseau.'; }
+  }
+  $('login').addEventListener('submit', (e) => { e.preventDefault(); load(); });
+  $('refresh').addEventListener('click', load);
+  $('auto').addEventListener('change', () => { clearInterval(timer); if ($('auto').checked) timer = setInterval(load, 30000); });
+
+  function render(rows) {
+    rows.sort((a, b) => a.eleve.localeCompare(b.eleve, 'fr'));
+    const P = rows.map(r => r.payload || {});
+    const checked = P.filter(p => p.checked && typeof p.score === 'number');
+    const avg = checked.length ? (checked.reduce((s, p) => s + p.score, 0) / checked.length) : null;
+    const allConvs = P.flatMap(p => (p.convs || []));
+    const tot = c => (c.i ? (c.i.oeuvre || 0) + (c.i.selfs || 0) + (c.i.milieu || 0) : 0);
+    const last = rows.reduce((m, r) => r.created_at > m ? r.created_at : m, '');
+    const k = $('kpis'); k.textContent = '';
+    [[rows.length, 'étudiants ayant envoyé'],
+     [avg == null ? '–' : avg.toFixed(1).replace('.', ',') + ' / 8', 'classement des gestes, moyenne'],
+     [allConvs.filter(c => (c.gestes || []).some(g => g && g.trim())).length, 'conversations décrites'],
+     [last ? new Date(last).toLocaleString('fr-FR', { dateStyle: 'short', timeStyle: 'short' }) : '–', 'dernier envoi']
+    ].forEach(([v, l]) => k.appendChild(el('div', { class: 'kpi' }, [el('b', { text: String(v) }), el('span', { text: l })])));
+
+    /* exercice 1 */
+    const t1 = $('t1'); t1.textContent = '';
+    t1.appendChild(el('tr', {}, ['Geste', 'Dominante', 'Pérennité', 'Bien classé'].map(h => el('th', { text: h }))));
+    let hardest = null;
+    GESTES.forEach((g, i) => {
+      const ans = P.map(p => (p.g1 || [])[i] || {}).filter(a => a.d || a.p);
+      const n = ans.length;
+      const c = (key, v) => ans.filter(a => a[key] === v).length;
+      const ok = ans.filter(a => a.d === g.d && g.p.includes(a.p)).length;
+      const rate = pct(ok, n);
+      if (n && (hardest == null || rate < hardest.rate)) hardest = { t: g.t, rate };
+      const split = (pairs) => { const d = el('div', { class: 'split' }); pairs.forEach(([cls, v]) => { if (v) d.appendChild(el('i', { class: cls, style: 'width:' + pct(v, n) + '%', title: v + ' sur ' + n })); }); return d; };
+      t1.appendChild(el('tr', {}, [
+        el('td', { text: g.t }),
+        el('td', {}, [split([['mat', c('d', 'mat')], ['sem', c('d', 'sem')]])]),
+        el('td', {}, [split([['eph', c('p', 'eph')], ['per', c('p', 'per')]])]),
+        el('td', { class: 'num' }, [el('span', { class: rate >= 70 ? 'good' : 'weak', text: n ? rate + ' %' : '–' }), n ? ' (' + ok + '/' + n + ')' : ''])
+      ]));
+    });
+    $('t1note').textContent = hardest && hardest.rate < 100 ? 'Geste le moins bien classé : « ' + hardest.t + ' » (' + hardest.rate + ' %). Bon point de départ pour la discussion.' : '';
+
+    /* exercice 2 */
+    const F = { Ordinaire: 0, Rituelle: 0, Inventive: 0, '': 0 };
+    const described = allConvs.filter(c => c.forme || tot(c) > 0 || (c.gestes || []).some(g => g && g.trim()));
+    described.forEach(c => { F[c.forme || ''] = (F[c.forme || ''] || 0) + 1; });
+    const fb = $('formes'); fb.textContent = '';
+    const nConv = described.length;
+    ['Ordinaire', 'Rituelle', 'Inventive', ''].forEach(f => {
+      const d = el('div', { class: 'dims' }, [el('span', { text: f || 'Non précisée' }), el('div', { class: 'track' }, [el('i', { style: 'width:' + pct(F[f], nConv) + '%' })]), el('span', { class: 'num', text: String(F[f]) })]);
+      fb.appendChild(d);
+    });
+    const dims = $('dims'); dims.textContent = '';
+    const used = allConvs.filter(c => tot(c) > 0);
+    [['oeuvre', 'Œuvre'], ['selfs', 'Selfs'], ['milieu', 'Milieu']].forEach(([key, lab]) => {
+      const m = used.length ? used.reduce((s, c) => s + (c.i[key] || 0), 0) / used.length : 0;
+      dims.append(el('span', { text: lab }), el('div', { class: 'track' }, [el('i', { style: 'width:' + (m / 3 * 100) + '%' })]), el('span', { class: 'num', text: m.toFixed(1).replace('.', ',') }));
+    });
+    const t2 = $('t2'); t2.textContent = '';
+    t2.appendChild(el('tr', {}, ['Étudiant', 'Conversation A', 'Conversation B', 'Écart'].map(h => el('th', { text: h }))));
+    rows.forEach((r, i) => {
+      const cs = P[i].convs || [];
+      const cell = (c) => c ? el('td', {}, [el('div', { text: c.titre || '' }), c.forme ? el('span', { class: 'pill ' + c.forme, text: c.forme }) : el('span', { class: 'muted', text: 'forme ?' }), ' ', el('span', { class: 'muted', text: tot(c) + '/9' })]) : el('td', { text: '–' });
+      const diff = cs.length === 2 ? Math.abs(tot(cs[0]) - tot(cs[1])) : null;
+      const same = cs.length === 2 && cs[0].forme && cs[0].forme === cs[1].forme && diff > 0;
+      t2.appendChild(el('tr', {}, [el('td', { text: r.eleve }), cell(cs[0]), cell(cs[1]), el('td', { class: 'num', text: diff == null ? '–' : diff + (same ? ' · même forme' : '') })]));
+    });
+
+    /* exercice 4 */
+    const t4 = $('t4'); t4.textContent = '';
+    t4.appendChild(el('tr', {}, ['Étudiant', 'Artefact', 'Acteurs', 'Déplacement par l’expertise'].map(h => el('th', { text: h }))));
+    rows.forEach((r, i) => {
+      const p = P[i];
+      t4.appendChild(el('tr', {}, [el('td', { text: r.eleve }), el('td', { text: p.artefact || '–' }), el('td', { text: (p.acteurs || []).filter(Boolean).join(', ') || '–' }), el('td', { text: p.expertise || '–' })]));
+    });
+
+    /* copies */
+    const cp = $('copies'); cp.textContent = '';
+    rows.forEach((r, i) => {
+      const p = P[i];
+      cp.appendChild(el('details', {}, [
+        el('summary', {}, [r.eleve, el('span', { class: 'muted', text: r.classe + ' · ' + new Date(r.created_at).toLocaleString('fr-FR', { dateStyle: 'short', timeStyle: 'short' }) + (r.envois > 1 ? ' · ' + r.envois + ' envois' : '') })]),
+        el('pre', { text: p.synthese || '(pas de synthèse)' })
+      ]));
+    });
+  }
+  if (code) load();
+})();
+</script>
+</body>
+</html>
