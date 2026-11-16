@@ -5,6 +5,19 @@
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>Glossaire de la Sémiotique des Transactions Coopératives</title>
 <meta name="description" content="Glossaire dynamique des concepts de la Sémiotique des Transactions Coopératives (STC), Manuel Zacklad, Cnam, Dicen-IDF.">
+<link rel="canonical" href="https://transactions-cooperatives.zacklad.org/">
+<link rel="alternate" hreflang="fr" href="https://transactions-cooperatives.zacklad.org/">
+<link rel="alternate" hreflang="en" href="https://transactions-cooperatives.zacklad.org/?lang=en">
+<link rel="alternate" hreflang="es" href="https://transactions-cooperatives.zacklad.org/?lang=es">
+<link rel="alternate" hreflang="de" href="https://transactions-cooperatives.zacklad.org/?lang=de">
+<link rel="alternate" hreflang="pt" href="https://transactions-cooperatives.zacklad.org/?lang=pt">
+<link rel="alternate" hreflang="it" href="https://transactions-cooperatives.zacklad.org/?lang=it">
+<link rel="alternate" hreflang="x-default" href="https://transactions-cooperatives.zacklad.org/">
+<meta property="og:title" content="Glossaire de la Sémiotique des Transactions Coopératives">
+<meta property="og:description" content="Glossaire relationnel des concepts de la Sémiotique des Transactions Coopératives (STC), Manuel Zacklad, Cnam, Dicen-IDF.">
+<meta property="og:url" content="https://transactions-cooperatives.zacklad.org/">
+<meta property="og:type" content="website">
+<script type="application/ld+json">{"@context": "https://schema.org", "@type": "DefinedTermSet", "@id": "https://transactions-cooperatives.zacklad.org/concepts/#glossaire", "name": "Glossaire de la Sémiotique des Transactions Coopératives", "alternateName": "Glossaire de la STC", "url": "https://transactions-cooperatives.zacklad.org/", "inLanguage": "fr", "author": {"@type": "Person", "name": "Manuel Zacklad", "affiliation": {"@type": "Organization", "name": "Cnam, Dicen-IDF"}}}</script>
 <link rel="icon" href="/favicon.svg" type="image/svg+xml">
 <link rel="icon" href="/favicon-32.png" sizes="32x32" type="image/png">
 <link rel="apple-touch-icon" href="/apple-touch-icon.png">
@@ -180,7 +193,8 @@ dl.attributs dd{margin:0}
 <div id="avert-trad" class="avert-trad" hidden></div>
 <main id="vue"><p class="chargement">Chargement du glossaire…</p></main>
 <div id="visionneuse" hidden><button aria-label="Fermer">×</button><img alt=""><p></p></div>
-<footer data-i18n="pied">Manuel Zacklad · Cnam, Dicen-IDF · Glossaire en cours d'élaboration, version provisoire</footer>
+<footer><span data-i18n="pied">Manuel Zacklad · Cnam, Dicen-IDF · Glossaire en cours d'élaboration, version provisoire</span> · <a id="lien-liste" href="/concepts/">Liste des concepts</a></footer>
+<noscript><p><a href="/concepts/">Liste des concepts du glossaire</a></p></noscript>
 
 <script>
 if(location.protocol==="http:" && location.hostname.endsWith("zacklad.org")) location.replace("https://"+location.host+location.pathname+location.search+location.hash);
@@ -353,6 +367,7 @@ function appliquerInterface(){
   const r = document.getElementById("recherche"); r.placeholder = t("rechercher"); r.setAttribute("aria-label", t("rechercher"));
   document.querySelectorAll("#langues [data-l]").forEach(b=>b.classList.toggle("actif", b.dataset.l===LANG));
   document.getElementById("langue-courante").textContent = LANG.toUpperCase();
+  const ll = document.getElementById("lien-liste"); if(ll){ ll.href = (LANG==="fr" ? "" : "/"+LANG) + "/concepts/"; ll.textContent = t("nav_concepts") + " (" + LANG.toUpperCase() + ")"; }
   const av = document.getElementById("avert-trad"); av.textContent = t("trad_avert"); av.hidden = !t("trad_avert");
 }
 async function changerLangue(l){
