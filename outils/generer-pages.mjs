@@ -161,7 +161,8 @@ for (const l of LANGUES) {
 }
 
 // Plan du site avec les versions linguistiques
-const auj = new Date().toISOString().slice(0, 10);
+// date stable (dernière modification de la base) pour éviter un commit quotidien sans changement réel
+const auj = concepts.map(c => (c.updated_at || "").slice(0, 10)).sort().pop() || new Date().toISOString().slice(0, 10);
 const entree = (loc, chemin, lastmod) => `<url><loc>${loc}</loc><lastmod>${lastmod || auj}</lastmod>${LANGUES.map(x => `<xhtml:link rel="alternate" hreflang="${x}" href="${chemin(x)}"/>`).join("")}</url>`;
 const sitemap = `<?xml version="1.0" encoding="UTF-8"?>
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9" xmlns:xhtml="http://www.w3.org/1999/xhtml">
