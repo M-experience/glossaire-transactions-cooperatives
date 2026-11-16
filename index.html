@@ -625,7 +625,7 @@ function vueConcept(slug){
   let h = `<div class="fil"><a href="#/">${t("nav_concepts")}</a> › ${pastille(c.famille_slug)}<a href="#/famille/${c.famille_slug}">${esc(f?.libelle)}</a>${asc.length?`<br>${t("remonter")} ${asc.map(lien).join(" › ")} › <b>${esc(c.libelle)}</b>`:""}</div>
   <div class="fiche"><div>
   <h1>${esc(c.libelle)}</h1>${badge(c.statut)}`;
-  if(c.resume) h += `<div class="resume">${esc(c.resume)}</div><p class="note">${t("resume_note")}</p>`;
+  if(c.resume) h += `<div class="resume">${esc(c.resume)}</div>${(c.definition||[]).length ? "" : `<p class="note">${t("resume_note")}</p>`}`;
   const attrs = (c.concept_attribut||[]).filter(a=>a.attribut!=="lien");
   if(attrs.length) h += `<h2>${t("caracteristiques")}</h2><dl class="attributs">` + attrs.map(a=>`<dt>${t("attr_"+a.attribut)}</dt><dd>${valeurAttribut(a)}</dd>`).join("") + `</dl>`;
   if(c.famille_slug==="configuration") h += `<p class="note"><a href="#/configurations">${t("cfg_voir")}</a></p>`;
