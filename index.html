@@ -628,7 +628,7 @@ function grouperRelations(slug){
   return groupes;
 }
 
-const ANCIENS = {"configuration-culturelle":"configuration-artistique","configuration-culturelle-artistique":"configuration-artistique","configuration-juridico-administrative":"configuration-etatique-administrative","configuration-citoyenne":"configuration-citoyenne-participative","configuration-participative":"configuration-citoyenne-participative","configuration-communautaire-informelle":"configuration-communautaire","configuration-communautaire-formelle":"configuration-communautaire","configuration-cultuelle-culturelle":"configuration-tertiaire","gradient-d-incarnation":"gradient-de-perennite","incorpore":"ephemere","autonome":"perenne"};
+const ANCIENS = {"coordination-spatio-temporelle":"coordination-par-l-acces","coordination-epistemique":"coordination-interpretative","configuration-culturelle":"configuration-artistique","configuration-culturelle-artistique":"configuration-artistique","configuration-juridico-administrative":"configuration-etatique-administrative","configuration-citoyenne":"configuration-citoyenne-participative","configuration-participative":"configuration-citoyenne-participative","configuration-communautaire-informelle":"configuration-communautaire","configuration-communautaire-formelle":"configuration-communautaire","configuration-cultuelle-culturelle":"configuration-tertiaire","gradient-d-incarnation":"gradient-de-perennite","incorpore":"ephemere","autonome":"perenne"};
 function vueConcept(slug){
   if(ANCIENS[slug]){ location.replace(`#/concept/${ANCIENS[slug]}`); return ""; }
   const c = D.parSlug[slug];
