@@ -113,6 +113,9 @@ function ecrire(rel, contenu) {
   const f = path.join(RACINE, rel); fs.mkdirSync(path.dirname(f), { recursive: true }); fs.writeFileSync(f, contenu);
 }
 
+// pages des concepts disparus ou renommés : on repart de zéro à chaque génération
+for (const l of LANGUES) fs.rmSync(path.join(RACINE, prefixe(l).slice(1), "concept"), { recursive: true, force: true });
+
 let n = 0;
 const urls = [];
 for (const l of LANGUES) {
