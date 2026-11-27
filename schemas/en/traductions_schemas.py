@@ -160,9 +160,9 @@ value production (work, self, milieu)
 under a contributive, competitive
 or antagonistic regime
 Coordination
-spatio-socio-temporal distribution
-of conversations,
-synchronous or asynchronous""".split("\n")
+regulates access, reciprocal roles
+and the shared reading
+of the situation""".split("\n")
 
 ES = """El mismo gesto adquiere su significación en la situación conversacional
 Nivel 1 - Gestos elementales
@@ -324,9 +324,9 @@ producción de valor (obra, self, medio)
 según un régimen contributivo,
 competitivo o antagónico
 Coordinación
-distribución espacio-socio-temporal
-de las conversaciones,
-sincrónica o asincrónica""".split("\n")
+regula el acceso, los roles recíprocos
+y la lectura compartida
+de la situación""".split("\n")
 
 DE = """Dieselbe Geste erhält ihre Bedeutung in der Konversationssituation
 Ebene 1 - Elementare Gesten
@@ -488,9 +488,9 @@ Wertproduktion (Werk, Self, Milieu)
 in einem kontributiven, kompetitiven
 oder antagonistischen Regime
 Koordination
-raum-sozio-zeitliche Verteilung
-der Konversationen,
-synchron oder asynchron""".split("\n")
+regelt den Zugang, die wechselseitigen
+Rollen und die gemeinsame
+Lesart der Situation""".split("\n")
 
 PT = """O mesmo gesto adquire sua significação na situação conversacional
 Nível 1 - Gestos elementares
@@ -652,9 +652,9 @@ produção de valor (obra, self, meio)
 segundo um regime contributivo,
 competitivo ou antagônico
 Coordenação
-distribuição espaço-sócio-temporal
-das conversas,
-síncrona ou assíncrona""".split("\n")
+regula o acesso, os papéis recíprocos
+e a leitura compartilhada
+da situação""".split("\n")
 
 IT = """Uno stesso gesto acquisisce la sua significazione nella situazione conversazionale
 Livello 1 - Gesti elementari
@@ -816,9 +816,9 @@ produzione di valore (opera, self, milieu)
 secondo un regime contributivo,
 competitivo o antagonista
 Coordinamento
-distribuzione spazio-socio-temporale
-delle conversazioni,
-sincrona o asincrona""".split("\n")
+regola l’accesso, i ruoli reciproci
+e la lettura condivisa
+della situazione""".split("\n")
 
 TR = {}
 for code, L in (("es", ES), ("de", DE), ("pt", PT), ("it", IT)):

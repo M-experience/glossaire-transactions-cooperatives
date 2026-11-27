@@ -230,7 +230,7 @@ def big(x, y, w, h, fill, stroke, title, desc, ts):
 b = big(440, 40, 1120, 224, "#eee7f5", "#6b4f9c", "Organization", ["makes explicit and stabilizes the institutional", "configurations that legitimize the arrangement"], 56)
 b += rect(580, 430, 840, 200, "#fce4e7", "#c8102e", 22, 5) + text(1000, 525, ["Conversation"], 64, 700, style=SER) + text(1000, 600, ["material and semiosic gestures"], 38, style=SER)
 b += big(20, 800, 880, 320, "#e4f0e8", "#2e7d55", "Cooperation", ["value production (work, self, milieu)", "under a contributive, competitive", "or antagonistic regime"], 60)
-b += big(1100, 800, 880, 320, "#e4ebf5", "#2e5a8a", "Coordination", ["spatio-socio-temporal distribution", "of conversations,", "synchronous or asynchronous"], 60)
+b += big(1100, 800, 880, 320, "#e4ebf5", "#2e5a8a", "Coordination", ["regulates access, reciprocal roles", "and the shared reading", "of the situation"], 60)
 L = dict(color=LINE, sw=4, start=True)
 b += line([(1000, 270), (1000, 424)], **L) + line([(434, 152), (200, 152), (200, 794)], **L) + line([(1566, 152), (1800, 152), (1800, 794)], **L)
 b += line([(574, 530), (460, 530), (460, 794)], **L) + line([(1426, 530), (1540, 530), (1540, 794)], **L)
