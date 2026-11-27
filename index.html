@@ -141,8 +141,17 @@ figure.schema figcaption b{color:var(--encre)}
 .etiquette{display:inline-block;background:#fff;border:1px solid var(--ligne);border-radius:12px;padding:0 9px;margin:0 3px 3px 0;font-size:13px}
 details.famille summary{list-style:none;cursor:pointer}
 details.famille summary::-webkit-details-marker{display:none}
-details.famille summary h3::after{content:"▸";float:right;color:var(--gris);font-size:14px;transition:transform .15s}
-details.famille[open] summary h3::after{transform:rotate(90deg)}
+details.famille summary h3::after{content:"▸";float:right;color:var(--gris);font-size:26px;line-height:22px;width:32px;height:32px;display:flex;align-items:center;justify-content:center;border-radius:50%;background:#f1f0ec;transition:transform .15s}
+details.famille summary:hover h3::after{background:#e6e3dc;color:var(--encre)}
+details.sous summary{list-style:none;cursor:pointer;display:flex;align-items:center;gap:6px}
+details.sous summary::-webkit-details-marker{display:none}
+details.sous .fl{display:inline-flex;width:22px;height:22px;align-items:center;justify-content:center;border-radius:50%;background:#f1f0ec;color:var(--gris);font-size:16px;flex:none;transition:transform .15s}
+details.sous .fl::before{content:"▸"}
+details.sous summary:hover .fl{background:#e6e3dc;color:var(--encre)}
+details.sous[open] > summary .fl{transform:rotate(90deg)}
+details.sous ul{margin:2px 0 4px 14px;padding-left:14px;border-left:2px solid #ece9e2}
+li.a-sous{list-style:none;margin-left:-28px}
+details.famille[open] > summary h3::after{transform:rotate(90deg)}
 details.famille summary p{margin:0}
 details.famille[open] summary p{margin-bottom:8px}
 details.famille ul{margin-top:4px}
@@ -586,7 +595,9 @@ function vueSchemas(){
 function brancherAccueil(){
   const sauver = ()=>{ try{ localStorage.setItem("familles-ouvertes", JSON.stringify([...document.querySelectorAll("details.famille[open]")].map(d=>d.dataset.f))); }catch(e){} };
   document.querySelectorAll("details.famille").forEach(d=>d.addEventListener("toggle", sauver));
-  const tous = ouvrir => e=>{ e.preventDefault(); document.querySelectorAll("details.famille").forEach(d=>d.open = ouvrir); sauver(); };
+  const tous = ouvrir => e=>{ e.preventDefault(); document.querySelectorAll("details.famille, details.sous").forEach(d=>d.open = ouvrir); sauver(); };
+  // un clic sur le nom ouvre la fiche sans replier la liste
+  document.querySelectorAll("details.sous summary a").forEach(a=>a.addEventListener("click", e=>e.stopPropagation()));
   document.getElementById("tout-deplier").onclick = tous(true);
   document.getElementById("tout-replier").onclick = tous(false);
 }
@@ -597,6 +608,21 @@ function vueFamille(slug){
 }
 const pastille = fam => `<span class="pastille" style="background:${D.famille[fam]?.couleur||'#999'}"></span>`;
 
+// Concepts d'une famille en arbre : un sous-concept (même famille) se range sous son parent, dans une liste dépliable
+function arbreFamille(cs){
+  const dans = new Set(cs.map(c=>c.slug));
+  const enf = {}; const racines = [];
+  for(const c of cs){ const p = parent(c.slug); if(p && dans.has(p) && p!==c.slug) (enf[p] ??= []).push(c); else racines.push(c); }
+  const vus = new Set();
+  const item = c=>{
+    if(vus.has(c.slug)) return ""; vus.add(c.slug);
+    const st = c.statut!=="stabilisé" ? ` <span class="note">(${esc(tStatut(c.statut))})</span>` : "";
+    const k = enf[c.slug];
+    if(!k) return `<li>${lien(c.slug)}${st}</li>`;
+    return `<li class="a-sous"><details class="sous"><summary><span class="fl" aria-hidden="true"></span>${lien(c.slug)}${st} <span class="compte">${k.length}</span></summary><ul>${k.map(item).join("")}</ul></details></li>`;
+  };
+  return racines.map(item).join("") + cs.filter(c=>!vus.has(c.slug)).map(item).join("");
+}
 function vueAccueil(){
   let h = `<h1>${t("acc_titre")}</h1>
   <p class="intro">${t("acc_intro")}</p>`;
@@ -610,8 +636,7 @@ function vueAccueil(){
     if(!cs.length) continue;
     const ouvert = ouvertes ? ouvertes.includes(f.slug) : false;
     h += `<details class="famille" data-f="${f.slug}"${ouvert?" open":""}><summary><h3>${pastille(f.slug)}${esc(f.libelle)} <span class="compte">${cs.length}</span></h3><p>${esc(f.description)}</p></summary><ul>`;
-    h += cs.map(c=>`<li>${lien(c.slug)}${c.statut!=="stabilisé"?` <span class="note">(${esc(tStatut(c.statut))})</span>`:""}</li>`).join("");
-    h += `</ul></details>`;
+    h += arbreFamille(cs) + `</ul></details>`;
   }
   return h + `</div>`;
 }
