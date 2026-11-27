@@ -149,8 +149,11 @@ details.sous .fl{display:inline-flex;width:22px;height:22px;align-items:center;j
 details.sous .fl::before{content:"▸"}
 details.sous summary:hover .fl{background:#e6e3dc;color:var(--encre)}
 details.sous[open] > summary .fl{transform:rotate(90deg)}
-details.sous ul{margin:2px 0 4px 14px;padding-left:14px;border-left:2px solid #ece9e2}
-li.a-sous{list-style:none;margin-left:-28px}
+details.famille ul{list-style:none;padding-left:0}
+details.famille li{padding-left:30px;position:relative}
+details.sous .fl{margin-left:-30px;margin-right:6px}
+details.sous summary{gap:0}
+details.sous ul{margin:2px 0 4px 2px;padding-left:4px;border-left:2px solid #ece9e2}
 details.famille[open] > summary h3::after{transform:rotate(90deg)}
 details.famille summary p{margin:0}
 details.famille[open] summary p{margin-bottom:8px}
