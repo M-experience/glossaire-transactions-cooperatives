@@ -1,0 +1,3 @@
+-- 27 novembre 2026 (soir) : notion fondamentale « Mode de coordination », qui regroupe les trois modes.
+-- Les trois modes deviennent des types de « mode de coordination », composante de la coordination.
+-- (Requêtes appliquées directement dans la base ; voir l'historique de session.)
