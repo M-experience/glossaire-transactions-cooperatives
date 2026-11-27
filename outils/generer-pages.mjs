@@ -135,7 +135,7 @@ for (const l of LANGUES) {
 <span class="statut">${esc(t(l, c.statut))}</span>`;
     if (c.resume) corps += `\n<div class="resume"><p>${esc(c.resume)}</p></div>`;
     if (defTexte) corps += `\n<h2>${esc(t(l, "definition"))}</h2>\n<div class="def"><p>${esc(defTexte)}</p></div>`;
-    const attrs = c.attributs.filter(a => a.attribut !== "lien");
+    const attrs = c.attributs.filter(a => a.attribut !== "lien" && a.attribut !== "aussi_dans");
     if (attrs.length) corps += `\n<h2>${esc(t(l, "caracteristiques"))}</h2>\n<dl>` + attrs.map(a => `<dt>${esc(t(l, "attr_" + a.attribut))}</dt><dd>${esc(a.valeur).replace(/\n/g, "<br>")}</dd>`).join("") + `</dl>`;
     const g = Object.entries(groupes);
     if (g.length) corps += `\n<h2>${esc(t(l, "relations"))}</h2>\n<div class="rel">` + g.map(([lab, sl]) => `<h3>${esc(lab)}</h3><ul>${[...new Set(sl)].map(s => `<li>${lien(s)}</li>`).join("")}</ul>`).join("") + `</div>`;

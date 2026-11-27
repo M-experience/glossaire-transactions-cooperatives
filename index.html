@@ -628,6 +628,18 @@ function arbreFamille(cs){
   };
   return racines.map(item).join("") + cs.filter(c=>!vus.has(c.slug)).map(item).join("");
 }
+function aussiDans(c){ const a = (c.concept_attribut||[]).find(x=>x.attribut==="aussi_dans"); return a ? a.valeur.split(",").map(v=>v.trim()).filter(Boolean) : []; }
+function conceptsDuBloc(fam){
+  const vus = new Set(); const res = [];
+  const ajouter = c=>{ if(c && !vus.has(c.slug)){ vus.add(c.slug); res.push(c); } };
+  D.concepts.filter(c=>c.famille_slug===fam).forEach(ajouter);
+  for(const m of D.concepts){
+    if(!aussiDans(m).length || (m.famille_slug!==fam && !aussiDans(m).includes(fam))) continue;
+    ajouter(m);
+    for(const c of D.concepts) if(ascendants(c.slug).includes(m.slug)) ajouter(c);
+  }
+  return res;
+}
 function vueAccueil(){
   let h = `<h1>${t("acc_titre")}</h1>
   <p class="intro">${t("acc_intro")}</p>`;
@@ -637,7 +649,7 @@ function vueAccueil(){
   let ouvertes = null; try{ ouvertes = JSON.parse(localStorage.getItem("familles-ouvertes")); }catch(e){}
   h += `<p class="note">${t("compte",{c:D.concepts.length,r:D.relations.length})} · <a href="#" id="tout-deplier">${t("deplier")}</a> · <a href="#" id="tout-replier">${t("replier")}</a></p><div class="familles">`;
   for(const f of D.familles){
-    const cs = D.concepts.filter(c=>c.famille_slug===f.slug);
+    const cs = conceptsDuBloc(f.slug);
     if(!cs.length) continue;
     const ouvert = ouvertes ? ouvertes.includes(f.slug) : false;
     h += `<details class="famille" data-f="${f.slug}"${ouvert?" open":""}><summary><h3>${pastille(f.slug)}${esc(f.libelle)} <span class="compte">${cs.length}</span></h3><p>${esc(f.description)}</p></summary><ul>`;
@@ -671,7 +683,7 @@ function vueConcept(slug){
   <div class="fiche"><div>
   <h1>${esc(c.libelle)}</h1>${badge(c.statut)}`;
   if(c.resume) h += `<div class="resume">${esc(c.resume)}</div>${(c.definition||[]).length ? "" : `<p class="note">${t("resume_note")}</p>`}`;
-  const attrs = (c.concept_attribut||[]).filter(a=>a.attribut!=="lien");
+  const attrs = (c.concept_attribut||[]).filter(a=>a.attribut!=="lien" && a.attribut!=="aussi_dans");
   if(attrs.length) h += `<h2>${t("caracteristiques")}</h2><dl class="attributs">` + attrs.map(a=>`<dt>${t("attr_"+a.attribut)}</dt><dd>${valeurAttribut(a)}</dd>`).join("") + `</dl>`;
   if(c.famille_slug==="configuration") h += `<p class="note"><a href="#/configurations">${t("cfg_voir")}</a></p>`;
   const ills = (c.concept_illustration||[]).filter(x=>x.illustration).sort((a,b)=>(b.principal-a.principal)||(a.illustration.diapositive-b.illustration.diapositive));
