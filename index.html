@@ -603,7 +603,7 @@ function brancherAccueil(){
 }
 function vueFamille(slug){
   const f = D.famille[slug]; if(!f) return vueAccueil();
-  const cs = D.concepts.filter(c=>c.famille_slug===slug);
+  const cs = D.concepts.filter(c=>c.famille_slug===slug).sort((x,y)=>x.libelle.localeCompare(y.libelle, LANG, {sensitivity:"base"}));
   return `<div class="fil"><a href="#/">${t("nav_concepts")}</a></div><h1>${pastille(slug)}${esc(f.libelle)}</h1><p class="intro">${esc(f.description)}</p><ul class="resultats">${cs.map(c=>`<li>${lien(c.slug)} ${c.statut!=="stabilisé"?`<span class="note">(${esc(tStatut(c.statut))})</span>`:""}<br><span class="com">${esc(c.resume)}</span></li>`).join("")}</ul>`;
 }
 const pastille = fam => `<span class="pastille" style="background:${D.famille[fam]?.couleur||'#999'}"></span>`;
@@ -613,6 +613,8 @@ function arbreFamille(cs){
   const dans = new Set(cs.map(c=>c.slug));
   const enf = {}; const racines = [];
   for(const c of cs){ const p = parent(c.slug); if(p && dans.has(p) && p!==c.slug) (enf[p] ??= []).push(c); else racines.push(c); }
+  const alpha = (x,y)=>x.libelle.localeCompare(y.libelle, LANG, {sensitivity:"base"});
+  racines.sort(alpha); Object.values(enf).forEach(l=>l.sort(alpha));
   const vus = new Set();
   const item = c=>{
     if(vus.has(c.slug)) return ""; vus.add(c.slug);
