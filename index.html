@@ -50,6 +50,9 @@ h1{font-size:32px;margin:0 0 6px}
 h2{font-size:21px;margin:32px 0 10px;border-bottom:1px solid var(--ligne);padding-bottom:6px}
 .intro{color:var(--gris);max-width:760px}
 .familles{display:grid;grid-template-columns:repeat(auto-fill,minmax(300px,1fr));gap:16px 22px;align-items:start}
+.familles details.famille[data-f="notion"]{grid-column:1/-1}
+.familles details.famille[data-f="notion"] > ul{columns:3 280px;column-gap:28px}
+.familles details.famille[data-f="notion"] > ul > li{break-inside:avoid}
 .famille{margin:0;background:var(--carte);border:1px solid var(--ligne);border-radius:8px;padding:14px 16px}
 .famille h3{margin:0 0 2px;font-size:17px}
 .famille p{margin:0 0 8px;font-size:13px;color:var(--gris)}
