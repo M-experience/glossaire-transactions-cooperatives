@@ -654,7 +654,7 @@ function vueAccueil(){
   for(const f of D.familles){
     const cs = conceptsDuBloc(f.slug);
     if(!cs.length) continue;
-    const ouvert = ouvertes ? ouvertes.includes(f.slug) : false;
+    const ouvert = f.slug==="notion" || (ouvertes ? ouvertes.includes(f.slug) : false);
     h += `<details class="famille" data-f="${f.slug}"${ouvert?" open":""}><summary><h3>${pastille(f.slug)}${esc(f.libelle)} <span class="compte">${cs.length}</span></h3><p>${esc(f.description)}</p></summary><ul>`;
     h += arbreFamille(cs) + `</ul></details>`;
   }
